@@ -11,3 +11,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('/refresh','refresh');
     });
 });
+Route::get('login',function (){
+    return response()->json([
+        'message' => 'unauthorized'
+    ]);
+})->name('login');

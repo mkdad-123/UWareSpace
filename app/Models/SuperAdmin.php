@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
@@ -15,7 +14,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|SuperAdmin query()
  * @mixin \Eloquent
  */
-class SuperAdmin extends Model
+class SuperAdmin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -27,6 +26,9 @@ class SuperAdmin extends Model
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+    protected $casts =[
+     'password' => 'hashed'
     ];
 
 }

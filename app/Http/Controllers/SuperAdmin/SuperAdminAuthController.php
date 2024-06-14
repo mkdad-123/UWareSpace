@@ -19,7 +19,7 @@ class SuperAdminAuthController extends Controller
             return response()->json([
                 'status' => 401,
                 'message' => 'Unauthorized',
-            ]);
+            ],401);
 
         }
         $token = $user->createToken('Token name')->accessToken;
@@ -31,20 +31,21 @@ class SuperAdminAuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        if (Auth::user()) {
-            $request->user()->token()->revoke();
+        if (auth('superAdmin')->user()) {
+            auth('superAdmin')->user()->token()->revoke();
 
             return response()->json([
                 'success' => true,
+                'status' => 200,
                 'message' => 'Logged out successfully',
-            ], 200);
+            ]);
         }
         return response()->json([
             'success' => false,
             'status' => 401,
-            'message' => 'authenticated',
-        ]);
+            'message' => 'Unauthorized',
+        ],401);
     }
 }
