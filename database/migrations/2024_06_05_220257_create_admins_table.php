@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('location');
+            $table->string('logo')->nullable();
             $table->boolean('active')->default('0');
             $table->string('code')->nullable();
             $table->timestamp('email_verified_at')->nullable();

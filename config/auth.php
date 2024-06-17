@@ -45,6 +45,11 @@ return [
             'provider' => 'superAdmins',
             'hash' => false,
         ],
+        'Admin' => [
+            'driver' => 'passport',
+            'provider' => 'Admins',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -72,6 +77,10 @@ return [
         'superAdmins' => [
             'driver' => 'eloquent',
             'model' => App\Models\SuperAdmin::class,
+        ],
+        'Admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
         // 'users' => [
         //     'driver' => 'database',
