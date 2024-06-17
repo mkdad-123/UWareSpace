@@ -16,7 +16,7 @@ class SuperAdminAuthController extends Controller
 
         if (!($user && Hash::check($request->password, $user->password))) {
             return response()->json([
-                'status' => 401,
+                'data' => response(),
                 'message' => 'Unauthorized',
             ],401);
 
@@ -24,8 +24,7 @@ class SuperAdminAuthController extends Controller
         $token = $user->createToken('Token name')->accessToken;
 
         return response()->json([
-            'status' => 200,
-            'token' => $token,
+            'data' => $token,
             'message' => 'Login successful'
         ]);
     }
@@ -36,14 +35,12 @@ class SuperAdminAuthController extends Controller
             auth('superAdmin')->user()->token()->revoke();
 
             return response()->json([
-                'success' => true,
-                'status' => 200,
+                'data' => response(),
                 'message' => 'Logged out successfully',
             ]);
         }
         return response()->json([
-            'success' => false,
-            'status' => 401,
+            'data' => response(),
             'message' => 'Unauthorized',
         ],401);
     }

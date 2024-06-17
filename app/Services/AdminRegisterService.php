@@ -48,7 +48,7 @@ class AdminRegisterService{
 
     protected function sendEmail($user)
     {
-        Mail::to($user->email)->send(new SendEmailVerification($user));
+        Mail::to($user->email)->send(new SendEmailVerification($user->code,$user->name));
     }
 
     public function register($request)
@@ -61,13 +61,13 @@ class AdminRegisterService{
 
             $user = $this->generateCode($user);
 
-            //$this->sendEmail($user);
+            $this->sendEmail($user);
+
+            DB::commit();
 
             $token = $user->createToken('Token for a admin')->accessToken;
             $message = 'your account has been created,please check your email';
             $this->result = new OperationResult($token,$message);
-
-            DB::commit();
 
         } catch (Exception $e) {
 
