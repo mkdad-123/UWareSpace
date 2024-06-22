@@ -50,6 +50,11 @@ return [
             'provider' => 'admins',
             'hash' => false,
         ],
+        'employee' => [
+            'driver' => 'passport',
+            'provider' => 'employees',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -81,6 +86,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employee::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

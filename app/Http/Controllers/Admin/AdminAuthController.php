@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\DTOs\AdminRegisterDto;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AdminRegisterRequest;
-use App\Models\Admin;
 use App\Services\AdminLoginService;
 use App\Services\AdminRegisterService;
-use Hash;
 use Illuminate\Http\Request;
 
 class AdminAuthController extends Controller
@@ -23,7 +22,7 @@ class AdminAuthController extends Controller
         ],201);
     }
 
-    public function login(Request $request)
+    public function login(AdminLoginRequest $request)
     {
 
             $result = (new AdminLoginService())->login($request);
@@ -32,6 +31,21 @@ class AdminAuthController extends Controller
                 'data' => $result->data,
                 'message' => $result->message
             ],$result->status);
+    }
 
+    public function logout()
+    {
+        if (auth('admin')->user()) {
+            auth('admin')->user()->token()->revoke();
+
+            return response()->json([
+                'data' => response(),
+                'message' => 'Logged out successfully',
+            ]);
+        }
+        return response()->json([
+            'data' => response(),
+            'message' => 'Unauthorized',
+        ],401);
     }
 }

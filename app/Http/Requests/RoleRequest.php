@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminLoginRequest extends FormRequest
+class RoleRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -15,8 +15,8 @@ class AdminLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|exists:admins',
-            'password' => 'required'
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required|array|exists:permissions,id',
         ];
     }
 }

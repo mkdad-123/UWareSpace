@@ -16,7 +16,7 @@ class AdminRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'email' => 'required|string|email|between:10|unique:admins',
+            'email' => 'required|string|email|between:10,50|unique:admins',
             'password'=> 'required|string|min:6',
             'location' => 'sometimes|string',
             'logo' => 'sometimes|string|mimes:jpg,png,jpeg'
