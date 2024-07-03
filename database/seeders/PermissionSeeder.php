@@ -8,14 +8,14 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
-    private $permissions = [
+    static private $permissions = [
         'store',
         'delete'
     ];
 
-    public function run(): void
+    static public function run(): void
     {
-        foreach ($this->permissions as $permission){
+        foreach (self::$permissions as $permission){
             Permission::create([
                 'name' => $permission,
                 'guard_name' => 'employee'

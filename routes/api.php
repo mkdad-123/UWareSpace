@@ -49,6 +49,17 @@ Route::get('login',function (){
 })->name('login');
 
 /*
+ * Verification success and failure
+ */
+Route::get('verification/success' , function (){
+    return view('auth.success');
+})->name('success');
+
+Route::get('verification/fail' , function (){
+    return view('auth.fail');
+})->name('fail');
+
+/*
  *  Roles management
  */
 Route::middleware('auth:admin')->group( function (){
@@ -57,7 +68,6 @@ Route::middleware('auth:admin')->group( function (){
         ->group( function (){
 
             Route::post('store','store');
-            Route::get('show_all_Permissions','showPermissions');
             Route::get('show','show');
             Route::get('show/{id}','showOne');
             Route::put('update/{id}','update');

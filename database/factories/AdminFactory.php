@@ -14,12 +14,12 @@ class AdminFactory extends Factory
     {
         return [
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt($this->faker->password()),
+            'password' => bcrypt('password'),
             'name' => $this->faker->name(),
             'location' => $this->faker->word(),
-            'active' => $this->faker->randomNumber(),
-            'code' => $this->faker->word(),
-            'email_verified_at' => $this->faker->unique()->safeEmail(),
+            'active' => true,
+            'code' => null,
+            'email_verified_at' => Carbon::now()->addMinute(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

@@ -13,18 +13,11 @@ class RoleController extends Controller
 {
     public function show()
     {
-        $admin = auth('admin')->id();
+        $admin = auth('admin')->user();
 
-        $roles = Role::all();
+        $roles = $admin->roles()->get();
 
         return $this->response(RoleResource::collection($roles));
-    }
-
-    public function showPermissions()
-    {
-        $permissions = Permission::all();
-
-        return $this->response($permissions);
     }
 
     public function store(RoleRequest $request)

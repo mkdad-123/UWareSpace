@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('logo')->nullable();
-            $table->string('phone');
             $table->boolean('active')->default('0');
             $table->string('code')->nullable();
             $table->timestamp('email_verified_at')->nullable();

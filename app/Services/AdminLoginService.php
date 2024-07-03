@@ -57,7 +57,7 @@ class AdminLoginService
             DB::commit();
 
             $token = $user->createToken('Token for a admin')->accessToken;
-            $message = 'your account has been created,please check your email';
+            $message = 'Login successfully';
             $this->result = new OperationResult($message,$token);
 
         } catch (Exception $e) {

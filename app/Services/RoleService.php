@@ -14,10 +14,16 @@ class RoleService{
 
     protected function storeRole($name)
     {
-        return Role::create([
+        $adminId = auth('admin')->id();
+
+        $role =  Role::create([
             'name' => $name,
             'guard_name' => 'employee'
         ]);
+
+        $role->admins()->attach($adminId);
+
+        return $role;
     }
 
     protected function getPermissions($permissionIds)
@@ -55,7 +61,7 @@ class RoleService{
 
             DB::commit();
 
-            $this->result = new OperationResult('Role has been updated successfully', response());
+            $this->result = new OperationResult('Role has been created successfully', response());
 
         } catch (Exception $e){
 

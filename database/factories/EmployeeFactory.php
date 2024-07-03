@@ -13,12 +13,12 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'admin_id' => $this->faker->randomNumber(),
-            'password' => bcrypt($this->faker->password()),
+            'admin_id' => rand(1,10),
+            'password' => bcrypt('password'),
             'email' => $this->faker->unique()->safeEmail(),
             'name' => $this->faker->name(),
             'location' => $this->faker->word(),
-            'active' => $this->faker->randomNumber(),
+            'active' => true,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

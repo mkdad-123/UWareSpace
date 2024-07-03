@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Role;
 
 /**
  *
@@ -66,6 +67,11 @@ class Admin extends Authenticatable implements Resetable
 
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Employee::class );
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }
