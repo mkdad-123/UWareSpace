@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Contracts\Auth\CanResetPassword as Resetable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 /**
- * 
+ *
  *
  * @method static \Illuminate\Database\Eloquent\Builder|SuperAdmin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SuperAdmin newQuery()
@@ -33,9 +35,9 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|SuperAdmin whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class SuperAdmin extends Authenticatable
+class SuperAdmin extends Authenticatable implements Resetable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable , CanResetPassword;
 
     protected $fillable = [
         "email",

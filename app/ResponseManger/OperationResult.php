@@ -10,7 +10,7 @@ class OperationResult
 
     public $status;
 
-    public function __construct($message,$data = null,$status = 200)
+    public function __construct($message = 'Successfully',$data = null,$status = 200)
     {
         $this->data = $data;
         $this->message = $message;

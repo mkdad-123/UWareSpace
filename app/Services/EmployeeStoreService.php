@@ -4,12 +4,15 @@ namespace App\Services;
 
 use App\Mail\SendJobEmail;
 use App\Models\Employee;
+use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
-class EmployeeService{
+class EmployeeStoreService{
+
+    public OperationResult $result;
 
     protected function storeEmployee($data)
     {
@@ -30,7 +33,9 @@ class EmployeeService{
 
     protected function sendEmail($user,$role,$password)
     {
-        Mail::to($user->email)->send(new SendJobEmail($user->name,$user->role,$password));
+        $admin = auth('admin')->user();
+
+        Mail::to($user->email)->send(new SendJobEmail($user->name,$role,$password,$admin));
     }
 
     public function store($request)
@@ -49,13 +54,16 @@ class EmployeeService{
 
              DB::commit();
 
+            $this->result = new OperationResult('Employee has been created successfully',response());
+
         } catch (Exception $e){
 
             DB::rollBack();
 
-            return response($e->getMessage());
+            return $this->result = new OperationResult($e->getMessage() , response(),500);
         }
-        return true;
+
+        return $this->result;
     }
 
 }

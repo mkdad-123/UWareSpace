@@ -10,7 +10,7 @@ class EmployeeUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:employees,email',
+            'email' => 'sometimes|email|unique:employees,email',
             'password' => 'sometimes',   //same:confirm-password',
             'role_id' => 'required|exists:roles,id'
         ];

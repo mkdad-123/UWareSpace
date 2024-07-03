@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleService{
+
+    public OperationResult $result;
 
     protected function storeRole($name)
     {
@@ -52,13 +55,16 @@ class RoleService{
 
             DB::commit();
 
+            $this->result = new OperationResult('Role has been updated successfully', response());
+
         } catch (Exception $e){
 
             DB::rollBack();
 
-            return response($e->getMessage());
+            return $this->result = new OperationResult($e->getMessage() , response(),500);
+
         }
-        return true;
+        return $this->result;
     }
 
     public function update($id , $request)
@@ -74,17 +80,21 @@ class RoleService{
 
             $this->storePermission($permissions,$role);
 
+            $role = Role::with('permissions')->find($id);;
+
+            $this->result = new OperationResult('Role has been updated successfully',$role);
+
             DB::commit();
 
-            $role = Role::with('permissions')->whereId($id)->get();
+
 
         } catch (Exception $e){
 
             DB::rollBack();
 
-            return response($e->getMessage());
+            return $this->result = new OperationResult($e->getMessage() , response(),500);
         }
-        return $role;
+        return $this->result;
     }
 
 }

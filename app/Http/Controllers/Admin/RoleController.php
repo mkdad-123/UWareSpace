@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
+use App\Http\Resources\RoleResource;
 use App\Services\RoleService;
-use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -12,37 +13,49 @@ class RoleController extends Controller
 {
     public function show()
     {
+        $admin = auth('admin')->id();
+
         $roles = Role::all();
-        return $this->response($roles,'successfully');
+
+        return $this->response(RoleResource::collection($roles));
     }
 
     public function showPermissions()
     {
         $permissions = Permission::all();
+
         return $this->response($permissions);
     }
 
     public function store(RoleRequest $request)
     {
 
-        (new RoleService())->store($request);
+        $result = (new RoleService())->store($request);
 
-        return $this->response(response());
+        return $this->response(
+            $result->data,
+            $result->message,
+            $result->status
+        );
     }
 
     public function showOne($id)
     {
         $role = Role::with('permissions')->find($id);
 
-        return $this->response($role,'successfully');
+        return $this->response(new RoleResource($role));
     }
 
 
-    public function update(RoleRequest $request, $id)
+    public function update(RoleRequest $request,$id)
     {
-        $role = (new RoleService())->update($id,$request);
+        $result = (new RoleService())->update($id,$request);
 
-        return $this->response($role);
+        return $this->response(
+            new RoleResource($result->data),
+            $result->message,
+            $result->status
+        );
     }
 
     public function destroy($id)

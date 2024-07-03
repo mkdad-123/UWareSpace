@@ -7,30 +7,26 @@ use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AdminRegisterRequest;
 use App\Services\AdminLoginService;
 use App\Services\AdminRegisterService;
-use Illuminate\Http\Request;
+use App\Traits\ResetPasswordTrait;
 
 class AdminAuthController extends Controller
 {
+    use ResetPasswordTrait;
+
     public function register(AdminRegisterRequest $request)
     {
 
         $result = (new AdminRegisterService())->register($request);
 
-        return response()->json([
-            'data' => $result->data,
-            'message' => $result->message,
-        ],201);
+        return $this->response($result->data,$result->message ,$result->status);
     }
 
     public function login(AdminLoginRequest $request)
     {
 
-            $result = (new AdminLoginService())->login($request);
+        $result = (new AdminLoginService())->login($request);
 
-            return response()->json([
-                'data' => $result->data,
-                'message' => $result->message
-            ],$result->status);
+        return $this->response($result->data,$result->message , $result->status);
     }
 
     public function logout()
@@ -38,14 +34,10 @@ class AdminAuthController extends Controller
         if (auth('admin')->user()) {
             auth('admin')->user()->token()->revoke();
 
-            return response()->json([
-                'data' => response(),
-                'message' => 'Logged out successfully',
-            ]);
+            return $this->response(response(),'Logged out successfully' , 401);
+
         }
-        return response()->json([
-            'data' => response(),
-            'message' => 'Unauthorized',
-        ],401);
+        return $this->response(response(),'Unauthorized' , 401);
+
     }
 }

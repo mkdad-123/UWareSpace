@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\EmployeeStoreRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Models\Employee;
+use App\Services\EmployeeStoreService;
+use App\Services\EmployeeUpdateService;
+
+class EmployeeController extends Controller
+{
+
+    public function show()
+    {
+        $adminId = auth('admin')->id();
+
+        $employees = Employee::whereAdminId($adminId)->get();
+
+        return $this->response(EmployeeResource::collection($employees));
+    }
+
+    public function store(EmployeeStoreRequest $request)
+    {
+        $result = (new EmployeeStoreService())->store($request);
+
+        return $this->response(
+            $result->data,
+            $result->message,
+            $result->status
+        );
+    }
+
+    public function showOne($id)
+    {
+        $employee = Employee::with('roles')->find($id);
+
+        return $this->response(new EmployeeResource($employee));
+    }
+
+    public function update(EmployeeUpdateRequest $request, $id)
+    {
+
+        $result = (new EmployeeUpdateService())->update($request , $id);
+
+        return $this->response(
+            new EmployeeResource($result->data),
+            $result->message,
+            $result->status
+        );
+    }
+
+    public function destroy($id)
+    {
+        Employee::find($id)->delete();
+
+        return $this->response(response());
+    }
+}

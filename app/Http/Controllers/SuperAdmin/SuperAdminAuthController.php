@@ -4,11 +4,15 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SuperAdmin;
+use App\Traits\ResetPasswordTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class SuperAdminAuthController extends Controller
 {
+    use ResetPasswordTrait;
+
     public function login(Request $request)
     {
 

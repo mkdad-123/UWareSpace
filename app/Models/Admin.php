@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as Resetable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,9 +45,9 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements Resetable
 {
-    use HasFactory,HasApiTokens,Notifiable;
+    use HasFactory,HasApiTokens,Notifiable , CanResetPassword;
 
     protected $fillable = [
         'email',

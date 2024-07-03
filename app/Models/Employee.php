@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as Resetable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,9 +43,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements Resetable
 {
-    use HasFactory,HasApiTokens,Notifiable,HasRoles;
+    use HasFactory,HasApiTokens,Notifiable,HasRoles , CanResetPassword;
 
     protected $fillable = [
         'email',

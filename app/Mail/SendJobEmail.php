@@ -16,19 +16,21 @@ class SendJobEmail extends Mailable
     public $name;
     public $role;
     public $password;
+    public $admin;
 
-    public function __construct($name,$role,$password)
+    public function __construct($name,$role,$password,$admin)
     {
         $this->password = $password;
         $this->role = $role;
         $this->name = $name;
+        $this->admin = $admin;
     }
 
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Job Email',
+            subject: 'Recruitment Email',
         );
     }
 
@@ -40,7 +42,10 @@ class SendJobEmail extends Mailable
             with: [
                 'name' => $this->name,
                 'role' => $this->role,
-                'password' => $this->password
+                'password' => $this->password,
+                'adminPhone' => $this->admin->phone,
+                'adminName' => $this->admin->name,
+                'adminEmail' => $this->admin->email,
             ]
         );
     }
