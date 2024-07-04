@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Mail\SendJobEmail;
 use App\Models\Employee;
+use App\Models\Phone;
 use App\ResponseManger\OperationResult;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
@@ -44,7 +46,9 @@ class EmployeeStoreService{
 
              DB::beginTransaction();
 
-             $user = $this->storeEmployee($request->except('role_id'));
+             $user = $this->storeEmployee($request->except(['role_id' , 'phones']));
+
+             $user = PhoneService::storePhones($user , $request->input('phones'));
 
              $role = $this->getRole($request->role_id);
 

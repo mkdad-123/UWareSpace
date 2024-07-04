@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Mail\SendEmailVerification;
 use App\Models\Admin;
+use App\Models\Phone;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -22,16 +23,27 @@ class AdminRegisterService{
 
     protected function store($data)
     {
-        $user = $this->model::create($data->all());
+        $user = $this->model->create($data);
 
         return $user;
     }
 
-    protected function generateCode(Admin $user)
+    protected function storePhones($user , $phones)
     {
-        try {
+        foreach ($phones as $phoneData){
+            $phone = new Phone();
 
+            $phone->number = $phoneData['number'];
+
+            $user->phones()->save($phone);
+        }
+        return $user;
+    }
+
+    protected function generateCode($user)
+    {
             $code = rand(1000,9999);
+
             $user->setAttribute('code',$code);
 
             $user->setAttribute('email_verified_at',null);
@@ -39,11 +51,6 @@ class AdminRegisterService{
             $user->save();
 
             return $user;
-
-        }catch (Exception $e){
-
-            return response($e->getMessage());
-        }
     }
 
     protected function sendEmail($user)
@@ -57,7 +64,9 @@ class AdminRegisterService{
 
             DB::beginTransaction();
 
-            $user = $this->store($request);
+            $user = $this->store($request->except('phones'));
+
+            $user = PhoneService::storePhones($user , $request->input('phones'));
 
             $user = $this->generateCode($user);
 
@@ -67,7 +76,7 @@ class AdminRegisterService{
 
             $token = $user->createToken('Token for a admin')->accessToken;
             $message = 'your account has been created,please check your email';
-            $this->result = new OperationResult($token,$message,201);
+            $this->result = new OperationResult($message,$token,201);
 
         } catch (Exception $e) {
 

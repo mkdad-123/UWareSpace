@@ -9,9 +9,11 @@ class EmployeeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email' => 'sometimes|email|unique:employees,email',
-            'password' => 'sometimes',   //same:confirm-password',
+            'name' => 'required|string|max:255',
+            'password' => 'sometimes|nullable|string|min:8',   //same:confirm-password',
+            'phones' => 'sometimes|array',
+            'phones.*.id' => 'sometimes|exists:phones,id',
+            'phones.*.number' => 'sometimes|string|max:12',
             'role_id' => 'required|exists:roles,id'
         ];
     }

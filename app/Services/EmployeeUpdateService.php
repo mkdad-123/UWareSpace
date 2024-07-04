@@ -3,18 +3,31 @@
 namespace App\Services;
 
 use App\Models\Employee;
+use App\Models\Phone;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
 class EmployeeUpdateService{
 
     public OperationResult $result;
 
-    protected function checkPassword($data)
+    protected function validEmail($data , $id)
+    {
+        $user = Employee::find($id);
+
+        $data->validate([
+            'email' => 'sometimes|email|',Rule::unique('employees')->ignore($user->id),
+        ]);
+
+        return $user;
+    }
+
+    protected function updatePassword($data)
     {
         if(!empty($data['password'])){
             $data['password'] = Hash::make($data['password']);
@@ -24,7 +37,7 @@ class EmployeeUpdateService{
         return $data;
     }
 
-    protected function checkEmail($data)
+    protected function updateEmail($data)
     {
         if(empty($data['email'])) {
             $data = Arr::except($data, array('email'));
@@ -32,10 +45,8 @@ class EmployeeUpdateService{
         return $data;
     }
 
-    protected function updateUser($id,$data)
+    protected function updateUser($id,$data , $user)
     {
-        $user = Employee::find($id);
-
          $user->update($data);
 
          return $user;
@@ -62,11 +73,17 @@ class EmployeeUpdateService{
 
             DB::beginTransaction();
 
-            $data = $this->checkPassword($request->except('role_id'));
+            $user = $this->validEmail($request , $id);
 
-            $data = $this->checkEmail($data);
+            $data = $this->updatePassword($request->except(['role_id' , 'phones']));
 
-            $user = $this->updateUser($id ,$data);
+            $data = $this->updateEmail($data);
+
+            $user = $this->updateUser($id ,$data , $user);
+
+            if($request->input('phones')){
+                (new PhoneService())->updatePhones($request->input('phones'),$user);
+            }
 
             $role = $this->getRole($request->role_id);
 
@@ -74,7 +91,7 @@ class EmployeeUpdateService{
 
             $this->setRoleInUser($user,$role);
 
-            $employee = Employee::with('roles')->find($id);
+            $employee = Employee::with(['roles', 'phones'])->find($id);
 
             DB::commit();
 

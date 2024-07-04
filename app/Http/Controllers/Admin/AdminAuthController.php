@@ -15,7 +15,6 @@ class AdminAuthController extends Controller
 
     public function register(AdminRegisterRequest $request)
     {
-
         $result = (new AdminRegisterService())->register($request);
 
         return $this->response($result->data,$result->message ,$result->status);

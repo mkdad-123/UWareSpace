@@ -15,7 +15,6 @@ class EmployeeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone,
             'location' => $this->location
         ];
 
@@ -28,6 +27,16 @@ class EmployeeResource extends JsonResource
                        ];
                 });
             };
+
+        if($this->relationLoaded('phones'))
+        {
+            $data['phones'] = $this->phones->map(function ($phone){
+                return [
+                    'id' => $phone->id,
+                    'number' => $phone->number,
+                ];
+            });
+        };
 
         return $data;
     }

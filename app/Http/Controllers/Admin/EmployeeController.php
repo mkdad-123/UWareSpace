@@ -7,8 +7,10 @@ use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+use App\Models\Phone;
 use App\Services\EmployeeStoreService;
 use App\Services\EmployeeUpdateService;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -17,7 +19,7 @@ class EmployeeController extends Controller
     {
         $adminId = auth('admin')->id();
 
-        $employees = Employee::whereAdminId($adminId)->get();
+        $employees = Employee::with('phones')->whereAdminId($adminId)->get();
 
         return $this->response(EmployeeResource::collection($employees));
     }
@@ -35,7 +37,7 @@ class EmployeeController extends Controller
 
     public function showOne($id)
     {
-        $employee = Employee::with('roles')->find($id);
+        $employee = Employee::with(['roles','phones'])->find($id);
 
         return $this->response(new EmployeeResource($employee));
     }
@@ -50,11 +52,11 @@ class EmployeeController extends Controller
             $result->message,
             $result->status
         );
-    }
+   }
 
     public function destroy($id)
     {
-        Employee::find($id)->delete();
+        Employee::with('phones')->find($id)->delete();
 
         return $this->response(response());
     }

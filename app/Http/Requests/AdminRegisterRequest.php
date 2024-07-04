@@ -15,10 +15,12 @@ class AdminRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'email' => 'required|string|email|between:10,50|unique:admins',
-            'password'=> 'required|string|min:6',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:admins,email',
+            'password'=> 'required|string|min:8',
             'location' => 'sometimes|string',
+            'phones' => 'required|array',
+            'phones.*.number'=> 'required|string',
             'logo' => 'sometimes|string|mimes:jpg,png,jpeg'
         ];
     }

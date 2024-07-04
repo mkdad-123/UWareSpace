@@ -18,10 +18,11 @@ class EmployeeStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email',
-            'password' => 'required',   //same:confirm-password',
-            'phone' => 'required|max:12',
+            'password' => 'required|string|min:8',   //same:confirm-password',
+            'phones' => 'required|array',
+            'phones.*.number' => 'required|string|max:12',
             'location' => 'sometimes',
             'role_id' => 'required|exists:roles,id'
         ];
