@@ -43,7 +43,6 @@ class AdminLoginService
         try {
             DB::beginTransaction();
 
-
             $user = $this->getUser($request->email);
 
             if(! $this->isValidData($request,$user)){

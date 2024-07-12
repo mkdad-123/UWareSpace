@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as Resetable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -47,7 +48,7 @@ use Spatie\Permission\Models\Role;
  * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
-class Admin extends Authenticatable implements Resetable
+class Admin extends Authenticatable implements Resetable,MustVerifyEmail
 {
     use HasFactory,HasApiTokens,Notifiable , CanResetPassword;
 

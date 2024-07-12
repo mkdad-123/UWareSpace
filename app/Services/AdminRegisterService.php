@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Phone;
 use App\ResponseManger\OperationResult;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -40,22 +41,12 @@ class AdminRegisterService{
         return $user;
     }
 
-    protected function generateCode($user)
-    {
-            $code = rand(1000,9999);
-
-            $user->setAttribute('code',$code);
-
-            $user->setAttribute('email_verified_at',null);
-
-            $user->save();
-
-            return $user;
-    }
 
     protected function sendEmail($user)
     {
-        Mail::to($user->email)->send(new SendEmailVerification($user->code,$user->name));
+        event(new Registered($user));
+
+        //Mail::to($user->email)->send(new SendEmailVerification($user->code,$user->name));
     }
 
     public function register($request)
@@ -67,8 +58,6 @@ class AdminRegisterService{
             $user = $this->store($request->except('phones'));
 
             $user = PhoneService::storePhones($user , $request->input('phones'));
-
-            $user = $this->generateCode($user);
 
             $this->sendEmail($user);
 
