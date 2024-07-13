@@ -10,7 +10,9 @@ use App\Models\Employee;
 use App\Models\Phone;
 use App\Services\EmployeeStoreService;
 use App\Services\EmployeeUpdateService;
+use Auth;
 use Illuminate\Validation\Rule;
+use Request;
 
 class EmployeeController extends Controller
 {
@@ -37,7 +39,7 @@ class EmployeeController extends Controller
 
     public function showOne($id)
     {
-        $employee = Employee::with(['roles','phones'])->find($id);
+        $employee = Employee::with(['roles', 'phones'])->find($id);
 
         return $this->response(new EmployeeResource($employee));
     }
@@ -45,14 +47,14 @@ class EmployeeController extends Controller
     public function update(EmployeeUpdateRequest $request, $id)
     {
 
-        $result = (new EmployeeUpdateService())->update($request , $id);
+        $result = (new EmployeeUpdateService())->update($request, $id);
 
         return $this->response(
             new EmployeeResource($result->data),
             $result->message,
             $result->status
         );
-   }
+    }
 
     public function destroy($id)
     {

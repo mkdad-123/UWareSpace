@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         Admin::factory(10)->create();
+        Admin::factory(10)->create();
 
-         Employee::factory(10)->create();
+        //Employee::factory(10)->create();
 
-         SuperAdmin::create([
+        SuperAdmin::create([
             'name' => 'Mkdad Taleb',
             'email' => 'ma0109424@gmail.com',
             'password' => Hash::make('password')
         ]);
 
-         PermissionSeeder::run();
+        PermissionSeeder::run();
 
         Admin::create([
             'name' => 'Mkdad Taleb',
@@ -38,4 +38,6 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         ]);
     }
+
+
 }

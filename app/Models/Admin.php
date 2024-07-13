@@ -86,5 +86,7 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail
     {
         return $this->morphMany(Phone::class, 'phoneable');
     }
-
+    public function compliants(){
+        return $this->morphMany(Compliant::class , 'compliantable');
+    }
 }
