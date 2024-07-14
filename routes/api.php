@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
+use App\Http\Controllers\Subscription\SubscriptionController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Compliant;
@@ -52,6 +53,13 @@ Route::controller(SuperAdminController::class)->prefix('SuperAdmin')
 Route::controller(AdminController::class)->prefix('Admin')
     ->group(function () {
         Route::get('/ShowCompliants', 'ShowCompliants')->middleware('auth:admin');
+
+    });
+    Route::controller(SubscriptionController::class)->prefix('subscription')
+    ->group(function () {
+        Route::post('/MakePlan', 'MakePlan')->middleware('auth:superAdmin');
+        Route::get('/ShowPlans', 'ShowPlans')->middleware('auth:admin');
+        Route::post('/PickePlan', 'PickePlan')->middleware('auth:admin');
 
     });
     Route::controller(CompliantsController::class)->prefix('Compliant')
