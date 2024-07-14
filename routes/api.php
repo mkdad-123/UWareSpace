@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -85,7 +86,20 @@ Route::middleware('auth:admin')->group( function (){
             Route::delete('delete/{id}','destroy');
         });
 
+    /*
+ * Warehouse management
+ */
+    Route::prefix('warehouse')->controller(WarehouseController::class)
+        ->group(function (){
+            Route::post('store' , 'store');
+            Route::get('show-all' , 'showAll');
+            Route::get('show/{warehouse}' , 'show');
+            Route::patch('update/{warehouse}' , 'update');
+            Route::delete('delete/{warehouse}' , 'delete');
+        });
 });
+
+
 
 
 

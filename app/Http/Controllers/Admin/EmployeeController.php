@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeStoreRequest;
-use App\Http\Requests\EmployeeUpdateRequest;
+use App\Http\Requests\Employee\EmployeeStoreRequest;
+use App\Http\Requests\Employee\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
-use App\Models\Phone;
 use App\Services\EmployeeStoreService;
 use App\Services\EmployeeUpdateService;
-use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -58,6 +56,6 @@ class EmployeeController extends Controller
     {
         Employee::with('phones')->find($id)->delete();
 
-        return $this->response(response());
+        return $this->response(response(),'your employee has been deleted successfully');
     }
 }

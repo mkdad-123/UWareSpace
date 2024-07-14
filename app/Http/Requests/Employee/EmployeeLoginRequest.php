@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminLoginRequest extends FormRequest
+class EmployeeLoginRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -15,7 +15,7 @@ class AdminLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|exists:admins',
+            'email' => 'required|exists:employees,email',
             'password' => 'required'
         ];
     }
