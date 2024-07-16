@@ -81,9 +81,9 @@ Route::middleware('auth:admin')->group( function (){
         ->group( function (){
             Route::post('store','store');
             Route::get('show','show');
-            Route::get('show/{id}','showOne');
-            Route::put('update/{id}','update');
-            Route::delete('delete/{id}','destroy');
+            Route::get('show/{employee}','showOne');
+            Route::put('update/{employee}','update');
+            Route::delete('delete/{employee}','destroy');
         });
 
     /*
@@ -94,7 +94,7 @@ Route::middleware('auth:admin')->group( function (){
             Route::post('store' , 'store');
             Route::get('show-all' , 'showAll');
             Route::get('show/{warehouse}' , 'show');
-            Route::patch('update/{warehouse}' , 'update');
+            Route::put('update/{warehouse}' , 'update');
             Route::delete('delete/{warehouse}' , 'delete');
         });
 });

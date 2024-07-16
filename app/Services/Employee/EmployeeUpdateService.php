@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Employee;
 
 use App\Models\Employee;
-use App\Models\Phone;
 use App\ResponseManger\OperationResult;
+use App\Services\PhoneService;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,17 +15,13 @@ use Spatie\Permission\Models\Role;
 
 class EmployeeUpdateService{
 
-    public OperationResult $result;
+    protected OperationResult $result;
 
-    protected function validEmail($data , $id)
+    protected $phoneService;
+
+    public function __construct(PhoneService $phoneService)
     {
-        $user = Employee::find($id);
-
-        $data->validate([
-            'email' => 'sometimes|email|',Rule::unique('employees')->ignore($user->id),
-        ]);
-
-        return $user;
+        $this->phoneService = $phoneService;
     }
 
     protected function updatePassword($data)
@@ -45,7 +42,7 @@ class EmployeeUpdateService{
         return $data;
     }
 
-    protected function updateUser($id,$data , $user)
+    protected function updateUser($data , $user)
     {
          $user->update($data);
 
@@ -67,41 +64,46 @@ class EmployeeUpdateService{
         DB::table('model_has_roles')->where('model_id',$id)->delete();
     }
 
-    public function update($request , $id)
+    public function update($request , $user)
     {
         try {
 
             DB::beginTransaction();
 
-            $user = $this->validEmail($request , $id);
-
             $data = $this->updatePassword($request->except(['role_id' , 'phones']));
 
             $data = $this->updateEmail($data);
 
-            $user = $this->updateUser($id ,$data , $user);
+            $user = $this->updateUser($data , $user);
 
-            if($request->input('phones')){
-                (new PhoneService())->updatePhones($request->input('phones'),$user);
+            if($request->has('phones')){
+
+                $this->phoneService->updatePhones($request->input('phones'),$user);
             }
 
             $role = $this->getRole($request->role_id);
 
-            $this->deleteRole($id);
+            $this->deleteRole($user->id);
 
             $this->setRoleInUser($user,$role);
 
-            $employee = Employee::with(['roles', 'phones'])->find($id);
+           // $employee = Employee::with(['roles','phones'])->find($id);
 
             DB::commit();
 
-            $this->result = new OperationResult('Employee has been updated successfully',$employee);
+            $this->result = new OperationResult('Employee has been updated successfully',$user);
 
-        } catch (Exception $e){
+        } catch (QueryException $e) {
 
             DB::rollBack();
 
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
         return $this->result;
     }

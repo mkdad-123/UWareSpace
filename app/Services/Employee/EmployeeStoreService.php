@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Employee;
 
 use App\Mail\SendJobEmail;
 use App\Models\Employee;
-use App\Models\Phone;
 use App\ResponseManger\OperationResult;
+use App\Services\PhoneService;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
@@ -60,11 +60,17 @@ class EmployeeStoreService{
 
             $this->result = new OperationResult('Employee has been created successfully',response());
 
-        } catch (Exception $e){
+        } catch (QueryException $e) {
 
             DB::rollBack();
 
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
 
         return $this->result;

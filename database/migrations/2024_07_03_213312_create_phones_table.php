@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->morphs('phoneable');
-            $table->string('number');
+            $table->string('number')->unique();
             $table->timestamps();
         });
     }

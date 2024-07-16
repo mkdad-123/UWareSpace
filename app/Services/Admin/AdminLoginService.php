@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Models\Admin;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Hash;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class AdminLoginService
@@ -59,11 +60,17 @@ class AdminLoginService
             $message = 'Login successfully';
             $this->result = new OperationResult($message,$token);
 
+        } catch (QueryException $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
         } catch (Exception $e) {
 
             DB::rollBack();
 
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
         return $this->result;
 

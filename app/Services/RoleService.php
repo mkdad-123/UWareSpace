@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\ResponseManger\OperationResult;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -63,12 +64,17 @@ class RoleService{
 
             $this->result = new OperationResult('Role has been created successfully', response());
 
-        } catch (Exception $e){
+        } catch (QueryException $e) {
 
             DB::rollBack();
 
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
 
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
         return $this->result;
     }
@@ -92,13 +98,17 @@ class RoleService{
 
             DB::commit();
 
-
-
-        } catch (Exception $e){
+        } catch (QueryException $e) {
 
             DB::rollBack();
 
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
         return $this->result;
     }

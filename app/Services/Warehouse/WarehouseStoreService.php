@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Warehouse;
 
 use App\Models\Warehouse;
 use App\ResponseManger\OperationResult;
+use App\Services\LocationService;
 use DB;
 use Mockery\Exception;
 
@@ -48,7 +49,7 @@ class WarehouseStoreService
 
                 if(! $adrsCoordinate = $this->getAddress($location)){
 
-                    return $this->result = new OperationResult('Failed to get coordinate because '.$adrsCoordinate,response(), 400);
+                    return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
                 }
 
                 $data = $this->mergeData($data ,$adrsCoordinate);
@@ -58,7 +59,7 @@ class WarehouseStoreService
 
             DB::commit();
 
-            $this->result = new OperationResult('Your warehouse have been added' , $warehouse,201);
+            $this->result = new OperationResult('Your warehouse has been added successfully' , $warehouse,201);
 
         }catch (Exception $e){
 

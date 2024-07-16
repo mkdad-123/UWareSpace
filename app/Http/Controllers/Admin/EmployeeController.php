@@ -7,11 +7,17 @@ use App\Http\Requests\Employee\EmployeeStoreRequest;
 use App\Http\Requests\Employee\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
-use App\Services\EmployeeStoreService;
-use App\Services\EmployeeUpdateService;
+use App\Services\Employee\EmployeeStoreService;
+use App\Services\Employee\EmployeeUpdateService;
+use App\Services\EmployeeDeleteService;
 
 class EmployeeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Employee::class , 'employee');
+    }
 
     public function show()
     {
@@ -22,9 +28,9 @@ class EmployeeController extends Controller
         return $this->response(EmployeeResource::collection($employees));
     }
 
-    public function store(EmployeeStoreRequest $request)
+    public function store(EmployeeStoreRequest $request , EmployeeStoreService $storeService)
     {
-        $result = (new EmployeeStoreService())->store($request);
+        $result = $storeService->store($request);
 
         return $this->response(
             $result->data,
@@ -33,29 +39,41 @@ class EmployeeController extends Controller
         );
     }
 
-    public function showOne($id)
+    public function showOne(Employee $employee)
     {
-        $employee = Employee::with(['roles','phones'])->find($id);
+        $employee->load(['phones' , 'roles']);
 
         return $this->response(new EmployeeResource($employee));
     }
 
-    public function update(EmployeeUpdateRequest $request, $id)
+    public function update(EmployeeUpdateRequest $request, Employee $employee ,EmployeeUpdateService $updateService)
     {
+        $result = $updateService->update($request , $employee);
 
-        $result = (new EmployeeUpdateService())->update($request , $id);
-
-        return $this->response(
-            new EmployeeResource($result->data),
+        if ( $result->status == 200){
+            return $this->response(
+                new EmployeeResource($result->data),
+                $result->message,
+                $result->status,
+            );
+        }
+        return  $this->response(
+            $result->data,
             $result->message,
-            $result->status
+            $result->status,
         );
    }
 
-    public function destroy($id)
+    public function destroy(Employee $employee , EmployeeDeleteService $deleteService)
     {
-        Employee::with('phones')->find($id)->delete();
+        $this->authorize('delete', $employee);
 
-        return $this->response(response(),'your employee has been deleted successfully');
+        $result = $deleteService->delete($employee);
+
+        return  $this->response(
+            $result->data,
+            $result->message,
+            $result->status,
+        );
     }
 }

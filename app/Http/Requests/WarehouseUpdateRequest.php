@@ -6,23 +6,24 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class WarehouseUpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
+        $warehouseId = $this->route('warehouse')->id;
+
         return [
-            //
+            'name' => 'sometimes|string|max:250|unique:warehouses,name,'. $warehouseId ,
+            'size_cubic_meters' => 'sometimes|numeric|between:0,99999999.99',
+            'location'=> 'sometimes|array',
+            'location.country' => 'required_with:location|string|max:250',
+            'location.city' => 'required_with:location|string|max:250',
+            'location.region' => 'required_with:location|string|max:250',
+            'location.street' => 'sometimes|string|max:250'
         ];
     }
 }

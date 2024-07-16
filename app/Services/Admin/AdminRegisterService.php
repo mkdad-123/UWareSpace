@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
-use App\Mail\SendEmailVerification;
 use App\Models\Admin;
 use App\Models\Phone;
 use App\ResponseManger\OperationResult;
+use App\Services\PhoneService;
 use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class AdminRegisterService{
 
@@ -67,10 +67,17 @@ class AdminRegisterService{
             $message = 'your account has been created,please check your email';
             $this->result = new OperationResult($message,$token,201);
 
+        } catch (QueryException $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
         } catch (Exception $e) {
 
             DB::rollBack();
-            return $this->result = new OperationResult($e->getMessage() , response(),500);
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
         }
         return $this->result;
     }

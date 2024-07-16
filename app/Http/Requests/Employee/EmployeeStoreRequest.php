@@ -19,7 +19,7 @@ class EmployeeStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employees,email',
+            'email' => 'required|email|max:250|unique:employees,email',
             'password' => 'required|string|min:8',   //same:confirm-password',
             'phones' => 'required|array',
             'phones.*.number' => 'required|string|max:12',

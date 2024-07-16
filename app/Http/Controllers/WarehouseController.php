@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WarehouseStoreRequest;
+use App\Http\Requests\WarehouseUpdateRequest;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
-use App\Services\WarehouseStoreService;
+use App\Services\LocationService;
+use App\Services\Warehouse\WarehouseStoreService;
+use App\Services\Warehouse\WarehouseUpdateService;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
@@ -51,9 +54,24 @@ class WarehouseController extends Controller
         );
     }
 
-    public function update(Request $request , Warehouse $warehouse)
+    public function update(WarehouseUpdateRequest $request , Warehouse $warehouse , WarehouseUpdateService $updateService)
     {
-        $warehouse->name = $request->input('name');
+
+        $result = $updateService->update($request,$warehouse);
+
+        if ( $result->status == 200){
+
+            return $this->response(
+                new WarehouseResource($result->data),
+                $result->message,
+                $result->status,
+            );
+        }
+        return  $this->response(
+            $result->data,
+            $result->message,
+            $result->status,
+        );
     }
 
     public function delete(Warehouse $warehouse)

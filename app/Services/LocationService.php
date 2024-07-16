@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 class LocationService
 {
 
-    public function getCoordinatedLocation($address): bool|array
+    protected function getCoordinatedLocation($address): bool|array
     {
 
         $response = Http::withOptions(['verify' => false])
@@ -39,7 +39,7 @@ class LocationService
         $region = $location['region'];
         $address = $region . ',' . $city . ',' . $country;
 
-        if (array_key_exists('street', $location)){
+        if (array_key_exists('street', $location)) {
 
             $street = $location['street'];
             $address = $street . ',' . $address;
