@@ -92,8 +92,8 @@ Route::middleware('auth:admin')->group( function (){
     Route::prefix('warehouse')->controller(WarehouseController::class)
         ->group(function (){
             Route::post('store' , 'store');
-            Route::get('show-all' , 'showAll');
-            Route::get('show/{warehouse}' , 'show');
+            Route::get('show-all' , 'showAll')->middleware('auth:employee');
+            Route::get('show/{warehouse}' , 'show')->middleware('auth:employee');;
             Route::put('update/{warehouse}' , 'update');
             Route::delete('delete/{warehouse}' , 'delete');
         });

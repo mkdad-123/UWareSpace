@@ -15,9 +15,10 @@ class WarehouseController extends Controller
 {
     public function showAll()
     {
-        $adminId = auth('admin')->id();
+        $admin = auth('admin')->user()->load('warehouse');
 
-        $warehouses = Warehouse::whereAdminId($adminId)->get();
+        $warehouses  = $admin->warehouses();
+        //$warehouses = Warehouse::whereAdminId($adminId)->get();
 
         return $this->response(
             WarehouseResource::collection($warehouses) ,

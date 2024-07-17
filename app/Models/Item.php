@@ -7,26 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Warehouse extends Model
+class Item extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'size_cubic_meters',
-        'latitude',
-        'longitude',
-        'admin_id',
-        'current_capacity',
-        'location'
+      'SKU',
+      'name',
+      'sell_price',
+      'pur_price',
+      'size_cubic_meters',
+      'weight',
+      'str_price',
+      'total_qty',
+      'photo',
+      'unit'
     ];
 
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class);
     }
-    public function items(): BelongsToMany
+
+    public function warehouses(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class)->withPivot(['real_qty','min_qty','available_qty']);
+        return $this->belongsToMany(Warehouse::class)->withPivot(['real_qty','min_qty','available_qty']);
     }
 }

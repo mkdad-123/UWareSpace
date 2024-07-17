@@ -87,9 +87,14 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail
         return $this->morphMany(Phone::class, 'phoneable');
     }
 
-    public function warehoues(): HasMany
+    public function warehouses(): HasMany
     {
         return $this->hasMany(Warehouse::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
     }
 
 }
