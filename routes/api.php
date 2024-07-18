@@ -92,14 +92,22 @@ Route::middleware('auth:admin')->group( function (){
     Route::prefix('warehouse')->controller(WarehouseController::class)
         ->group(function (){
             Route::post('store' , 'store');
-            Route::get('show-all' , 'showAll')->middleware('auth:employee');
-            Route::get('show/{warehouse}' , 'show')->middleware('auth:employee');;
+            Route::get('show-all' , 'showAll');
+            Route::get('show/{warehouse}' , 'show');
             Route::put('update/{warehouse}' , 'update');
             Route::delete('delete/{warehouse}' , 'delete');
         });
 });
 
+Route::middleware('auth:employee')->group(function (){
 
+    Route::prefix('employee/warehouse')->controller(WarehouseController::class)
+        ->group(function (){
+            Route::get('show-all' , 'showAll');
+            Route::get('show/{warehouse}' , 'show');
+        });
+
+});
 
 
 

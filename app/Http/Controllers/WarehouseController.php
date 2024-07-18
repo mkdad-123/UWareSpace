@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\WarehouseStoreRequest;
-use App\Http\Requests\WarehouseUpdateRequest;
+use App\Http\Requests\Warehouse\WarehouseStoreRequest;
+use App\Http\Requests\Warehouse\WarehouseUpdateRequest;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
-use App\Services\LocationService;
 use App\Services\Warehouse\WarehouseStoreService;
 use App\Services\Warehouse\WarehouseUpdateService;
-use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
     public function showAll()
     {
-        $admin = auth('admin')->user()->load('warehouse');
+        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $warehouses  = $admin->warehouses();
-        //$warehouses = Warehouse::whereAdminId($adminId)->get();
+        $warehouses  = $admin->load('warehouses')->warehouses;
 
         return $this->response(
             WarehouseResource::collection($warehouses) ,
