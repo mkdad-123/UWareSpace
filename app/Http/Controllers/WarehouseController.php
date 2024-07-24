@@ -23,11 +23,13 @@ class WarehouseController extends Controller
         );
     }
 
-    public function show(Warehouse $warehouse)
+    public function show($id)
     {
+        $warehouse = Warehouse::with('items')->whereId($id)->get();
+
         return $this->response(
-            new WarehouseResource($warehouse) ,
-            'Your warehouse have been got successfully'
+            WarehouseResource::collection($warehouse) ,
+            'Your warehouse have been get successfully'
         );
     }
 

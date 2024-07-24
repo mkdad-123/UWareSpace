@@ -18,7 +18,7 @@ class EmployeeController extends Controller
     {
         $adminId = auth('admin')->id();
 
-        $employees = Employee::with('phones')->whereAdminId($adminId)->get();
+        $employees = Employee::with(['phones' , 'roles'])->whereAdminId($adminId)->get();
 
         return $this->response(EmployeeResource::collection($employees));
     }

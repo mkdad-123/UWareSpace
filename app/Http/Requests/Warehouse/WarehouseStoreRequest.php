@@ -17,7 +17,7 @@ class WarehouseStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:250|unique:warehouses,name',
-            'size_cubic_meters' => 'required|numeric|between:0,99999999.99',
+            'size_cubic_meters' => 'required|numeric|min:0',
             'location'=> 'sometimes|array',
             'location.country' => 'required_with:location|string|max:250',
             'location.city' => 'required_with:location|string|max:250',

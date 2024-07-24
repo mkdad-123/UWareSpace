@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -80,7 +81,7 @@ Route::middleware('auth:admin')->group( function (){
     Route::prefix('employee')->controller(EmployeeController::class)
         ->group( function (){
             Route::post('store','store');
-            Route::get('show','show');
+            Route::get('show-all','show');
             Route::get('show/{employee}','showOne');
             Route::put('update/{employee}','update');
             Route::delete('delete/{employee}','destroy');
@@ -97,6 +98,12 @@ Route::middleware('auth:admin')->group( function (){
             Route::put('update/{warehouse}' , 'update');
             Route::delete('delete/{warehouse}' , 'delete');
         });
+
+    Route::prefix('admin/item')->controller(ItemController::class)
+        ->group(function (){
+            Route::get('show-all' , 'showAll');
+            Route::get('show/{item}' , 'show');
+        });
 });
 
 Route::middleware('auth:employee')->group(function (){
@@ -104,7 +111,16 @@ Route::middleware('auth:employee')->group(function (){
     Route::prefix('employee/warehouse')->controller(WarehouseController::class)
         ->group(function (){
             Route::get('show-all' , 'showAll');
-            Route::get('show/{warehouse}' , 'show');
+            Route::get('show/{id}' , 'show');
+        });
+
+    Route::prefix('item')->controller(ItemController::class)
+        ->group(function (){
+            Route::post('store' , 'store');
+            Route::get('show-all' , 'showAll');
+            Route::get('show/{item}' , 'show');
+            Route::patch('update/{item}' , 'update');
+            Route::delete('delete/{item}' , 'delete');
         });
 
 });
