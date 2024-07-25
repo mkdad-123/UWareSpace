@@ -7,6 +7,7 @@ use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\WarehouseItemController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -121,6 +122,12 @@ Route::middleware('auth:employee')->group(function (){
             Route::get('show/{item}' , 'show');
             Route::post('update/{item}' , 'update');
             Route::delete('delete/{item}' , 'delete');
+        });
+
+    Route::prefix('item')->controller(WarehouseItemController::class)
+        ->group(function (){
+            Route::post('store-in-warehouse/{item}' , 'store');
+            Route::put('update-in-warehouse/{item}' , 'update');
         });
 
 });

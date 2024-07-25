@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('available_qty');
             $table->timestamps();
 
-            $table->primary(['item_id' , 'warehouse_id']);
+            $table->unique(['item_id' , 'warehouse_id']);
         });
     }
 

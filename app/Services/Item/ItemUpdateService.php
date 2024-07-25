@@ -2,6 +2,7 @@
 
 namespace App\Services\Item;
 
+use App\Models\Item;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -66,5 +67,31 @@ class ItemUpdateService
         return $this->result;
     }
 
+    protected function filterData(Item $item,$warehouseId, $data)
+    {
+        $currentData = $item->warehouses()->where('warehouse_id', $warehouseId)->first()->pivot->toArray();
+
+        $updateData = array_filter([
+            'real_quantity' => $data['real_quantity'] ?? $currentData['real_qty'],
+            'available_quantity' => $data['available_quantity'] ?? $currentData['available_qty'],
+            'min_quantity' => $data['min_quantity'] ?? $currentData['min_qty']
+        ], function ($value) {
+            return !is_null($value);
+        });
+
+        return $updateData;
+    }
+    public function updateItemInWarehouse(Item $item ,$warehouseId, $data)
+    {
+        $data = $this->filterData($item,$warehouseId, $data);
+
+        $item->warehouses()->updateExistingPivot($warehouseId,[
+            'real_qty' => $data['real_quantity'],
+            'available_qty' => $data['available_quantity'],
+            'min_qty' => $data['min_quantity']
+        ]);
+
+
+    }
 
 }

@@ -40,15 +40,6 @@ class ItemStoreService
          ]);
     }
 
-    protected function storeItemInWarehouse($item , $data)
-    {
-        $item->warehouses()->attach($data['warehouse_id'],[
-            'real_qty' => $data['real_quantity'],
-            'available_qty' => $data['available_quantity'],
-            'min_qty' => $data['min_quantity']
-        ]);
-    }
-
     public function store(Request $request)
     {
 
@@ -76,14 +67,6 @@ class ItemStoreService
 
             $item = $this->storeItem($data);
 
-//            $this->storeItemInWarehouse($item ,
-//                $request->only(
-//                    'warehouse_id' ,
-//                    'real_quantity',
-//                    'available_quantity',
-//                    'min_quantity'
-//                ));
-
             DB::commit();
 
             $this->result = new OperationResult('Item has been created in your warehouse successfully',$item , 201);
@@ -102,5 +85,14 @@ class ItemStoreService
         }
 
         return $this->result;
+    }
+
+    public function storeItemInWarehouse($item ,$warehouseId, $data)
+    {
+        $item->warehouses()->attach($warehouseId,[
+            'real_qty' => $data['real_quantity'],
+            'available_qty' => $data['available_quantity'],
+            'min_qty' => $data['min_quantity']
+        ]);
     }
 }
