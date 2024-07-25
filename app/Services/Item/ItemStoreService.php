@@ -76,17 +76,17 @@ class ItemStoreService
 
             $item = $this->storeItem($data);
 
-            $this->storeItemInWarehouse($item ,
-                $request->only(
-                    'warehouse_id' ,
-                    'real_quantity',
-                    'available_quantity',
-                    'min_quantity'
-                ));
+//            $this->storeItemInWarehouse($item ,
+//                $request->only(
+//                    'warehouse_id' ,
+//                    'real_quantity',
+//                    'available_quantity',
+//                    'min_quantity'
+//                ));
 
             DB::commit();
 
-            $this->result = new OperationResult('Item has been created in your warehouse successfully',$data);
+            $this->result = new OperationResult('Item has been created in your warehouse successfully',$item , 201);
 
         } catch (QueryException $e) {
 

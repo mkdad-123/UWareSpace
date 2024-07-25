@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $admin_id
@@ -72,6 +72,7 @@ class Item extends Model
 
     public function warehouses(): BelongsToMany
     {
-        return $this->belongsToMany(Warehouse::class , 'warehouse_item')->withPivot(['real_qty','min_qty','available_qty']);
+        return $this->belongsToMany(Warehouse::class , 'warehouse_item')
+            ->withPivot(['real_qty','min_qty','available_qty']);
     }
 }

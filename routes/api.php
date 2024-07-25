@@ -119,7 +119,7 @@ Route::middleware('auth:employee')->group(function (){
             Route::post('store' , 'store');
             Route::get('show-all' , 'showAll');
             Route::get('show/{item}' , 'show');
-            Route::patch('update/{item}' , 'update');
+            Route::post('update/{item}' , 'update');
             Route::delete('delete/{item}' , 'delete');
         });
 

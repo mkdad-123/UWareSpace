@@ -8,8 +8,10 @@ class ItemUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
+        $adminId = auth('employee')->user()->admin_id;
+
         return [
-            'SKU' => 'sometimes|string|max:255|',
+            'SKU' => 'required|string|max:255|unique:items,SKU,NULL,id,admin_id,' . $adminId,
             'name' => 'sometimes|string|max:255',
             'sell_price' => 'sometimes|numeric|min:0',
             'pur_price' => 'sometimes|numeric|min:0',
@@ -20,7 +22,7 @@ class ItemUpdateRequest extends FormRequest
             'min_qty' => 'sometimes|integer|min:0',
             'available_qty'=> 'sometimes|integer|min:0',
             'real_qty' => 'sometimes|integer|min:0',
-            //'photo' => 'sometimes|image|mimes:jpg,png,jpeg',
+            'photo' => 'sometimes|image|mimes:jpg,png,jpeg',
             'unit' => 'sometimes|string|max:255',
         ];
     }

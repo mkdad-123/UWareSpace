@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Item\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
+use App\Services\Item\ItemUpdateService;
+use Illuminate\Http\Request;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Services\Item\ItemStoreService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -45,35 +47,38 @@ class ItemController extends Controller
         );
     }
 
-    public function update(Item $item , ItemUpdateRequest $request)
+    public function update(Item $item , ItemUpdateRequest $request , ItemUpdateService $updateService)
     {
-        if ($request->has('SKU')){
+        $result = $updateService->update($item , $request);
 
+
+        if ( $result->status == 200){
+            return $this->response(
+                new ItemResource($result->data),
+                $result->message,
+                $result->status,
+            );
         }
-        $item->update([
-            'SKU' => $request['SKU'],
-            'name' => $request['name'],
-            'sell_price' => $request['sell_price'],
-            'pur_price' => $request['pur_price'],
-            'str_price' => $request['start_price'],
-            'weight' => $request['weight'],
-            'size_cubic_meters' => $request['size_cubic_meters'],
-            'total_qty' => $request['total_quantity'],
-            'photo' => $request['photo'],
-            'unit' => $request['unit']
-        ]);
-
-        //$item->update($request->all());
-
-        return $this->response(
-            new ItemResource($item),
-            'Item has been updated successfully',
+        return  $this->response(
+            $result->data,
+            $result->message,
+            $result->status,
         );
     }
 
     public function delete(Item $item)
     {
+        if ($item->photo)
+        {
+            Storage::delete('public/'.$item->photo);
+        }
 
+        $item->delete();
+
+        return $this->response(
+            response(),
+            'Item has been deleted successfully',
+        );
     }
 
     public function search()
