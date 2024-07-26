@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Item\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use App\Services\Item\ItemUpdateService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Services\Item\ItemStoreService;
 use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ItemController extends Controller
 {
@@ -82,12 +85,14 @@ class ItemController extends Controller
     }
 
     public function search()
-    {
-
-    }
+    {}
 
     public function filter()
     {
+        $items = QueryBuilder::for(Item::class)
+            ->allowedFilters(['unit' , 'name', 'SKU',])->get();
+
+            return $this->response(ItemResource::collection($items));
 
     }
 }

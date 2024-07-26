@@ -122,6 +122,8 @@ Route::middleware('auth:employee')->group(function (){
             Route::get('show/{item}' , 'show');
             Route::post('update/{item}' , 'update');
             Route::delete('delete/{item}' , 'delete');
+            Route::get('filter','filter');
+
         });
 
     Route::prefix('item')->controller(WarehouseItemController::class)
