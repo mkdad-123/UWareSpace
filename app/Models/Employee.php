@@ -78,4 +78,7 @@ class Employee extends Authenticatable implements Resetable
     {
         return $this->morphMany(Phone::class, 'phoneable');
     }
+    public function compliants(){
+        return $this->morphMany(Compliant::class , 'compliantable');
+    }
 }

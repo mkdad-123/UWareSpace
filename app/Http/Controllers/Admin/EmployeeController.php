@@ -11,6 +11,7 @@ use App\Services\Employee\EmployeeStoreService;
 use App\Services\Employee\EmployeeUpdateService;
 use App\Services\EmployeeDeleteService;
 
+
 class EmployeeController extends Controller
 {
 
@@ -38,6 +39,7 @@ class EmployeeController extends Controller
     {
         $employee->load(['phones' , 'roles']);
 
+
         return $this->response(new EmployeeResource($employee));
     }
 
@@ -54,10 +56,11 @@ class EmployeeController extends Controller
         }
         return  $this->response(
             $result->data,
+
             $result->message,
             $result->status,
         );
-   }
+    }
 
     public function destroy(Employee $employee , EmployeeDeleteService $deleteService)
     {

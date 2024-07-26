@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Models\Role;
+use Laravel\Cashier\Billable;
 
 /**
  *
@@ -50,7 +51,8 @@ use Spatie\Permission\Models\Role;
  */
 class Admin extends Authenticatable implements Resetable,MustVerifyEmail
 {
-    use HasFactory,HasApiTokens,Notifiable , CanResetPassword;
+
+    use HasFactory,HasApiTokens,Notifiable , CanResetPassword , Billable;
 
     protected $fillable = [
         'email',
@@ -97,4 +99,9 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail
         return $this->hasMany(Item::class);
     }
 
+    public function compliants()
+    {
+
+        return $this->morphMany(Compliant::class , 'compliantable');
+    }
 }
