@@ -14,12 +14,10 @@ class WarehouseResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'size' => $this->size_cubic_meters,
-            'capacity' => $this->current_capacity
+            'capacity' => $this->current_capacity,
+            'location' => $this->location,
         ];
 
-        if($this->location){
-            $data['location'] = $this->location;
-        }
 
         if($this->relationLoaded('items'))
         {

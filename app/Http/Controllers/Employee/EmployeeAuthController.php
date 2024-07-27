@@ -17,7 +17,7 @@ class EmployeeAuthController extends Controller
         $user = Employee::whereEmail($request->email)->first();
 
         if(!($user && Hash::check($request->password , $user->password))){
-            $this->response(response() , 'Unauthorized' , 401);
+            return $this->response(response() , 'Unauthorized' , 401);
         }
 
         $token = $user->createToken('Token for a employee')->accessToken;

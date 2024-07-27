@@ -44,6 +44,8 @@ class AdminAuthController extends Controller
 
     public function verify (Request $request)
     {
-        return (new EmailVerificationService())->verify($request);
+        return  (new EmailVerificationService())->verify($request);
+
+
     }
 }
