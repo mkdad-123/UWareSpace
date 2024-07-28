@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\Subscription\SubscriptionController;
@@ -68,7 +69,16 @@ Route::controller(AdminController::class)->prefix('Admin')
         Route::post('/WriteComplaintEmployees', 'WriteComplaintEmployees')->middleware('auth:employee');
 
     });
-/*
+    Route::controller(ClientController::class)->prefix('client')
+    ->group(function () {
+        Route::post('/StoreClients', 'store')->middleware('auth:admin');
+        Route::post('/UpdateClients', 'update')->middleware('auth:admin');
+        Route::get('/ShowClients', 'show')->middleware('auth:admin');
+        Route::post('/ShowClient','showId')->middleware('auth:admin');
+        Route::post('/DeleteClient','delete')->middleware('auth:admin');
+        Route::post('/SortClients','sort')->middleware('auth:admin');
+    });
+    /*
  * login route for default route
  */
 Route::get('login', function () {

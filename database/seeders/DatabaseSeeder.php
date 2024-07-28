@@ -17,25 +17,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory(10)->create();
+        // Admin::factory(10)->create();
 
-        //Employee::factory(10)->create();
+        // //Employee::factory(10)->create();
 
-        SuperAdmin::create([
+        // SuperAdmin::create([
+        //     'name' => 'Mkdad Taleb',
+        //     'email' => 'ma0109424@gmail.com',
+        //     'password' => Hash::make('password')
+        // ]);
+
+        // PermissionSeeder::run();
+
+        // Admin::create([
+        //     'name' => 'Mkdad Taleb',
+        //     'email' => 'ma0109424@gmail.com',
+        //     'password' => Hash::make('password'),
+        //     'location' => 'damas',
+        //     'active' => true,
+        //     'email_verified_at' => Carbon::now(),
+        // ]);
+        Employee::create([
             'name' => 'Mkdad Taleb',
-            'email' => 'ma0109424@gmail.com',
-            'password' => Hash::make('password')
-        ]);
-
-        PermissionSeeder::run();
-
-        Admin::create([
-            'name' => 'Mkdad Taleb',
-            'email' => 'ma0109424@gmail.com',
-            'password' => Hash::make('password'),
-            'location' => 'damas',
-            'active' => true,
-            'email_verified_at' => Carbon::now(),
+                'email' => 'b@gmail.com',
+                'password' => Hash::make('password'),
+                'location' => 'damas',
+                'active' => true,
+                'admin_id'=> 1,
         ]);
     }
 

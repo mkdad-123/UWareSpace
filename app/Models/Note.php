@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $noteable_type
@@ -27,6 +27,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Note whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+Relation:: morphMap([
+    'Admin' => 'App\Models\Admin',
+    'Employee' => 'App\Models\Employee',
+    'Client'  => 'App\Models\Client',
+    'Supplier' => 'App\Models\Supplier'
+]);
 class Note extends Model
 {
     use HasFactory;

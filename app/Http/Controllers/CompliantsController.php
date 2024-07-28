@@ -25,7 +25,7 @@ class CompliantsController extends Controller
             'content' => $request->content,
         ]);
         if ($employee) {
-            return $this->response($employee, "Thanks for participating in the improvement of the application", 200);
+            return $this->response($employee, "Thanks for sharing your opinion ", 200);
         }
         return $this->response([], "resend the compliant again please", 401);
     }

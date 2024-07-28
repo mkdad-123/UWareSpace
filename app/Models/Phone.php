@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $phoneable_type
@@ -27,7 +27,15 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Phone whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+Relation:: morphMap([
+    'Admin' => 'App\Models\Admin',
+    'Employee' => 'App\Models\Employee',
+    'Client'  => 'App\Models\Client',
+    'Supplier' => 'App\Models\Supplier'
+]);
+
 class Phone extends Model
+
 {
     use HasFactory;
 

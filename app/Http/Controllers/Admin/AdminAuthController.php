@@ -19,49 +19,38 @@ class AdminAuthController extends Controller
     public function register(AdminRegisterRequest $request)
     {
         $result = (new AdminRegisterService())->register($request);
-
-        return $this->response($result->data,$result->message ,$result->status);
+        return $this->response($result->data, $result->message, $result->status);
     }
 
     public function login(AdminLoginRequest $request)
     {
-
         $result = (new AdminLoginService())->login($request);
-
-        return $this->response($result->data,$result->message , $result->status);
+        return $this->response($result->data, $result->message, $result->status);
     }
-
     public function logout()
     {
         if (auth('admin')->user()) {
             auth('admin')->user()->token()->revoke();
-
-            return $this->response(response(),'Logged out successfully' , 401);
-
+            return $this->response(response(), 'Logged out successfully', 401);
         }
-        return $this->response(response(),'Unauthorized' , 401);
-
+        return $this->response(response(), 'Unauthorized', 401);
     }
 
-    public function verify (Request $request)
+    public function verify(Request $request)
     {
         $admin = Admin::find($request->route('id'));
-
-       if (!(
+        if (!(
             (hash_equals((string) $admin->getKey(), (string) $request->route('id')))  &&
             (hash_equals(sha1($admin->getEmailForVerification()), (string) $request->route('hash')))
-        )){
-           return response('failed');
-       }
-
+        )) {
+            return response('failed');
+        }
         if ($admin->hasVerifiedEmail()) {
             return response('success');
         }
-
         if ($admin->markEmailAsVerified()) {
             event(new Verified($admin));
         }
-
         return response('success');
     }
 }

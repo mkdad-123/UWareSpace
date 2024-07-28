@@ -46,7 +46,7 @@ class AdminRegisterService{
     {
         event(new Registered($user));
 
-        //Mail::to($user->email)->send(new SendEmailVerification($user->code,$user->name));
+        Mail::to($user->email)->send(new SendEmailVerification($user->code,$user->name));
     }
 
     public function register($request)

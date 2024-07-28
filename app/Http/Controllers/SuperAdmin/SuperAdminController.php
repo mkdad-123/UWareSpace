@@ -34,7 +34,7 @@ class SuperAdminController extends Controller
     }
     public function ShowCompliants()
     {
-        $compliants = Compliant::where('compliantable_type', 'Employee')->get();
+        $compliants = Compliant::where('compliantable_type', 'Admin')->get();
         if ($compliants != null){
         return $this->response($compliants, "this all compliants", 200);
         }
