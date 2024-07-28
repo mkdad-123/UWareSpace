@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VehicleStoreRequest;
+use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
@@ -13,17 +15,17 @@ class VehicleController extends Controller
 
         $vehicles  = $admin->load('vehicles')->vehicles;
 
-        return $this->response($vehicles , "Vehicle has been created successfully");
+        return $this->response(VehicleResource::collection($vehicles));
     }
 
     public function show(Vehicle $vehicle)
     {}
 
-    public function store(Request $request)
+    public function store(VehicleStoreRequest $request)
     {
-        $vehicle = Vehicle::create($request->all());
+        Vehicle::create($request->all());
 
-        return $this->response($vehicle , "Vehicle has been created successfully" , 201);
+        return $this->response(response() , "Vehicle has been created successfully" , 201);
     }
 
     public function update(Request $request , Vehicle $vehicle)
@@ -31,8 +33,7 @@ class VehicleController extends Controller
         $vehicle->fill($request->all());
         $vehicle->save();
 
-        return $this->response($vehicle , "Vehicle has been updated successfully");
-
+        return $this->response(new VehicleResource($vehicle) , "Vehicle has been updated successfully");
     }
 
     public function delete(Vehicle $vehicle)

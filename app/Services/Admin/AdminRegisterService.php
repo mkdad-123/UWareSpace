@@ -63,9 +63,8 @@ class AdminRegisterService{
 
             DB::commit();
 
-            $token = $user->createToken('Token for a admin')->accessToken;
             $message = 'your account has been created,please check your email';
-            $this->result = new OperationResult($message,$token,201);
+            $this->result = new OperationResult($message,response(),201);
 
         } catch (QueryException $e) {
 

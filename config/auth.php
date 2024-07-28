@@ -75,10 +75,6 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
         'superAdmins' => [
             'driver' => 'eloquent',
             'model' => App\Models\SuperAdmin::class,

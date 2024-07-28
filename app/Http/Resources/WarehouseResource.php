@@ -34,10 +34,26 @@ class WarehouseResource extends JsonResource
                     'total_qty' => $item->total_qty,
                     'photo' => $item->photo,
                     'unit' => $item->unit,
-
+                    'real_qty' => $item->pivot->real_qty,
+                    'min_qty' => $item->pivot->min_qty,
+                    'available_qty' => $item->pivot->available_qty,
                 ];
             });
-        };
+        }
+
+        if($this->relationLoaded('vehicles')){
+
+            $data['vehciles'] = $this->vehicles->map(function ($vehicle){
+                return [
+                    'id' => $vehicle->id,
+                    'name' => $vehicle->name,
+                    'size_cubic_meters' => $vehicle->size_cubic_meters,
+                    'load_capacity_kg' => $vehicle->load_capacity_kg,
+                    'plate_number' => $vehicle->plate_number,
+                    'status' => $vehicle->status,
+                ];
+            });
+        }
 
         return $data;
     }

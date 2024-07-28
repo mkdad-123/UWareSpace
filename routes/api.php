@@ -149,7 +149,7 @@ Route::middleware('auth:admin')->group(function () {
         ->group(function () {
             Route::post('store', 'store');
             Route::get('show-all', 'showAll');
-            Route::post('update/{vehicle}', 'update');
+            Route::put('update/{vehicle}', 'update');
             Route::delete('delete/{vehicle}', 'delete');
         });
 });
@@ -176,5 +176,10 @@ Route::middleware('auth:employee')->group(function () {
         ->group(function () {
             Route::post('store-in-warehouse/{item}', 'store');
             Route::put('update-in-warehouse/{item}', 'update');
+        });
+
+    Route::prefix('employee/vehicle')->controller(VehicleController::class)
+        ->group(function () {
+            Route::get('show-all', 'showAll');
         });
 });

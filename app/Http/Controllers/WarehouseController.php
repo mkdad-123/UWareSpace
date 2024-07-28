@@ -25,7 +25,7 @@ class WarehouseController extends Controller
 
     public function showItems($id)
     {
-        $warehouse = Warehouse::with('items')->whereId($id)->get();
+        $warehouse = Warehouse::with(['items' , 'vehicles'])->whereId($id)->get();
 
         return $this->response(
             WarehouseResource::collection($warehouse) ,

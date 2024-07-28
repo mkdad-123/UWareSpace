@@ -40,7 +40,7 @@ class Vehicle extends Model
         'warehouse_id',
         'name',
         'size_cubic_meters',
-        'load_capacity',
+        'load_capacity_kg',
         'plate_number',
     ];
 

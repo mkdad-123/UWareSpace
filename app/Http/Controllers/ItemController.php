@@ -18,7 +18,9 @@ class ItemController extends Controller
 {
     public function showAll()
     {
-        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+       // $admin = auth('employee')->user()->admin;
+        $admin = auth('admin')->user();
+        return $admin;
 
         $items  = $admin->load('items')->items;
 
