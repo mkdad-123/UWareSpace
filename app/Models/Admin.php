@@ -11,12 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Laravel\Cashier\Billable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $email
@@ -82,10 +83,10 @@ use Laravel\Cashier\Billable;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereTrialEndsAt($value)
  * @mixin \Eloquent
  */
-class Admin extends Authenticatable implements Resetable,MustVerifyEmail
+class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubject
 {
 
-    use HasFactory,HasApiTokens,Notifiable , CanResetPassword , Billable;
+    use HasFactory,Notifiable , CanResetPassword , Billable;
 
     protected $fillable = [
         'email',
@@ -141,5 +142,15 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail
     public function vehicles(): HasManyThrough
     {
         return $this->hasManyThrough(Vehicle::class,Warehouse::class);
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

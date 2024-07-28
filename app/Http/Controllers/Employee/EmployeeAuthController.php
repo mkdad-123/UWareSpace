@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Employee\EmployeeLoginRequest;
 use App\Models\Employee;
 use App\Traits\ResetPasswordTrait;
 use Illuminate\Http\Request;
@@ -12,15 +13,13 @@ class EmployeeAuthController extends Controller
 {
     use ResetPasswordTrait;
 
-    public function login(Request $request)
+    public function login(EmployeeLoginRequest $request)
     {
-        $user = Employee::whereEmail($request->email)->first();
+        if(! $token = auth('employee')->attempt($request->all())){
 
-        if(!($user && Hash::check($request->password , $user->password))){
-            return $this->response(response() , 'Unauthorized' , 401);
+            return  $this->response( response(),'Unauthorized',401);
+
         }
-
-        $token = $user->createToken('Token for a employee')->accessToken;
         return $this->response($token , 'Login successfully');
 
     }
@@ -28,7 +27,8 @@ class EmployeeAuthController extends Controller
     public function logout()
     {
         if (auth('employee')->user()) {
-            auth('employee')->user()->token()->revoke();
+            auth()->guard('employee')->logout();
+
             return $this->response(response(),'Logged out successfully' , 401);
         }
         return $this->response(response(),'Unauthorized' , 401);

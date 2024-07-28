@@ -7,7 +7,11 @@ use App\ResponseManger\OperationResult;
 use Exception;
 use Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Client;
+use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Passport;
 
 class AdminLoginService
 {
@@ -25,10 +29,15 @@ class AdminLoginService
         return Admin::whereEmail($email)->first();
     }
 
-    public function isValidData($data , $user)
-    {
+//    public function isValidData($data , $user)
+//    {
+//
+//        return ($user && Hash::check($data->password , $user->password));
+//    }
 
-        return ($user && Hash::check($data->password , $user->password));
+    protected function isValidData($data)
+    {
+        return auth('admin')->attempt($data) ;
     }
 
     public function isVerified($email)
@@ -44,9 +53,9 @@ class AdminLoginService
         try {
             DB::beginTransaction();
 
-            $user = $this->getUser($request->email);
+            //$user = $this->getUser($request->email);
 
-            if(! $this->isValidData($request,$user)){
+            if(! $token = $this->isValidData($request->all())){
                return  $this->result= new OperationResult('Unauthorized',response(),401);
             }
 
@@ -56,7 +65,6 @@ class AdminLoginService
 
             DB::commit();
 
-            $token = $user->createToken('Token for a admin')->accessToken;
             $message = 'Login successfully';
             $this->result = new OperationResult($message,$token);
 

@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'admin',
+        'passwords' => 'admins',
     ],
 
     /*
@@ -41,17 +41,17 @@ return [
             'provider' => 'users',
         ],
         'superAdmin' => [
-            'driver' => 'passport',
+            'driver' => 'jwt',
             'provider' => 'superAdmins',
             'hash' => false,
         ],
         'admin' => [
-            'driver' => 'passport',
+            'driver' => 'jwt',
             'provider' => 'admins',
             'hash' => false,
         ],
         'employee' => [
-            'driver' => 'passport',
+            'driver' => 'jwt',
             'provider' => 'employees',
             'hash' => false,
         ],

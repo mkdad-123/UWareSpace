@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 /**
  *
@@ -44,9 +45,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Employee extends Authenticatable implements Resetable
+class Employee extends Authenticatable implements Resetable , JWTSubject
 {
-    use HasFactory,HasApiTokens,Notifiable,HasRoles , CanResetPassword;
+    use HasFactory,Notifiable,HasRoles ,CanResetPassword;
 
     protected $fillable = [
         'email',
@@ -80,5 +81,15 @@ class Employee extends Authenticatable implements Resetable
     }
     public function compliants(){
         return $this->morphMany(Compliant::class , 'compliantable');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

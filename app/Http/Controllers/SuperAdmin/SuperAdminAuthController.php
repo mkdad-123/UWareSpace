@@ -15,28 +15,19 @@ class SuperAdminAuthController extends Controller
 
     public function login(Request $request)
     {
+        if(! $token = auth('superAdmin')->attempt($request->all())){
 
-        $user = SuperAdmin::whereEmail($request->email)->first();
-
-        if (!($user && Hash::check($request->password, $user->password))) {
-            return response()->json([
-                'data' => response(),
-                'message' => 'Unauthorized',
-            ],401);
+            return  $this->response( response(),'Unauthorized',401);
 
         }
-        $token = $user->createToken('Token name')->accessToken;
-
-        return response()->json([
-            'data' => $token,
-            'message' => 'Login successful'
-        ]);
+        return $this->response($token , 'Login successfully');
     }
 
     public function logout()
     {
         if (auth('superAdmin')->user()) {
-            auth('superAdmin')->user()->token()->revoke();
+            auth()->guard('superAdmin')->logout();
+
 
             return response()->json([
                 'data' => response(),

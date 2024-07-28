@@ -6,7 +6,6 @@ namespace App\Providers;
 use App\Models\Employee;
 use App\Policies\EmployeePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,10 +24,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::tokensExpireIn(now()->addDays(15));
-        // Route : .../oauth/token/refresh
-        Passport::refreshTokensExpireIn(now()->addDays(30));
-
         //
     }
 }

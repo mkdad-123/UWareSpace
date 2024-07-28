@@ -33,7 +33,7 @@ class AdminAuthController extends Controller
     public function logout()
     {
         if (auth('admin')->user()) {
-            auth('admin')->user()->token()->revoke();
+            auth()->guard('admin')->logout();
 
             return $this->response(response(),'Logged out successfully' , 401);
 
