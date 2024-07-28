@@ -8,6 +8,7 @@ use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseItemController;
 use App\Http\Controllers\Subscription\SubscriptionController;
@@ -52,6 +53,9 @@ Route::controller(SuperAdminController::class)->prefix('SuperAdmin')
 
 
     });
+
+
+
 Route::controller(AdminController::class)->prefix('Admin')
     ->group(function () {
         Route::get('/ShowCompliants', 'ShowCompliants')->middleware('auth:admin');
@@ -70,6 +74,9 @@ Route::controller(AdminController::class)->prefix('Admin')
         Route::post('/WriteComplaintEmployees', 'WriteComplaintEmployees')->middleware('auth:employee');
 
     });
+
+
+
 /*
  * login route for default route
  */
@@ -118,21 +125,32 @@ Route::middleware('auth:admin')->group(function () {
         });
 
     /*
- * Warehouse management
- */
+    * Warehouse management
+    */
     Route::prefix('warehouse')->controller(WarehouseController::class)
         ->group(function (){
             Route::post('store' , 'store');
             Route::get('show-all' , 'showAll');
-            Route::get('show/{warehouse}' , 'show');
+            Route::get('show/{id}' , 'showItems');
             Route::put('update/{warehouse}' , 'update');
             Route::delete('delete/{warehouse}' , 'delete');
         });
 
+    /*
+    * Item management for admin dashboard
+    */
     Route::prefix('admin/item')->controller(ItemController::class)
         ->group(function (){
             Route::get('show-all' , 'showAll');
             Route::get('show/{item}' , 'show');
+        });
+
+    Route::prefix('vehicle')->controller(VehicleController::class)
+        ->group(function () {
+            Route::post('store', 'store');
+            Route::get('show-all', 'showAll');
+            Route::post('update/{vehicle}', 'update');
+            Route::delete('delete/{vehicle}', 'delete');
         });
 });
 
@@ -141,7 +159,7 @@ Route::middleware('auth:employee')->group(function () {
     Route::prefix('employee/warehouse')->controller(WarehouseController::class)
         ->group(function () {
             Route::get('show-all', 'showAll');
-            Route::get('show/{id}', 'show');
+            Route::get('show/{id}', 'showItems');
         });
 
     Route::prefix('item')->controller(ItemController::class)
@@ -152,13 +170,11 @@ Route::middleware('auth:employee')->group(function () {
             Route::post('update/{item}', 'update');
             Route::delete('delete/{item}', 'delete');
             Route::get('filter', 'filter');
-
         });
 
     Route::prefix('item')->controller(WarehouseItemController::class)
         ->group(function () {
             Route::post('store-in-warehouse/{item}', 'store');
             Route::put('update-in-warehouse/{item}', 'update');
-
         });
 });

@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $admin_id
@@ -57,8 +58,15 @@ class Warehouse extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class , 'warehouse_item')->withPivot(['real_qty','min_qty','available_qty']);
+        return $this->belongsToMany(Item::class , 'warehouse_item')
+            ->withPivot(['real_qty','min_qty','available_qty']);
+    }
+
+    public function vehicles(): HasMany
+    {
+        return $this->hasMany(Vehicle::class);
     }
 }

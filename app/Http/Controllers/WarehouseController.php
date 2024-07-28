@@ -23,7 +23,7 @@ class WarehouseController extends Controller
         );
     }
 
-    public function show($id)
+    public function showItems($id)
     {
         $warehouse = Warehouse::with('items')->whereId($id)->get();
 

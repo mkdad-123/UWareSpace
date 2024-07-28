@@ -22,7 +22,7 @@ class EmailVerificationService{
         $admin = Admin::find($request->route('id'));
 
         if ( ! $this->validData($request,$admin)){
-            return view('auth.faildVerify');
+            return view('auth.failedVerify');
         }
 
         if ($admin->hasVerifiedEmail()) {
