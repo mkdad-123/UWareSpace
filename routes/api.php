@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WarehouseController;
@@ -183,4 +184,15 @@ Route::middleware('auth:employee')->group(function () {
         ->group(function () {
             Route::get('show-all', 'showAll');
         });
+
 });
+
+Route::prefix('shipment')->controller(ShipmentController::class)
+    ->group(function () {
+        Route::get('store', 'store');
+        Route::get('show-all', 'showAll');
+        Route::get('show/{shipment}', 'show');
+        Route::post('update/{shipment}', 'update');
+        Route::delete('delete/shipment', 'delete');
+        Route::get('filter', 'filter');
+    });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ShipmentEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('warehouse_id')->constrained('warehouses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('employee_id')->unique()->constrained('employees')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('vehicle_id')->constrained('vehicles')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('vehicle_id')->unique()->constrained('vehicles')->cascadeOnDelete()->cascadeOnUpdate();
           //  $table->foreignId('sell_order_id')->constrained('sell_orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('tracking_number')->unique();
             $table->decimal('current_capacity')->default(0);
-            $table->string('status');
+            $table->string('status')->default(ShipmentEnum::PREPARATION);
             $table->timestamps();
         });
     }

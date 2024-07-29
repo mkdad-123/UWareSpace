@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\VehicleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('size_cubic_meters');
             $table->string('load_capacity_kg');
-            $table->string('status')->default('un_active');
+            $table->string('status')->default(VehicleEnum::UN_ACTIVE);
             $table->string('plate_number')->nullable()->unique();
             $table->timestamps();
         });
