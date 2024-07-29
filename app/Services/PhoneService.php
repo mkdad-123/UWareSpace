@@ -34,7 +34,7 @@ class PhoneService{
 
         $phoneIdsToKeep = collect($phones)->pluck('id')->all();
 
-         return $currentPhones->whereNotIn('id' , $phoneIdsToKeep);
+        return $currentPhones->whereNotIn('id' , $phoneIdsToKeep);
 
     }
     protected function delete($phones)

@@ -62,7 +62,7 @@ trait ModelOperationTrait
             $member = $this->model->create([
             'name'            =>$clientRequest->name,
             'location'        =>$clientRequest->location,
-            'client_email'    =>$clientRequest->client_email,
+            'email'           =>$clientRequest->email,
             'admin_id'        => auth('admin')->user()->id,
         ]);
         $member = PhoneService::storePhones($member , $clientRequest->input('phones'));
@@ -82,15 +82,15 @@ trait ModelOperationTrait
 
     public function update (ClientUpdateRequest $clientRequest ){
             $member = $this->model->find( $clientRequest->input('id'));
+            if ($clientRequest->phones) {
+                (new PhoneService())->updatePhones($clientRequest->phones, $member);
+            }
             if($member !=null && $member->admin_id == auth('admin')->user()->id){
             $member ->update([
             'name'     =>$clientRequest->name,
             'location' =>$clientRequest->location ,
-            'client_email'    =>$clientRequest->client_email,
+            'email'    =>$clientRequest->email,
         ]);
-        if ($clientRequest->input('phones')) {
-            $member =(new PhoneService())->updatePhones($clientRequest->input('phones'), $member);
-        }
             return response()->json([
                 'data' =>$member,
                 'message'=> 'member is updated successfuly',

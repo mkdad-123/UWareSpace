@@ -23,7 +23,7 @@ class ClientStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'client_email' => 'required|string|email|unique:clients,client_email',
+            'email' => 'required|string|email|unique:clients,email',
             'location' => 'sometimes|string',
             'phones' => 'required|array',
             'phones.*.number'=> 'required|string',

@@ -10,6 +10,7 @@ use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\Subscription\SubscriptionController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\SuppliersController;
 use App\Models\Compliant;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,15 @@ Route::controller(AdminController::class)->prefix('Admin')
         Route::post('/ShowClient','showId')->middleware('auth:admin');
         Route::post('/DeleteClient','delete')->middleware('auth:admin');
         Route::post('/SortClients','sort')->middleware('auth:admin');
+    });
+    Route::controller(SuppliersController::class)->prefix('supplier')
+    ->group(function () {
+        Route::post('/StoreSuppliers', 'store')->middleware('auth:admin');
+        Route::post('/UpdateSuppliers', 'update')->middleware('auth:admin');
+        Route::get('/ShowSuppliers', 'show')->middleware('auth:admin');
+        Route::post('/ShowSupplier','showId')->middleware('auth:admin');
+        Route::post('/DeleteSuppliers','delete')->middleware('auth:admin');
+        Route::post('/SortSuppliers','sort')->middleware('auth:admin');
     });
     /*
  * login route for default route
