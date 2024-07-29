@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WarehouseItemStoreRequest;
 use App\Http\Requests\WarehouseItemUpdateRequest;
+use App\Http\Resources\WarehouseItemResource;
 use App\Models\Item;
+use App\Models\Warehouse;
 use App\Services\Item\ItemStoreService;
 use App\Services\Item\ItemUpdateService;
 
@@ -32,6 +34,13 @@ class WarehouseItemController extends Controller
 
         return $this->response(response(),'Items have been updated in your warehouse successfully');
 
+    }
+
+    public function filterMinQuantity(Warehouse $warehouse)
+    {
+        $items = $warehouse->items()->whereColumn('warehouse_item.real_qty' , '<=' , 'warehouse_item.min_qty' )->get();
+
+        return $this->response(WarehouseItemResource::collection($items));
     }
 
 }

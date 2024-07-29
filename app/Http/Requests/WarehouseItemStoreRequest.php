@@ -19,7 +19,8 @@ class WarehouseItemStoreRequest extends FormRequest
 
         return [
 
-            'warehouse_id' => 'required|exists:warehouses,id',Rule::unique('warehouses_item')
+            'warehouse_id' => 'required|exists:warehouses,id',
+            Rule::unique('warehouse_item')
                 ->where(function ($query) use ($itemId){
                     return $query->where('item_id' , $itemId);
                 }),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\VehicleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,6 +43,10 @@ class Vehicle extends Model
         'size_cubic_meters',
         'load_capacity_kg',
         'plate_number',
+    ];
+
+    protected $casts = [
+        'status' => VehicleEnum::class
     ];
 
     public function warehouse(): BelongsTo

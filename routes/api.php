@@ -176,6 +176,7 @@ Route::middleware('auth:employee')->group(function () {
         ->group(function () {
             Route::post('store-in-warehouse/{item}', 'store');
             Route::put('update-in-warehouse/{item}', 'update');
+            Route::get('warehouse/filter-minimum-quantity/{warehouse}' , 'filterMinQuantity');
         });
 
     Route::prefix('employee/vehicle')->controller(VehicleController::class)
