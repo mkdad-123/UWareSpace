@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('warehouse_id')->constrained('warehouses')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('employee_id')->unique()->constrained('employees')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('vehicle_id')->unique()->constrained('vehicles')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('employee_id')->constrained('employees')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('vehicle_id')->constrained('vehicles')->cascadeOnDelete()->cascadeOnUpdate();
           //  $table->foreignId('sell_order_id')->constrained('sell_orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('tracking_number')->unique();
             $table->decimal('current_capacity')->default(0);

@@ -144,6 +144,11 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
         return $this->hasManyThrough(Vehicle::class,Warehouse::class);
     }
 
+    public function shipments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Shipment::class,Warehouse::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

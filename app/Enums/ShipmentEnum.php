@@ -8,12 +8,11 @@ enum ShipmentEnum : string
      case SENDING = 'sending';
      case RECEIVED = 'received';
 
-     public function getStatus(): array
+     public static function getStatus(): array
      {
          return [
              self::PREPARATION->value,
              self::SENDING->value,
-             self::RECEIVED->value,
          ];
      }
 }
