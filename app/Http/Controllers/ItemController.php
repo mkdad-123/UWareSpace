@@ -6,13 +6,11 @@ use App\filters\ItemFilter;
 use App\Http\Requests\Item\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use App\Services\Item\ItemUpdateService;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
+
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Services\Item\ItemStoreService;
 use Illuminate\Support\Facades\Storage;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ItemController extends Controller
@@ -21,10 +19,13 @@ class ItemController extends Controller
     {
         $admin = auth('admin')->user()?: auth('employee')->user()->admin;
 
-        $items  = $admin->load('items')->items;
+        $items  = $admin->load('items')->items();
 
-//        $items = QueryBuilder::for(Item::class)
-//            ->allowedFilters(ItemFilter::filter())->get();
+        if (request()->has('filter.item'))
+        {
+            $items = QueryBuilder::for($items)
+                ->allowedFilters(ItemFilter::filter())->get();
+        }
 
         return $this->response(
             ItemResource::collection($items) ,

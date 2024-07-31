@@ -14,7 +14,7 @@ class ItemFilter
             AllowedFilter::callback('item', function (Builder $query, $value) {
 
                 $query->where('SKU' , 'like' , "%{$value}%")
-                    ->orWhere('name' , 'like' , "%{$value}%")
+                    ->Orwhere('name' , 'like' , "%{$value}%")
                     ->orWhere('sell_price' , 'like' , "%{$value}%")
                     ->orWhere('pur_price' , 'like' , "%{$value}%")
                     ->orWhere('size_cubic_meters' , 'like' , "%{$value}%")
