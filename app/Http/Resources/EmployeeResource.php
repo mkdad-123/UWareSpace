@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\Permission\Models\Role;
 
 class EmployeeResource extends JsonResource
 {
@@ -15,29 +16,10 @@ class EmployeeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'location' => $this->location
+            'location' => $this->location,
+            'roles' => new RoleResource($this->whenLoaded('roles')),
+            'phones' => new PhoneResource($this->whenLoaded('phones'))
         ];
-
-            if($this->relationLoaded('roles'))
-            {
-                $data['roles'] = $this->roles->map(function ($role){
-                   return [
-                        'id' => $role->id,
-                        'name' => $role->name,
-                       ];
-                });
-            };
-
-        if($this->relationLoaded('phones'))
-        {
-            $data['phones'] = $this->phones->map(function ($phone){
-                return [
-                    'id' => $phone->id,
-                    'number' => $phone->number,
-                ];
-            });
-        };
-
         return $data;
     }
 }

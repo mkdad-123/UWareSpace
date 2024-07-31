@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\filters\ItemFilter;
 use App\Http\Requests\Item\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use App\Services\Item\ItemUpdateService;
@@ -20,7 +21,10 @@ class ItemController extends Controller
     {
         $admin = auth('admin')->user()?: auth('employee')->user()->admin;
 
-       $items  = $admin->load('items')->items;
+        $items  = $admin->load('items')->items;
+
+//        $items = QueryBuilder::for(Item::class)
+//            ->allowedFilters(ItemFilter::filter())->get();
 
         return $this->response(
             ItemResource::collection($items) ,

@@ -26,10 +26,7 @@ class WarehouseStoreService
 
     }
 
-    protected function getAddress($location)
-    {
-        return $this->locationService->transformAddress($location);
-    }
+
 
     protected function mergeData($data , $adrsCoordinate)
     {
@@ -47,7 +44,7 @@ class WarehouseStoreService
 
             if($location){
 
-                if(! $adrsCoordinate = $this->getAddress($location)){
+                if(! $adrsCoordinate = $this->locationService->transformAddress($location)){
 
                     return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
                 }
