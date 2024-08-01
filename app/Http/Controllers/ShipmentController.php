@@ -37,7 +37,9 @@ class ShipmentController extends Controller
 
     public function update(Request $request , Shipment $shipment)
     {
+        $shipment->fill($request->all());
 
+        return $this->response($shipment , 'Shipment has been updated successfully');
     }
 
     public function delete(Shipment $shipment)

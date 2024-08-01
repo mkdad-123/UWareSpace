@@ -215,17 +215,6 @@ Route::middleware('auth:employee')->group(function () {
             Route::get('show-all', 'showAll');
         });
 
-
-    Route::prefix('shipment')->controller(ShipmentController::class)
-        ->group(function () {
-            Route::post('store', 'store');
-            Route::get('show-all', 'showAll');
-            Route::get('show/{shipment}', 'show');
-            Route::post('update/{shipment}', 'update');
-            Route::delete('delete/shipment', 'delete');
-            Route::get('filter', 'filter');
-        });
-
     Route::controller(ClientController::class)->prefix('client')
         ->group(function () {
             Route::post('store', 'store');
@@ -241,6 +230,17 @@ Route::middleware('auth:employee')->group(function () {
             Route::get('show-all', 'showAll');
             Route::get('show/{id}','show');
            // Route::post('sort','sort');
+        });
+
+
+    Route::prefix('shipment')->controller(ShipmentController::class)
+        ->group(function () {
+            Route::post('store', 'store');
+            Route::get('show-all', 'showAll');
+            Route::get('show/{shipment}', 'show');
+            Route::post('update/{shipment}', 'update');
+            Route::delete('delete/shipment', 'delete');
+            Route::get('filter', 'filter');
         });
 });
 
