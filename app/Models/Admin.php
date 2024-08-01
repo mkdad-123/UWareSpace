@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $email
@@ -81,6 +81,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereStripeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereTrialEndsAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shipment> $shipments
+ * @property-read int|null $shipments_count
  * @mixin \Eloquent
  */
 class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubject

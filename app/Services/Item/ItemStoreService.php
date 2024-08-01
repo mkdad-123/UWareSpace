@@ -3,6 +3,7 @@
 namespace App\Services\Item;
 
 use App\Models\Item;
+use App\Models\Warehouse;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -14,6 +15,9 @@ class ItemStoreService
 
     protected OperationResult $result;
 
+    /*
+     * Store Warehouse in database
+     */
     protected function storePhoto($photo , $data)
     {
         $photoName = time().'.'.$photo->getClientOriginalExtension();
@@ -87,7 +91,11 @@ class ItemStoreService
         return $this->result;
     }
 
-    public function storeItemInWarehouse($item ,$warehouseId, $data)
+    /*
+     * Store items in warehouse
+     */
+
+    protected function createItemInWarehouse($item ,$warehouseId, $data)
     {
         $item->warehouses()->attach($warehouseId,[
             'real_qty' => $data['real_quantity'],
@@ -95,4 +103,63 @@ class ItemStoreService
             'min_qty' => $data['min_quantity']
         ]);
     }
+
+    public function storeInWarehouse($request , $item)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $this->createItemInWarehouse(
+                $item ,
+                $request->input('warehouse_id') ,
+                $request->except(['warehouse_id']) ,
+            );
+
+            $warehouse = Warehouse::find($request->input('warehouse_id'));
+
+            $itemCapacity =  $warehouse->items()->where('id' , $item->id)->get();
+
+            $percent = calculate_capacity($warehouse->size_cubic_meters,$itemCapacity);
+
+            $capacity = $warehouse->current_capacity + $percent;
+
+            $capacity = round($capacity ,2);
+
+            if($capacity > 100)
+            {
+                return $this->result = new OperationResult(
+                    'The warehouse capacity is not enough, the capacity becomes '. $capacity,
+                    response(),
+                    400);
+            }
+
+            $warehouse->current_capacity += $percent;
+
+            $warehouse->save();
+
+
+
+            DB::commit();
+
+            $this->result = new OperationResult('Items have been created in your warehouse successfully',$warehouse,201);
+
+        } catch (QueryException $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
+        }
+
+        return $this->result;
+
+
+    }
+
 }

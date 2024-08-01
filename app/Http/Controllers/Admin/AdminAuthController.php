@@ -46,6 +46,5 @@ class AdminAuthController extends Controller
     {
         return  (new EmailVerificationService())->verify($request);
 
-
     }
 }

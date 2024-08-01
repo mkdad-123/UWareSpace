@@ -57,4 +57,12 @@ class RoleController extends Controller
 
         return $this->response(response(),'Role deleted successfully');
     }
+
+    public function showPermission()
+    {
+        $permissions = Permission::all(['id' , 'name']);
+
+        return $this->response($permissions,'permissions have been get successfully');
+
+    }
 }

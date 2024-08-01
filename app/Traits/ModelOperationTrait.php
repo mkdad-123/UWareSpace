@@ -2,11 +2,8 @@
 
 namespace App\Traits;
 
-use App\Http\Requests\ClientStoreRequest;
-use App\Http\Requests\ClientUpdateRequest;
 use App\Http\Resources\MemberResource;
 use App\Models\Client;
-use App\Services\MemberService;
 use Request;
 
 trait ModelOperationTrait

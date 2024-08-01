@@ -11,7 +11,6 @@ class AdminRegisterRequest extends FormRequest
         return true;
     }
 
-
     public function rules(): array
     {
 
@@ -20,9 +19,9 @@ class AdminRegisterRequest extends FormRequest
             'email' => 'required|string|email|unique:admins,email',
             'password'=> 'required|string|min:8',
             'location' => 'sometimes|string',
-            'phones' => 'required|array',
+            'phones' => 'required',
             'phones.*.number'=> 'required|string',
-            'logo' => 'sometimes|string|mimes:jpg,png,jpeg'
+            'logo' => 'sometimes|image|mimes:jpg,png,jpeg'
         ];
     }
 }

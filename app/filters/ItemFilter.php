@@ -7,18 +7,26 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class ItemFilter
 {
-    public static function filter(): array
+    public static function filter($id): array
     {
+
         return [
 
-            AllowedFilter::callback('item', function (Builder $query, $value) {
+            AllowedFilter::callback('item', function (Builder $query, $value) use ($id){
 
                 $query->where('SKU' , 'like' , "%{$value}%")
+
                     ->Orwhere('name' , 'like' , "%{$value}%")
-                    ->orWhere('sell_price' , 'like' , "%{$value}%")
-                    ->orWhere('pur_price' , 'like' , "%{$value}%")
-                    ->orWhere('size_cubic_meters' , 'like' , "%{$value}%")
-                    ->orWhere('unit' , 'like' , "%{$value}%");
+
+                    ->where('admin_id' , $id)->orWhere('sell_price' , 'like' , "%{$value}%")
+
+                    ->where('admin_id' , $id)->orWhere('pur_price' , 'like' , "%{$value}%")
+
+                    ->where('admin_id' , $id)->orWhere('size_cubic_meters' , 'like' , "%{$value}%")
+
+                    ->where('admin_id' , $id) ->orWhere('unit' , 'like' , "%{$value}%")
+
+                    ->where('admin_id' , $id);
             })
         ];
     }

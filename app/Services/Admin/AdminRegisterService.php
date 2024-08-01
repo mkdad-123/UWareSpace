@@ -22,22 +22,21 @@ class AdminRegisterService{
         $this->model = new Admin();
     }
 
+    protected function storeLogo($logo , $data)
+    {
+        $logoName = time().$logo->getClientOriginalName();
+
+        $logo->storeAs('logos',$logoName,'public');
+
+        $data['logo'] = 'logos/'.$logoName;
+
+        return $data;
+    }
+
     protected function store($data)
     {
         $user = $this->model->create($data);
 
-        return $user;
-    }
-
-    protected function storePhones($user , $phones)
-    {
-        foreach ($phones as $phoneData){
-            $phone = new Phone();
-
-            $phone->number = $phoneData['number'];
-
-            $user->phones()->save($phone);
-        }
         return $user;
     }
 
@@ -55,16 +54,24 @@ class AdminRegisterService{
 
             DB::beginTransaction();
 
-            $user = $this->store($request->except('phones'));
+            $phones = json_decode($request->input('phones'),true);
 
-            $user = PhoneService::storePhones($user , $request->input('phones'));
+            $data = $request->except('phones');
+
+            if ($request->hasFile('logo'))
+            {
+                $data = $this->storeLogo($request->file('logo') , $data);
+            }
+
+            $user = $this->store($data);
+
+            $user = PhoneService::storePhones($user , $phones);
 
             $this->sendEmail($user);
 
             DB::commit();
 
-            $message = 'your account has been created,please check your email';
-            $this->result = new OperationResult($message,response(),201);
+            $this->result = new OperationResult('your account has been created,please check your email',response(),201);
 
         } catch (QueryException $e) {
 

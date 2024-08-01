@@ -21,11 +21,9 @@ class ItemController extends Controller
 
         $items  = $admin->load('items')->items();
 
-        if (request()->has('filter.item'))
-        {
-            $items = QueryBuilder::for($items)
-                ->allowedFilters(ItemFilter::filter())->get();
-        }
+        $items = QueryBuilder::for($items)
+                    ->allowedFilters(ItemFilter::filter($admin->id))->get();
+
 
         return $this->response(
             ItemResource::collection($items) ,

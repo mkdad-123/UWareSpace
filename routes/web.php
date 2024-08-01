@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('auth.reset-password');
+    return view('welcome');
 });
 
 Route::get('/reset-password/{token}/{broker}', function (string $token , string $broker) {

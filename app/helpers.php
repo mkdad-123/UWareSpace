@@ -17,8 +17,6 @@ if(! function_exists('calculate_capacity_warehouse'))
             $totalPercent += $percent;
         }
 
-        return $totalPercent;
+        return round($totalPercent,2);
     }
 }
-
-// $percent = calculate_capacity($warehouse->size_cubic_meters, $warehouse->items);

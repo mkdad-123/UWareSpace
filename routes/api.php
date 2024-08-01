@@ -113,7 +113,10 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('show/{id}', 'showOne');
             Route::put('update/{id}', 'update');
             Route::delete('delete/{id}', 'destroy');
+            Route::get('permissions' , 'showPermission');
         });
+
+    Route::get('permissions/show-all' , [RoleController::class,'showPermission']);
 
     /*
      * Employees management

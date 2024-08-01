@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WarehouseItemStoreRequest;
 use App\Http\Requests\WarehouseItemUpdateRequest;
 use App\Http\Resources\WarehouseItemResource;
+use App\Http\Resources\WarehouseResource;
 use App\Models\Item;
 use App\Models\Warehouse;
 use App\Services\Item\ItemStoreService;
@@ -14,14 +15,21 @@ class WarehouseItemController extends Controller
 {
     public function store(Item $item ,WarehouseItemStoreRequest $request , ItemStoreService $storeService)
     {
-        $storeService->storeItemInWarehouse(
-            $item ,
-            $request->input('warehouse_id') ,
-            $request->except(['warehouse_id'])
+        $result = $storeService->storeInWarehouse($request,$item);
+
+        if ( $result->status == 201){
+
+            return $this->response(
+                new WarehouseResource($result->data),
+                $result->message,
+                $result->status,
+            );
+        }
+        return  $this->response(
+            $result->data,
+            $result->message,
+            $result->status,
         );
-
-        return $this->response(response(),'Items have been created in your warehouse successfully',201);
-
     }
 
     public function update(Item $item ,WarehouseItemUpdateRequest $request , ItemUpdateService $updateService)
