@@ -13,7 +13,6 @@ enum PurchaseOrderEnum : string
         return [
             self::PENDING->value,
             self::SENDING->value,
-            self::RECEIVED->value
         ];
     }
 }

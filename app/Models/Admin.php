@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $email
@@ -83,6 +83,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereTrialEndsAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shipment> $shipments
  * @property-read int|null $shipments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Purchase_Order> $purchase_orders
+ * @property-read int|null $purchase_orders_count
  * @mixin \Eloquent
  */
 class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubject
@@ -149,6 +151,16 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
     public function shipments(): HasManyThrough
     {
         return $this->hasManyThrough(Shipment::class,Warehouse::class);
+    }
+
+    public function orders(): HasManyThrough
+    {
+        return $this->hasManyThrough(Order::class,Warehouse::class);
+    }
+
+    public function purchase_orders(): HasManyThrough
+    {
+        return $this->hasManyThrough(Purchase_Order::class,Order::class);
     }
 
     public function getJWTIdentifier()

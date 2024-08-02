@@ -118,20 +118,21 @@ class ItemStoreService
 
             $warehouse = Warehouse::find($request->input('warehouse_id'));
 
-            $itemCapacity =  $warehouse->items()->where('id' , $item->id)->get();
+            $itemCapacity =  $warehouse->items()->where('id' , $item->id)->first();
 
-            $percent = calculate_capacity($warehouse->size_cubic_meters,$itemCapacity);
+            $percent = calculate_capacity($warehouse->size_cubic_meters,
+                $itemCapacity->size_cubic_meters ,
+                $itemCapacity->pivot->real_qty);
 
-            $capacity = $warehouse->current_capacity + $percent;
+            $capacity_percent = round(($warehouse->current_capacity + $percent) , 2);
 
-            $capacity = round($capacity ,2);
-
-            if($capacity > 100)
+            if($capacity_percent > 100)
             {
                 return $this->result = new OperationResult(
-                    'The warehouse capacity is not enough, the capacity becomes '. $capacity,
+                    'The warehouse capacity is not enough, the percent capacity becomes '. $capacity_percent,
                     response(),
-                    400);
+                    400
+                );
             }
 
             $warehouse->current_capacity += $percent;
@@ -142,7 +143,12 @@ class ItemStoreService
 
             DB::commit();
 
-            $this->result = new OperationResult('Items have been created in your warehouse successfully',$warehouse,201);
+            $this->result = new OperationResult(
+                'Items have been created in your warehouse successfully ,
+                          the percent capacity becomes '. $capacity_percent,
+                $warehouse,
+                201
+            );
 
         } catch (QueryException $e) {
 

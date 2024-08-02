@@ -3,20 +3,12 @@
 if(! function_exists('calculate_capacity_warehouse'))
 {
 
-    function calculate_capacity($size , $items): float
+    function calculate_capacity($size , $itemSize , $itemQty): float
     {
-        $totalPercent = 0.0;
+            $maxLoadFromItem = (double) ($size / $itemSize);
 
-        foreach ($items as $item)
-        {
+            $percent = ($itemQty / $maxLoadFromItem) *  100;
 
-            $maxLoadFromItem = (double) ($size / $item->size_cubic_meters);
-
-            $percent = ($item->pivot->real_qty / $maxLoadFromItem) *  100;
-
-            $totalPercent += $percent;
-        }
-
-        return round($totalPercent,2);
+        return round($percent,2);
     }
 }

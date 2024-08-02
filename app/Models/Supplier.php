@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  *
@@ -53,5 +54,10 @@ class Supplier extends Model
     public function notes()
     {
         return $this->morphMany(Note::class, 'noteable');
+    }
+
+    public function purchase_orders(): HasMany
+    {
+        return $this->hasMany(Purchase_Order::class);
     }
 }
