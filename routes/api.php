@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
@@ -240,7 +241,7 @@ Route::middleware('auth:employee')->group(function () {
             Route::get('show-all', 'showAll');
             Route::get('show/{shipment}', 'show');
             Route::post('update/{shipment}', 'update');
-            Route::delete('delete/shipment', 'delete');
+            Route::delete('delete/{shipment}', 'delete');
             Route::get('filter', 'filter');
         });
 
@@ -250,12 +251,14 @@ Route::middleware('auth:employee')->group(function () {
             ->group(function () {
                 Route::post('store', 'store');
                 Route::get('show-all', 'showAll');
-                Route::get('show/{shipment}', 'show');
-                Route::post('update/{shipment}', 'update');
-                Route::delete('delete/shipment', 'delete');
-                Route::get('filter', 'filter');
+                Route::get('show/{order}', 'show');
+                Route::delete('delete/{order}', 'delete');
             });
     });
 
+    Route::prefix('received/purchase')->controller(PurchaseController::class)
+        ->group(function (){
+            Route::get('show-all-purchase', 'showPurchases');
+        });
 });
 

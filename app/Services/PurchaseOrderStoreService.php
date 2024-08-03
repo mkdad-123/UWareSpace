@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\PurchaseOrderEnum;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Order_item;
@@ -39,7 +40,7 @@ class PurchaseOrderStoreService
     {
         Purchase_Order::create([
             'order_id' => $orderId,
-            'supplier_id' => $supplierId
+            'supplier_id' => $supplierId,
         ]);
     }
 

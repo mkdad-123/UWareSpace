@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PurchaseOrderEnum;
+use App\filters\PurchaseOrderFilter;
 use App\Http\Requests\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Http\Resources\PurchaseOrderResource;
 use App\Models\Order;
-use App\Models\Purchase_Order;
 use App\Services\PurchaseOrderStoreService;
-use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseOrderController extends Controller
 {
@@ -18,14 +17,20 @@ class PurchaseOrderController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $purchaseOrders  = $admin->load('orders.purchase_order')->orders();
+        $purchaseOrders  = $admin->load('orders.purchase_order')->orders()
+            ->whereHas('purchase_order' , function ($query) {
 
-        $purchases = $purchaseOrders->whereHas('purchase_order' , function ($query){
-           $query->whereIn('status' , PurchaseOrderEnum::getStatus());
-        })->with('purchase_order')->get();
+                $query->whereIn('status', PurchaseOrderEnum::getStatus());
+            });
+
+        $purchases = QueryBuilder::for($purchaseOrders)
+            ->allowedFilters(PurchaseOrderFilter::filter($admin->id))
+            ->with(['purchase_order.supplier' , 'warehouse'])->get();
+
 
         return $this->response (OrderResource::collection($purchases));
     }
+
 
     public function show(Order $order)
     {
@@ -33,6 +38,7 @@ class PurchaseOrderController extends Controller
 
         return $this->response (new OrderResource($purchase));
     }
+
 
     public function store(PurchaseOrderRequest $request , PurchaseOrderStoreService $orderStoreService)
     {
@@ -53,16 +59,11 @@ class PurchaseOrderController extends Controller
         );
     }
 
-
-
-    public function update(Request $request , Purchase_Order $purchase_Order)
+    public function delete(Order $order)
     {
+        $order->delete();
 
-    }
-
-    public function delete(Purchase_Order $purchase_Order)
-    {
-
+        return $this->response (response(),'Order has been deleted successfully');
     }
 
     public function filterStatus()
@@ -70,15 +71,7 @@ class PurchaseOrderController extends Controller
 
     }
 
-    public function sort()
-    {
 
-    }
-
-    public function search()
-    {
-
-    }
 
 
 }
