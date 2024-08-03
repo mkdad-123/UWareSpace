@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Order;
 
 use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use Spatie\QueryBuilder\QueryBuilder;
 

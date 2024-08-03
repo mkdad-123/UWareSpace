@@ -8,16 +8,17 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\Order\OrderStatusController;
+use App\Http\Controllers\Order\PurchaseController;
+use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\ShipmentController;
+use App\Http\Controllers\Subscription\SubscriptionController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
+use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\VehicleController;
-use App\Http\Controllers\WarehouseController;
-use App\Http\Controllers\WarehouseItemController;
-use App\Http\Controllers\Subscription\SubscriptionController;
-use App\Http\Controllers\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\Warehouse\WarehouseController;
+use App\Http\Controllers\Warehouse\WarehouseItemController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -254,11 +255,19 @@ Route::middleware('auth:employee')->group(function () {
                 Route::get('show/{order}', 'show');
                 Route::delete('delete/{order}', 'delete');
             });
+
+        Route::prefix('purchase')->controller(OrderStatusController::class)
+            ->group(function (){
+                Route::post('changeStatus/{order}', 'changeStatusPurchase');
+            });
     });
 
     Route::prefix('received/purchase')->controller(PurchaseController::class)
         ->group(function (){
             Route::get('show-all-purchase', 'showPurchases');
         });
+
+
+
 });
 

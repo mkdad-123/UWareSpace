@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- *
+ * 
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Order_item newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order_item newQuery()
@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereUpdatedAt($value)
+ * @property-read \App\Models\Order $order
  * @mixin \Eloquent
  */
 class Order_item extends Model

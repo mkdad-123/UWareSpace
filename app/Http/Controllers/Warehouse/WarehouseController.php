@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Warehouse;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Warehouse\WarehouseStoreRequest;
 use App\Http\Requests\Warehouse\WarehouseUpdateRequest;
 use App\Http\Resources\WarehouseResource;

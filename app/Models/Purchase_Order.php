@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $order_id
@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereSupplierId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereUpdatedAt($value)
+ * @property-read \App\Models\Order $order
+ * @property-read \App\Models\Supplier $supplier
+ * @method static \Database\Factories\Purchase_OrderFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
 class Purchase_Order extends Model

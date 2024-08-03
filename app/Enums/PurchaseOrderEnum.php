@@ -15,4 +15,12 @@ enum PurchaseOrderEnum : string
             self::SENDING->value,
         ];
     }
+
+    public static function getStatusForChange(): array
+    {
+        return [
+            self::RECEIVED->value,
+            self::SENDING->value,
+        ];
+    }
 }

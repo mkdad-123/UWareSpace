@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Order;
 
-use App\Enums\PurchaseOrderEnum;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Order_item;
@@ -11,24 +10,30 @@ use App\Models\Warehouse;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderStoreService
 {
     protected OperationResult $result;
 
-    protected function calculateCapacity($items ,$warehouseSize )
+    public function calculateCapacity($items ,$warehouseSize )
     {
+        $itemIds = array_column($items,'id');
+
+        $loadedItems = Item::whereIn('id' , $itemIds)->get()->keyBy('id');
+
         $total = 0.0;
 
-        foreach ($items as $item)
+        foreach ($items as $loadedItems)
         {
-            $itemSize = Item::find($item['id'])->size_cubic_meters;
+            $itemSize = $loadedItems['id']->size_cubic_meters;
 
-            $total += calculate_capacity($warehouseSize , $itemSize , $item['quantity']);
+            $total += calculate_capacity($warehouseSize , $itemSize , $loadedItems['quantity']);
         }
         return $total;
     }
+
     protected function storeOrder($data)
     {
         $order = Order::create($data);
@@ -56,6 +61,13 @@ class PurchaseOrderStoreService
         }
     }
 
+    protected function addCache($orderId ,$percent)
+    {
+        $cacheKey = "order_capacity_{$orderId}";
+
+        Cache::put($cacheKey , $percent , 22880);
+    }
+
     public function store($request)
     {
         try {
@@ -80,6 +92,8 @@ class PurchaseOrderStoreService
             }
 
             $orderId  = $this->storeOrder($request->only(['warehouse_id' , 'payment_type' , 'payment_at']));
+
+            $this->addCache($orderId , $percent);
 
             $this->storePurchaseOrder($orderId , $request->input('supplier_id'));
 

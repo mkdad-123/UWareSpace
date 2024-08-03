@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Order;
 
 use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Services\PurchaseOrderStoreService;
+use App\Services\Order\PurchaseOrderStoreService;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseOrderController extends Controller
@@ -66,7 +67,7 @@ class PurchaseOrderController extends Controller
         return $this->response (response(),'Order has been deleted successfully');
     }
 
-    public function filterStatus()
+    public function addBatch($request)
     {
 
     }
