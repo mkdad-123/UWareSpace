@@ -81,6 +81,7 @@ class ItemUpdateService
 
         return $updateData;
     }
+
     public function updateItemInWarehouse(Item $item ,$warehouseId, $data)
     {
         $data = $this->filterData($item,$warehouseId, $data);

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Warehouse;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\WarehouseItemStoreRequest;
-use App\Http\Requests\WarehouseItemUpdateRequest;
+use App\Http\Requests\Warehouse\WarehouseItemStoreRequest;
+use App\Http\Requests\Warehouse\WarehouseItemUpdateRequest;
 use App\Http\Resources\WarehouseItemResource;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Item;

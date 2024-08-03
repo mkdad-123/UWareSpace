@@ -27,4 +27,17 @@ class PurchaseController extends Controller
 
         return $this->response (OrderResource::collection($purchases));
     }
+
+    public function showNonInventoried()
+    {
+        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+
+        $items  = $admin->load('orders.purchase_order')->orders()
+            ->whereHas('purchase_order' , function ($query) {
+
+                $query->whereIn('status', PurchaseOrderEnum::getStatusForChange());
+            })->get();
+
+        return $this->response (OrderResource::collection($items));
+    }
 }

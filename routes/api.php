@@ -254,6 +254,7 @@ Route::middleware('auth:employee')->group(function () {
                 Route::get('show-all', 'showAll');
                 Route::get('show/{order}', 'show');
                 Route::delete('delete/{order}', 'delete');
+                Route::post('batch/{order}' , 'addBatch');
             });
 
         Route::prefix('purchase')->controller(OrderStatusController::class)
@@ -265,9 +266,7 @@ Route::middleware('auth:employee')->group(function () {
     Route::prefix('received/purchase')->controller(PurchaseController::class)
         ->group(function (){
             Route::get('show-all-purchase', 'showPurchases');
+            Route::get('show-all-non-inventoried', 'showNonInventoried');
         });
-
-
-
 });
 

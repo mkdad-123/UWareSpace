@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Order;
 use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BatchRequest;
 use App\Http\Requests\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Services\Item\ItemStoreService;
 use App\Services\Order\PurchaseOrderStoreService;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -67,9 +69,26 @@ class PurchaseOrderController extends Controller
         return $this->response (response(),'Order has been deleted successfully');
     }
 
-    public function addBatch($request)
+    public function addBatch (BatchRequest $request ,Order $order , ItemStoreService $storeService)
     {
+        $warehouse = $order->warehouse;
 
+        $order->order_items->map(function ($order_item) use ($warehouse , $storeService , $request){
+
+             $item =  $warehouse->items()->where('item_id' ,$order_item->item_id)->first();
+
+             if (! is_null($item))
+             {
+                 $pivot = $item->pivot;
+                 $pivot->real_qty +=  $order_item->quantity;
+                 $pivot->available_qty +=  $order_item->quantity;
+                 $pivot->save();
+             }else{
+                 $storeService->createItemInWarehouse($item,$warehouse->id,$request);
+             }
+        });
+
+         return $this->response(response(),'the batch has been added in your warehouse successfully');
     }
 
 

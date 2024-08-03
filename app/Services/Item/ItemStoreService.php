@@ -95,7 +95,7 @@ class ItemStoreService
      * Store items in warehouse
      */
 
-    protected function createItemInWarehouse($item ,$warehouseId, $data)
+    public function createItemInWarehouse($item ,$warehouseId, $data)
     {
         $item->warehouses()->attach($warehouseId,[
             'real_qty' => $data['real_quantity'],
