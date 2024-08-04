@@ -10,6 +10,7 @@ use App\Http\Requests\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\Item\ItemStoreService;
+use App\Services\Item\ItemUpdateService;
 use App\Services\Order\PurchaseOrderStoreService;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -69,25 +70,28 @@ class PurchaseOrderController extends Controller
         return $this->response (response(),'Order has been deleted successfully');
     }
 
-    public function addBatch (BatchRequest $request ,Order $order , ItemStoreService $storeService)
+    public function addBatch (BatchRequest $request ,Order $order , ItemStoreService $storeService , ItemUpdateService $updateService)
     {
         $warehouse = $order->warehouse;
 
-        $order->order_items->map(function ($order_item) use ($warehouse , $storeService , $request){
 
-             $item =  $warehouse->items()->where('item_id' ,$order_item->item_id)->first();
+        $warehouseItem = $warehouse->items()->whereIn('item_id' , $order->order_items->pluck('item_id'))
+            ->get()->keyBy('id');
 
-             if (! is_null($item))
-             {
-                 $pivot = $item->pivot;
-                 $pivot->real_qty +=  $order_item->quantity;
-                 $pivot->available_qty +=  $order_item->quantity;
-                 $pivot->save();
-             }else{
+         $order->order_items()->each(function ($order_item) use ($warehouse ,$warehouseItem, $storeService ,$updateService, $request){
+
+             $item = $warehouseItem->get($order_item->item_id);
+
+             if ($item){
+
+                 $updateService->updatePivotForBatch($item , $order_item->quantity);
+
+             }else {
+
                  $storeService->createItemInWarehouse($item,$warehouse->id,$request);
              }
-        });
 
+        });
          return $this->response(response(),'the batch has been added in your warehouse successfully');
     }
 

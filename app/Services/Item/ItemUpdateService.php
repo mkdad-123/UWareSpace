@@ -91,8 +91,14 @@ class ItemUpdateService
             'available_qty' => $data['available_quantity'],
             'min_qty' => $data['min_quantity']
         ]);
+    }
 
-
+    public function updatePivotForBatch($item , $quantity)
+    {
+        $pivot = $item->pivot;
+        $pivot->real_qty +=  $quantity;
+        $pivot->available_qty +=  $quantity;
+        $pivot->save();
     }
 
 }

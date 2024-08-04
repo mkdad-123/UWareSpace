@@ -23,9 +23,9 @@ class PurchaseController extends Controller
 
         $purchases = QueryBuilder::for($purchaseOrders)
             ->allowedFilters(PurchaseOrderFilter::filterPurchase($admin->id))
-            ->with(['purchase_order.supplier' , 'warehouse'])->get();
+            ->with(['purchase_order.supplier' , 'warehouse'])->paginate(1);
 
-        return $this->response (OrderResource::collection($purchases));
+        return $this->response (($purchases));
     }
 
     public function showNonInventoried()
