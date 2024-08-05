@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderChangeRequest;
 use App\Models\Order;
+use App\Models\Shipment;
 use App\Services\Order\OrderChangeStatusService;
 
 class OrderStatusController extends Controller
@@ -29,5 +30,11 @@ class OrderStatusController extends Controller
 
     }
 
+    public function changeStatusShipment($request ,Shipment $shipment)
+    {
+        $shipment->status = $request->input('status');
+        $shipment->save();
 
+        $shipment->sellOrders()->order
+    }
 }

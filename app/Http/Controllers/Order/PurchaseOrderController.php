@@ -84,7 +84,7 @@ class PurchaseOrderController extends Controller
 
              if ($item){
 
-                 $updateService->updatePivotForBatch($item , $order_item->quantity);
+                 $updateService->updateQuantityForBatch($item , $order_item->quantity);
 
              }else {
 

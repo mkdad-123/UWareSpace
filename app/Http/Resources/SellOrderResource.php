@@ -14,6 +14,7 @@ class SellOrderResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'client' => new MemberResource($this->whenLoaded('client')),
+            'order' => new OrderResource($this->whenLoaded('order')),
             'shipment' =>new ShipmentResource($this->whenLoaded('shipment')),
         ];
     }

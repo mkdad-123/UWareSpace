@@ -16,7 +16,6 @@ class SellOrderStoreRequest extends FormRequest
             'payment_type' => ['sometimes' ,'string', 'in:cash,debt'],
             'payment_at' => ['required_if:payment_type,debt' ,'date','after:today'],
             'client_id' => ['required', 'exists:clients,id'],
-            'shipment_id' => ['required', 'exists:shipments,id'],
             'items' => ['required' , 'array'],
             'items.*.id' => ['required' , 'in:'.implode(',',$itemIds)],
             'items.*.quantity' => ['required' , 'integer' , 'min:1'],

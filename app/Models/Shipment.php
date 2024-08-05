@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $warehouse_id
@@ -79,8 +80,9 @@ class Shipment extends Model
         return $this->belongsTo(Vehicle::class);
     }
 
-    public function SellOrders(): HasMany
+    public function sellOrders(): HasMany
     {
         return $this->hasMany(SellOrder::class);
     }
+
 }

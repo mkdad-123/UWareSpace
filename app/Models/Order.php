@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $warehouse_id
@@ -27,9 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereWarehouseId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $order_items
  * @property-read int|null $order_items_count
- * @property-read \App\Models\PurchaseOrder|null $purchase_order
  * @method static \Database\Factories\OrderFactory factory($count = null, $state = [])
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
  * @property-read \App\Models\PurchaseOrder|null $purchaseOrder

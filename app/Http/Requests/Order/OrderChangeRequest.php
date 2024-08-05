@@ -25,7 +25,7 @@ class  OrderChangeRequest extends FormRequest
         $validator->after(function ($validator) {
             $order = $this->route('order');
             $newStatus = $this->input('status');
-            $currentStatus = $order->purchase_order->status;
+            $currentStatus = $order->purchaseOrder->status;
 
             if ($newStatus === 'sending' && $currentStatus !== 'pending') {
                 $validator->errors()->add('status', 'Status can only be changed to "sending" if it is currently "pending".');

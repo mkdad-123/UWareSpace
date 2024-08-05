@@ -90,7 +90,7 @@ use Illuminate\Support\Facades\Route;
             Route::get('show/{shipment}', 'show');
             Route::post('update/{shipment}', 'update');
             Route::delete('delete/{shipment}', 'delete');
-            Route::post('add-order-in-shipment' , 'addOrder');
+            Route::post('add-order-in-shipment/{shipment}' , 'addOrder');
             Route::get('filter', 'filter');
         });
 

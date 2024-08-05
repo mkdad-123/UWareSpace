@@ -13,17 +13,19 @@ class OrderStoreService
 {
     protected OperationResult $result;
 
-    public function calculateCapacity($items ,$warehouseSize): float
+    public function calculateCapacity($items ,$size): float
     {
         $itemIds = array_column($items,'id');
+
         $loadedItems = Item::whereIn('id' , $itemIds)->get()->keyBy('id');
+
         $total = 0.0;
 
         foreach ($items as $item )
         {
             $itemSize = $loadedItems[$item['id']]->size_cubic_meters;
 
-            $total += calculate_capacity($warehouseSize , $itemSize , $item['quantity']);
+            $total += calculate_capacity($size , $itemSize , $item['quantity']);
         }
 
         return $total;

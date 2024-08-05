@@ -93,11 +93,23 @@ class ItemUpdateService
         ]);
     }
 
-    public function updatePivotForBatch($item , $quantity)
+    public function updateQuantityForBatch($item , $quantity)
     {
+        $item->total_qty += $quantity;
+        $item->save();
         $pivot = $item->pivot;
         $pivot->real_qty +=  $quantity;
         $pivot->available_qty +=  $quantity;
+        $pivot->save();
+    }
+
+    public function updateQuantityForSellOrder($item , $quantity)
+    {
+        $item->total_qty -= $quantity;
+        $item->save();
+        $pivot = $item->pivot;
+        $pivot->real_qty -=  $quantity;
+        $pivot->available_qty -=  $quantity;
         $pivot->save();
     }
 

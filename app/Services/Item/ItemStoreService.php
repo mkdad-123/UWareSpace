@@ -129,7 +129,7 @@ class ItemStoreService
             if($capacity_percent > 100)
             {
                 return $this->result = new OperationResult(
-                    'The warehouse capacity is not enough, the percent capacity becomes '. $capacity_percent,
+                    'The warehouse capacity is not enough, the percent capacity becomes '. $capacity_percent . ' %',
                     response(),
                     400
                 );
@@ -144,9 +144,8 @@ class ItemStoreService
             DB::commit();
 
             $this->result = new OperationResult(
-                'Items have been created in your warehouse successfully ,
-                          the percent capacity becomes '. $capacity_percent,
-                $warehouse,
+                'Items have been created in your warehouse successfully ,the percent capacity becomes '. $capacity_percent. ' %',
+                response(),
                 201
             );
 

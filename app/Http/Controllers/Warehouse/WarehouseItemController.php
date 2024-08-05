@@ -21,7 +21,7 @@ class WarehouseItemController extends Controller
         if ( $result->status == 201){
 
             return $this->response(
-                new WarehouseResource($result->data),
+                $result->data,
                 $result->message,
                 $result->status,
             );

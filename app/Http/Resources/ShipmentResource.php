@@ -17,7 +17,8 @@ class ShipmentResource extends JsonResource
               'status' => $this->status,
               'warehouse' => new WarehouseResource($this->whenLoaded('warehouse')),
               'employee' => new EmployeeResource($this->whenLoaded('employee')),
-              'vehicle' => new VehicleResource($this->whenLoaded('vehicle'))
+              'vehicle' => new VehicleResource($this->whenLoaded('vehicle')),
+              'sell_order' =>  SellOrderResource::collection($this->whenLoaded('sellOrders'))
         ];
     }
 }
