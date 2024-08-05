@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item query()
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()
  * @property int $id
  * @property int $order_id
  * @property int $item_id
@@ -21,16 +21,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Order $Order
  * @property-read \App\Models\Item $item
  * @method static \Database\Factories\Order_itemFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereItemId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order_item whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereItemId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereUpdatedAt($value)
  * @property-read \App\Models\Order $order
  * @mixin \Eloquent
  */
-class Order_item extends Model
+class OrderItem extends Model
 {
     use HasFactory;
 

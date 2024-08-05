@@ -15,21 +15,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order query()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereSupplierId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase_Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereSupplierId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PurchaseOrder whereUpdatedAt($value)
  * @property-read \App\Models\Order $order
  * @property-read \App\Models\Supplier $supplier
  * @method static \Database\Factories\Purchase_OrderFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
-class Purchase_Order extends Model
+class PurchaseOrder extends Model
 {
     use HasFactory;
 

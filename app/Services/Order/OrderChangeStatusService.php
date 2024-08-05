@@ -19,9 +19,9 @@ class OrderChangeStatusService
 
     protected function changeStatus(Order $order ,string $status )
     {
-        $order->purchase_order->status = $status;
+        $order->purchaseOrder->status = $status;
 
-        $order->purchase_order->save();
+        $order->purchaseOrder->save();
     }
 
     protected function changeCapacity(Warehouse $warehouse ,Order $order)
@@ -32,7 +32,7 @@ class OrderChangeStatusService
 
         if(is_null($percent)) {
 
-            $items = $order->load('order_items')->order_items->map(function ($item){
+            $items = $order->load('orderItems')->orderItems->map(function ($item){
                 return [
                     "id" => $item->id,
                     "quantity" => $item->quantity

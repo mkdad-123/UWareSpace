@@ -2,22 +2,25 @@
 
 namespace Database\Factories;
 
-use App\Models\PurchaseOrder;
+use App\Models\Item;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class Purchase_OrderFactory extends Factory
+class OrderItemFactory extends Factory
 {
-    protected $model = PurchaseOrder::class;
+    protected $model = OrderItem::class;
 
     public function definition(): array
     {
         return [
-            'order_id' => $this->faker->randomNumber(),
-            'supplier_id' => $this->faker->randomNumber(),
-            'status' => $this->faker->word(),
+            'quantity' => $this->faker->randomNumber(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+
+            'order_id' => Order::factory(),
+            'item_id' => Item::factory(),
         ];
     }
 }

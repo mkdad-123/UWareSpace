@@ -56,8 +56,8 @@ class Supplier extends Model
         return $this->morphMany(Note::class, 'noteable');
     }
 
-    public function purchase_orders(): HasMany
+    public function purchaseOrders(): HasMany
     {
-        return $this->hasMany(Purchase_Order::class);
+        return $this->hasMany(PurchaseOrder::class);
     }
 }

@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $email
@@ -42,11 +42,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Client> $clients
  * @property-read int|null $clients_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Token> $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
  * @property string|null $logo
@@ -83,8 +81,13 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereTrialEndsAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shipment> $shipments
  * @property-read int|null $shipments_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Purchase_Order> $purchase_orders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchaseOrder> $purchase_orders
  * @property-read int|null $purchase_orders_count
+ * @property string|null $firebase_token
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchaseOrder> $purchaseOrders
+ * @method static \Illuminate\Database\Eloquent\Builder|Admin whereFirebaseToken($value)
  * @mixin \Eloquent
  */
 class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubject
@@ -97,8 +100,10 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
         'password',
         'name',
         'location',
-        'logo'
+        'logo',
+        'firebase_token',
     ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -158,9 +163,9 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
         return $this->hasManyThrough(Order::class,Warehouse::class);
     }
 
-    public function purchase_orders(): HasManyThrough
+    public function purchaseOrders(): HasManyThrough
     {
-        return $this->hasManyThrough(Purchase_Order::class,Order::class);
+        return $this->hasManyThrough(PurchaseOrder::class,Order::class);
     }
 
     public function getJWTIdentifier()
@@ -171,5 +176,10 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function routeNotificationForFirebase()
+    {
+        return $this->firebase_token;
     }
 }

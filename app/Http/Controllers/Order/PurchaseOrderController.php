@@ -6,7 +6,7 @@ use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BatchRequest;
-use App\Http\Requests\PurchaseOrderRequest;
+use App\Http\Requests\Order\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\Item\ItemStoreService;
@@ -21,15 +21,15 @@ class PurchaseOrderController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $purchaseOrders  = $admin->load('orders.purchase_order')->orders()
-            ->whereHas('purchase_order' , function ($query) {
+        $purchaseOrders  = $admin->load('orders.purchaseOrder')->orders()
+            ->whereHas('purchaseOrder' , function ($query) {
 
                 $query->whereIn('status', PurchaseOrderEnum::getStatus());
             });
 
         $purchases = QueryBuilder::for($purchaseOrders)
             ->allowedFilters(PurchaseOrderFilter::filter($admin->id))
-            ->with(['purchase_order.supplier' , 'warehouse'])->get();
+            ->with(['purchaseOrder.supplier' , 'warehouse'])->get();
 
 
         return $this->response (OrderResource::collection($purchases));
@@ -38,7 +38,7 @@ class PurchaseOrderController extends Controller
 
     public function show(Order $order)
     {
-        $purchase = $order->load(['purchase_order.supplier' , 'warehouse' , 'order_items.item']);
+        $purchase = $order->load(['purchaseOrder.supplier' , 'warehouse' , 'orderItems.item']);
 
         return $this->response (new OrderResource($purchase));
     }
@@ -72,13 +72,13 @@ class PurchaseOrderController extends Controller
 
     public function addBatch (BatchRequest $request ,Order $order , ItemStoreService $storeService , ItemUpdateService $updateService)
     {
+
         $warehouse = $order->warehouse;
 
-
-        $warehouseItem = $warehouse->items()->whereIn('item_id' , $order->order_items->pluck('item_id'))
+        $warehouseItem = $warehouse->items()->whereIn('item_id' , $order->orderItems->pluck('item_id'))
             ->get()->keyBy('id');
 
-         $order->order_items()->each(function ($order_item) use ($warehouse ,$warehouseItem, $storeService ,$updateService, $request){
+        $order->orderItems()->each(function ($order_item) use ($warehouse ,$warehouseItem, $storeService ,$updateService, $request){
 
              $item = $warehouseItem->get($order_item->item_id);
 
@@ -92,6 +92,7 @@ class PurchaseOrderController extends Controller
              }
 
         });
+
          return $this->response(response(),'the batch has been added in your warehouse successfully');
     }
 

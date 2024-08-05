@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VehicleStoreRequest;
+use App\Http\Requests\Shipment\VehicleStoreRequest;
 use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;

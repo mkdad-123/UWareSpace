@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Order;
 
 use App\Models\Item;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderRequest extends FormRequest
 {

@@ -15,15 +15,15 @@ class PurchaseController extends Controller
 
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $purchaseOrders  = $admin->load('orders.purchase_order')->orders()
-            ->whereHas('purchase_order' , function ($query) {
+        $purchaseOrders  = $admin->load('orders.purchaseOrder')->orders()
+            ->whereHas('purchaseOrder' , function ($query) {
 
                 $query->where('status', PurchaseOrderEnum::RECEIVED);
             });
 
         $purchases = QueryBuilder::for($purchaseOrders)
             ->allowedFilters(PurchaseOrderFilter::filterPurchase($admin->id))
-            ->with(['purchase_order.supplier' , 'warehouse'])->paginate(1);
+            ->with(['purchaseOrder.supplier' , 'warehouse'])->paginate(1);
 
         return $this->response (($purchases));
     }
@@ -32,8 +32,8 @@ class PurchaseController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $items  = $admin->load('orders.purchase_order')->orders()
-            ->whereHas('purchase_order' , function ($query) {
+        $items  = $admin->load('orders.purchaseOrder')->orders()
+            ->whereHas('purchaseOrder' , function ($query) {
 
                 $query->whereIn('status', PurchaseOrderEnum::getStatusForChange());
             })->get();

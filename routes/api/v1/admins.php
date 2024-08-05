@@ -1,29 +1,23 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
-use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
-use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Subscription\SubscriptionController;
-use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
-use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Warehouse\WarehouseController;
-use App\Http\Controllers\Warehouse\WarehouseItemController;
 use Illuminate\Support\Facades\Route;
 
-/*
- * Authentication System for super admin , admin , employee
- */
+    /*
+     * Authentication System for admin
+     */
 
 Route::group(['prefix' => 'auth'], function () {
 

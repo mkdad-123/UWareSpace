@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ShipmentEnum;
-use App\Http\Requests\ShipmentStoreRequest;
+use App\Http\Requests\Shipment\ShipmentStoreRequest;
 use App\Http\Resources\ShipmentResource;
+use App\Models\Order;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class ShipmentController extends Controller
     public function store(ShipmentStoreRequest $request)
     {
         $shipment = Shipment::create($request->all());
-        // send notification to driver
+
         return $this->response($shipment , 'Shipment has been created successfully');
     }
 
@@ -44,16 +45,14 @@ class ShipmentController extends Controller
 
     public function delete(Shipment $shipment)
     {
+        $shipment->delete();
 
+        return $this->response($shipment , 'Shipment has been deleted successfully');
     }
 
-    public function addOrder(Shipment $shipment)
+    public function addOrder(Order $order)
     {
-
+        return $items = $order->order_items;
     }
 
-    public function filter(Shipment $shipment)
-    {
-
-    }
 }

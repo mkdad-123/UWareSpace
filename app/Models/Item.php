@@ -77,8 +77,8 @@ class Item extends Model
             ->withPivot(['real_qty','min_qty','available_qty']);
     }
 
-    public function order_items(): HasMany
+    public function orderItems(): HasMany
     {
-        return $this->hasMany(Order_Item::class);
+        return $this->hasMany(OrderItem::class);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SupplierStoreRequest;
-use App\Http\Requests\SupplierUpdateRequest;
+use App\Http\Requests\Supplier\SupplierStoreRequest;
+use App\Http\Requests\Supplier\SupplierUpdateRequest;
 use App\Models\Supplier;
 use App\Services\MemberService;
 use App\Traits\ModelOperationTrait;

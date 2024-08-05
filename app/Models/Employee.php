@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $admin_id
@@ -44,6 +44,28 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Employee wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereUpdatedAt($value)
+ * @property string|null $firebase_token
+ * @property string|null $remember_token
+ * @property-read \App\Models\Admin $admin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Compliant> $compliants
+ * @property-read int|null $compliants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Note> $notes
+ * @property-read int|null $notes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Phone> $phones
+ * @property-read int|null $phones_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shipment> $shipments
+ * @property-read int|null $shipments_count
+ * @method static \Database\Factories\EmployeeFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee permission($permissions, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee role($roles, $guard = null, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereFirebaseToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee withoutPermission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee withoutRole($roles, $guard = null)
  * @mixin \Eloquent
  */
 class Employee extends Authenticatable implements Resetable , JWTSubject
@@ -56,7 +78,9 @@ class Employee extends Authenticatable implements Resetable , JWTSubject
         'phone',
         'password',
         'location',
-        'admin_id'
+        'active',
+        'admin_id',
+        'firebase_token'
     ];
     protected $hidden = [
         'password',
@@ -97,5 +121,10 @@ class Employee extends Authenticatable implements Resetable , JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function routeNotificationForFirebase()
+    {
+        return $this->firebase_token;
     }
 }

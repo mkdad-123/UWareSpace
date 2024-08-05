@@ -17,7 +17,7 @@ trait ModelOperationTrait
 
     public function showAll()
     {
-        $admin = auth('admin')->user() ?:auth('employee')->user();
+        $admin = auth('admin')->user() ?:auth('employee')->user()->admin;
 
         $members = $this->model->where('admin_id',$admin->id)->get();
 
@@ -28,6 +28,7 @@ trait ModelOperationTrait
             return $this->response(response(), 'members are not found', 404);
         }
     }
+
     public function show($id)
     {
 
@@ -35,7 +36,7 @@ trait ModelOperationTrait
 
         if($member!=null)
         {
-            $admin = auth('admin')->user() ?:auth('employee')->user();
+            $admin = auth('admin')->user() ?:auth('employee')->user()->admin;
 
             if ($member->admin_id == $admin->id)
             {

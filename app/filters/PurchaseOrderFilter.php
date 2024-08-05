@@ -21,7 +21,7 @@ class PurchaseOrderFilter
 
                     ->where('admin_id', $id)
 
-                    ->orwhereHas('purchase_order' , function (Builder $query) use ($value , $id){
+                    ->orwhereHas('purchaseOrder' , function (Builder $query) use ($value , $id){
 
                         $query->where('status', 'like', "%{$value}%")->whereIn('status' , PurchaseOrderEnum::getStatus())
 
@@ -37,7 +37,7 @@ class PurchaseOrderFilter
 
                         $query->where('name', 'like', "%{$value}%");
 
-                    })->whereHas('purchase_order' , function (Builder $query) use ($value){
+                    })->whereHas('purchaseOrder' , function (Builder $query) use ($value){
 
                         $query->whereIn('status' , PurchaseOrderEnum::getStatus());
 
@@ -59,7 +59,7 @@ class PurchaseOrderFilter
 
                     ->where('admin_id', $id)
 
-                    ->orwhereHas('purchase_order' , function (Builder $query) use ($value , $id){
+                    ->orwhereHas('purchaseOrder' , function (Builder $query) use ($value , $id){
 
                         $query->where('status', 'like', "%{$value}%")->where('status' , PurchaseOrderEnum::RECEIVED)
 
@@ -75,7 +75,7 @@ class PurchaseOrderFilter
 
                         $query->where('name', 'like', "%{$value}%");
 
-                    })->whereHas('purchase_order' , function (Builder $query) use ($value){
+                    })->whereHas('purchaseOrder' , function (Builder $query) use ($value){
 
                     $query->where('status' , PurchaseOrderEnum::RECEIVED);
 

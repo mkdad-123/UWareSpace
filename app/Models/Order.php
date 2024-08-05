@@ -27,10 +27,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereWarehouseId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order_item> $order_items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $order_items
  * @property-read int|null $order_items_count
- * @property-read \App\Models\Purchase_Order|null $purchase_order
+ * @property-read \App\Models\PurchaseOrder|null $purchase_order
  * @method static \Database\Factories\OrderFactory factory($count = null, $state = [])
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
+ * @property-read \App\Models\PurchaseOrder|null $purchaseOrder
+ * @property-read \App\Models\SellOrder|null $sellOrder
  * @mixin \Eloquent
  */
 class Order extends Model
@@ -49,13 +52,18 @@ class Order extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function order_items(): HasMany
+    public function orderItems(): HasMany
     {
-        return $this->hasMany(Order_Item::class);
+        return $this->hasMany(OrderItem::class);
     }
 
-    public function purchase_order(): HasOne
+    public function purchaseOrder(): HasOne
     {
-        return $this->hasOne(Purchase_order::class);
+        return $this->hasOne(PurchaseOrder::class);
+    }
+
+    public function sellOrder(): HasOne
+    {
+        return $this->hasOne(SellOrder::class);
     }
 }

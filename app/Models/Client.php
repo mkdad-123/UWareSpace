@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  *
@@ -34,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereLongitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SellOrder> $SellOrders
+ * @property-read int|null $sell_orders_count
  * @mixin \Eloquent
  */
 
@@ -63,9 +66,14 @@ class Client extends Model
         return $this->morphMany(Note::class, 'noteable');
     }
 
+    public function SellOrders(): HasMany
+    {
+        return $this->hasMany(SellOrder::class);
+    }
+
     public function warehousesByDistance()
     {
-        return Warehouse::selectRaw("*, ( 6371 * acos( cos( radians(?) ) *
+        return Warehouse::with('items')->selectRaw("*, ( 6371 * acos( cos( radians(?) ) *
                    cos( radians( latitude ) )
                    * cos( radians( longitude ) - radians(?) )
                    + sin( radians(?) ) *

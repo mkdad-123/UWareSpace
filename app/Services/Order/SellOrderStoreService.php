@@ -2,26 +2,41 @@
 
 namespace App\Services\Order;
 
-use App\Models\PurchaseOrder;
+use App\Models\Employee;
+use App\Models\SellOrder;
 use App\Models\Warehouse;
+use App\Notifications\SellOrderNotification;
 use App\ResponseManger\OperationResult;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
-class PurchaseOrderStoreService extends OrderStoreService
+class SellOrderStoreService extends OrderStoreService
 {
 
-    protected function storePurchaseOrder($orderId ,$supplierId)
+    protected function storeSellOrder($orderId ,$clientId)
     {
-        PurchaseOrder::create([
+        SellOrder::create([
             'order_id' => $orderId,
-            'supplier_id' => $supplierId,
+            'client_id' => $clientId,
         ]);
     }
 
-    public function store($request)
+     /*
+      * send notification for add Order into shipment
+      */
+    protected function sendNotification($orderId , $adminId)
     {
+        $users = Employee::whereAdminId($adminId)->permission('store')->get();
+
+        Notification::send($users , new SellOrderNotification($orderId));
+    }
+
+
+    public function store($request): OperationResult
+    {
+
         try {
 
             DB::beginTransaction();
@@ -32,29 +47,22 @@ class PurchaseOrderStoreService extends OrderStoreService
 
             $percent = $this->calculateCapacity($items ,$warehouse->size_cubic_meters );
 
-            $capacity_percent = round(($warehouse->current_capacity + $percent) , 2);
-
-            if($capacity_percent > 100)
-            {
-                return $this->result = new OperationResult (
-                    'The warehouse capacity is not enough, the percent capacity becomes '. $capacity_percent,
-                    response(),
-                    400
-                );
-            }
+            $capacity_percent = round(($warehouse->current_capacity - $percent) , 2);
 
             $orderId  = $this->storeOrder($request->only(['warehouse_id' , 'payment_type' , 'payment_at']));
 
             $this->addCache($orderId , $percent);
 
-            $this->storePurchaseOrder($orderId , $request->input('supplier_id'));
+            $this->storeSellOrder($orderId , $request->input('client_id') );
 
             $this->storeOrderItems($orderId ,$items);
 
+            $this->sendNotification($orderId , $warehouse->admin_id);
+
             DB::commit();
 
-            $this->result = new OperationResult('Order has been created successfully , the percent capacity will become '. $capacity_percent.' %' ,
-                 response(),
+            $this->result = new OperationResult('Order has been created successfully , the percent capacity will become '. $capacity_percent .' %' ,
+                response(),
                 201
             );
 

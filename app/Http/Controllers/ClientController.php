@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClientStoreRequest;
-use App\Http\Requests\ClientUpdateRequest;
+use App\Http\Requests\Client\ClientStoreRequest;
+use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Models\Client;
 use App\Services\MemberService;
 use App\Traits\ModelOperationTrait;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {

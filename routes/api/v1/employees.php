@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
@@ -11,10 +7,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
+use App\Http\Controllers\Order\SellOrderController;
 use App\Http\Controllers\ShipmentController;
-use App\Http\Controllers\Subscription\SubscriptionController;
-use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
-use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Warehouse\WarehouseController;
@@ -23,32 +17,31 @@ use Illuminate\Support\Facades\Route;
 
 
 
-/*
- * Authentication System for employee
- */
+    /*
+     * Authentication System for employee
+     */
+    Route::group(['prefix' => 'auth'], function () {
 
-Route::group(['prefix' => 'auth'], function () {
-
-    Route::controller(EmployeeAuthController::class)->prefix('employee')
-        ->group(function () {
-            Route::post('password/forgot-password/{broker}', 'forgotPassword')->middleware('guest:employee');
-            Route::post('/login', 'login');
-            Route::post('/logout', 'logout')->middleware('auth:employee');
-        });
-});
-
-Route::controller(CompliantsController::class)->prefix('Compliant')
-    ->group(function () {
-        Route::post('/WriteComplaintEmployees', 'WriteComplaintEmployees')->middleware('auth:employee');
+        Route::controller(EmployeeAuthController::class)->prefix('employee')
+            ->group(function () {
+                Route::post('password/forgot-password/{broker}', 'forgotPassword')->middleware('guest:employee');
+                Route::post('/login', 'login');
+                Route::post('/logout', 'logout')->middleware('auth:employee');
+            });
     });
 
-Route::middleware('auth:employee')->group(function () {
-
-    Route::prefix('employee/warehouse')->controller(WarehouseController::class)
+    Route::controller(CompliantsController::class)->prefix('Compliant')
         ->group(function () {
-            Route::get('show-all', 'showAll');
-            Route::get('show/{id}', 'showItems');
+            Route::post('/WriteComplaintEmployees', 'WriteComplaintEmployees')->middleware('auth:employee');
         });
+
+    Route::middleware('auth:employee')->group(function () {
+
+        Route::prefix('employee/warehouse')->controller(WarehouseController::class)
+            ->group(function () {
+                Route::get('show-all', 'showAll');
+                Route::get('show/{id}', 'showItems');
+            });
 
     Route::prefix('item')->controller(ItemController::class)
         ->group(function () {
@@ -97,24 +90,45 @@ Route::middleware('auth:employee')->group(function () {
             Route::get('show/{shipment}', 'show');
             Route::post('update/{shipment}', 'update');
             Route::delete('delete/{shipment}', 'delete');
+            Route::post('add-order-in-shipment' , 'addOrder');
             Route::get('filter', 'filter');
         });
 
     Route::prefix('orders')->group(function (){
 
-        Route::prefix('purchase')->controller(PurchaseOrderController::class)
-            ->group(function () {
-                Route::post('store', 'store');
-                Route::get('show-all', 'showAll');
-                Route::get('show/{order}', 'show');
-                Route::delete('delete/{order}', 'delete');
-                Route::post('batch/{order}' , 'addBatch');
-            });
+        Route::prefix('purchase')->group(function (){
 
-        Route::prefix('purchase')->controller(OrderStatusController::class)
-            ->group(function (){
-                Route::post('changeStatus/{order}', 'changeStatusPurchase');
-            });
+            Route::controller(PurchaseOrderController::class)
+                ->group(function () {
+                    Route::post('store', 'store');
+                    Route::get('show-all', 'showAll');
+                    Route::get('show/{order}', 'show');
+                    Route::delete('delete/{order}', 'delete');
+                    Route::post('batch/{order}' , 'addBatch');
+                });
+
+            Route::controller(OrderStatusController::class)
+                ->group(function (){
+                    Route::post('changeStatus/{order}', 'changeStatusPurchase');
+                });
+        });
+
+        Route::prefix('sell')->group(function (){
+
+            Route::controller(SellOrderController::class)
+                ->group(function () {
+                    Route::post('store', 'store');
+                    Route::get('show-all', 'showAll');
+                    Route::get('show/{order}', 'show');
+                    Route::delete('delete/{order}', 'delete');
+                    Route::get('show-nearest-warehouse/with-quantity/{client}' , 'checkNearestWarehouse');
+                });
+
+            Route::controller(OrderStatusController::class)
+                ->group(function (){
+                  //  Route::post('changeStatus/{order}', 'changeStatusPurchase');
+                });
+        });
     });
 
     Route::prefix('received/purchase')->controller(PurchaseController::class)

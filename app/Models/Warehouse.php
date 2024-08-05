@@ -83,8 +83,8 @@ class Warehouse extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function purchase_orders(): HasManyThrough
+    public function purchaseOrders(): HasManyThrough
     {
-        return $this->hasManyThrough(Purchase_Order::class,Order::class);
+        return $this->hasManyThrough(PurchaseOrder::class,Order::class);
     }
 }

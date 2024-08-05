@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('location');
             $table->boolean('active')->default(1);
+            $table->string('firebase_token')->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -14,8 +14,9 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'payment_type' => $this->payment_type,
             'payment_at' => $this->payment_at,
-            'purchase_order' => new PurchaseOrderResource($this->whenLoaded('purchase_order')),
-            'items' =>  OrderItemResource::collection($this->whenLoaded('order_items')),
+            'purchase_order' => new PurchaseOrderResource($this->whenLoaded('purchaseOrder')),
+            'sell_order' => new SellOrderResource($this->whenLoaded('sellOrder')),
+            'items' =>  OrderItemResource::collection($this->whenLoaded('orderItems')),
             'warehouse' => new WarehouseResource($this->whenLoaded('warehouse')),
         ];
     }

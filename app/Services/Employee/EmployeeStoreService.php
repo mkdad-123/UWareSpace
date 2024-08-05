@@ -10,6 +10,7 @@ use App\Services\PhoneService;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class EmployeeStoreService{
@@ -37,9 +38,9 @@ class EmployeeStoreService{
     {
         $admin = auth('admin')->user();
 
-        SendEmailJob::dispatch($user->email,new SendJobEmail($user->name,$role,$password,$admin));
+       // SendEmailJob::dispatch($user->email,new SendJobEmail($user->name,$role,$password,$admin));
 
-       // Mail::to($user->email)->send();
+        Mail::to($user->email)->send(new SendJobEmail($user->name,$role,$password,$admin));
     }
 
     public function store($request)

@@ -24,7 +24,6 @@ class AdminAuthController extends Controller
 
     public function login(AdminLoginRequest $request)
     {
-
         $result = (new AdminLoginService())->login($request);
 
         return $this->response($result->data,$result->message , $result->status);

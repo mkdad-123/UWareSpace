@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('active')->default('0');
             $table->string('code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('firebase_token')->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

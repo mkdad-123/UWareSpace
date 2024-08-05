@@ -15,11 +15,21 @@ class EmployeeAuthController extends Controller
 
     public function login(EmployeeLoginRequest $request)
     {
-        if(! $token = auth('employee')->attempt($request->all())){
+        if(! $token = auth('employee')->attempt($request->except('firebase_token'))){
 
             return  $this->response( response(),'Unauthorized',401);
 
         }
+        $employee = Employee::whereEmail($request->input('email'))->first();
+
+        if (! $employee->active)
+        {
+            return $this->response(response() , 'Your account is pending');
+        }
+
+        $employee->firebase_token = $request->input('firebase_token');
+        $employee->save();
+
         return $this->response($token , 'Login successfully');
 
     }
