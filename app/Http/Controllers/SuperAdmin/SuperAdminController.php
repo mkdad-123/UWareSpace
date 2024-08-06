@@ -9,9 +9,18 @@ use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
 {
-    public function ShowAdmins()
+    public function ShowAdminsActive()
     {
-        $admins = Admin::get();
+        $admins = Admin::where('active','1')->get();
+        if ($admins) {
+            return $this->response($admins, "show admins success", 200);
+        } else {
+            return $this->response([], "there no admins yet", 401);
+        }
+    }
+    public function ShowAdminsUnActive()
+    {
+        $admins = Admin::where('active','0')->get();
         if ($admins) {
             return $this->response($admins, "show admins success", 200);
         } else {
