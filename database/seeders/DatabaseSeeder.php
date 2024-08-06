@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password')
         ]);
 
-     //   PermissionSeeder::run();
+       PermissionSeeder::run();
 
 //        Admin::create([
 //            'name' => 'Mkdad Taleb',
