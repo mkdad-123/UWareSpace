@@ -32,6 +32,20 @@ class SuperAdminController extends Controller
             return $this->response($admin, "this admin is already pinded", 200);
         }
     }
+    public function makeAdminsStatusActive(Request $request)
+    {
+        if (!Admin::whereEmail($request->email)->first()) {
+            return $this->response([], "this admin is not found or the email is not exist", 401);
+        }
+        $admin = Admin::whereEmail($request->email)->first();
+        if ($admin->active == 0) {
+            $admin->active = 1;
+            $admin->save();
+            return $this->response($admin, "this admin is active  now", 200);
+        } else if ($admin->active == 1) {
+            return $this->response($admin, "this admin is already active", 200);
+        }
+    }
     public function ShowCompliants()
     {
         $compliants = Compliant::where('compliantable_type', 'Employee')->get();

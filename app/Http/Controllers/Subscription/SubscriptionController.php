@@ -27,13 +27,14 @@ class SubscriptionController extends Controller
             ]);
             if ($Plan) {
                 $plan = ModelsPlan::create([
-                    'price'          => $Plan->amount,
-                    'currency'       => $Plan->currency,
-                    'name'           => $request->name,
-                    'interval_count' => $Plan->interval_count,
-                    'billing_method' => $Plan->interval,
-                    'discription'    => $request->discription,
-                    'plan_id'        => $Plan->id,
+                    'price'           => $Plan->amount,
+                    'currency'        => $Plan->currency,
+                    'name'            => $request->name,
+                    'interval_count'  => $Plan->interval_count,
+                    'billing_method'  => $Plan->interval,
+                    'discription'     => $request->discription,
+                    'plan_id'         => $Plan->id,
+                    'num_of_employees'=>$request->employees_number,
                 ]);
             }
             if ($plan) {

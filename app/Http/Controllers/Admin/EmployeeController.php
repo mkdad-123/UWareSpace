@@ -7,6 +7,7 @@ use App\Http\Requests\Employee\EmployeeStoreRequest;
 use App\Http\Requests\Employee\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+use App\Models\Plan;
 use App\Services\Employee\EmployeeStoreService;
 use App\Services\Employee\EmployeeUpdateService;
 use App\Services\EmployeeDeleteService;
@@ -26,13 +27,21 @@ class EmployeeController extends Controller
 
     public function store(EmployeeStoreRequest $request , EmployeeStoreService $storeService)
     {
-        $result = $storeService->store($request);
-
-        return $this->response(
-            $result->data,
-            $result->message,
-            $result->status
-        );
+    $admin = auth('admin')->user()->id;
+        $plan = Plan::where('name', 'gold')->pluck('num_of_employees');
+        if (Employee::where('admin_id', $admin)->count() <= $plan){
+            $result = $storeService->store($request);
+            return $this->response(
+                $result->data,
+                $result->message,
+                $result->status
+            );
+        }
+        else{
+            return response()->json([
+                'message' => "You have reached the maximum number of employees. If you would like to add more, subscribe to a plan that allows for a larger number of employees, please",
+            ]);
+        }
     }
 
     public function showOne(Employee $employee)

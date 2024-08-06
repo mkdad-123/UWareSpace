@@ -29,14 +29,14 @@ class DatabaseSeeder extends Seeder
 
      //   PermissionSeeder::run();
 
-//        Admin::create([
-//            'name' => 'Mkdad Taleb',
-//            'email' => 'ma0109424@gmail.com',
-//            'password' => Hash::make('password'),
-//            'location' => 'damas',
-//            'active' => true,
-//            'email_verified_at' => Carbon::now(),
-//        ]);
+       Admin::create([
+           'name' => 'Mkdad Taleb',
+           'email' => 'ma0109424@gmail.com',
+           'password' => Hash::make('password'),
+           'location' => 'damas',
+           'active' => true,
+           'email_verified_at' => Carbon::now(),
+       ]);
     }
 
 

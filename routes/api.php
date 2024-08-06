@@ -55,6 +55,7 @@ Route::controller(SuperAdminController::class)->prefix('SuperAdmin')
     ->group(function () {
         Route::get('/ShowAdmins', 'ShowAdmins')->middleware('auth:superAdmin');
         Route::post('/ToggleAdminsStatus', 'ToggleAdminsStatus')->middleware('auth:superAdmin');
+        Route::post('/makeAdminsStatusActive', 'makeAdminsStatusActive')->middleware('auth:superAdmin');
         Route::get('/ShowCompliants', 'ShowCompliants')->middleware('auth:superAdmin');
 
 
