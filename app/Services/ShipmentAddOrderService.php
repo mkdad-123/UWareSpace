@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\SellOrderEnum;
 use App\Enums\VehicleEnum;
 use App\ResponseManger\OperationResult;
 use App\Services\Item\ItemUpdateService;
@@ -60,7 +61,7 @@ class ShipmentAddOrderService
     protected function storeOrder($shipment , $order)
     {
         $order->sellOrder->shipment_id = $shipment->id;
-
+        $order->sellOrder->status = SellOrderEnum::PREPARATION;
         $order->sellOrder->save();
     }
 
@@ -80,7 +81,7 @@ class ShipmentAddOrderService
 
     public function activeVehicle($vehicle)
     {
-        $vehicle->status = VehicleEnum::ACTIVE ;
+        $vehicle->status = VehicleEnum::ACTIVE;
 
         $vehicle->save();
     }

@@ -13,8 +13,8 @@ class SellOrderResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'client' => new MemberResource($this->whenLoaded('client')),
             'order' => new OrderResource($this->whenLoaded('order')),
+            'client' => new MemberResource($this->whenLoaded('client')),
             'shipment' =>new ShipmentResource($this->whenLoaded('shipment')),
         ];
     }

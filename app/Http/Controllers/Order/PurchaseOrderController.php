@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BatchRequest;
 use App\Http\Requests\Order\PurchaseOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PurchaseOrderResource;
 use App\Models\Order;
 use App\Services\Item\ItemStoreService;
 use App\Services\Item\ItemUpdateService;
@@ -19,20 +19,19 @@ class PurchaseOrderController extends Controller
 
     public function showAll()
     {
-        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+        $admin = auth('admin')->user() ?: auth('employee')->user()->admin;
 
-        $purchaseOrders  = $admin->load('orders.purchaseOrder')->orders()
-            ->whereHas('purchaseOrder' , function ($query) {
-
-                $query->whereIn('status', PurchaseOrderEnum::getStatus());
-            });
+        $purchaseOrders = $admin->load([
+            'purchaseOrders.order.warehouse', 'purchaseOrders.supplier',
+        ])->purchaseOrders()
+            ->with(['order.warehouse', 'supplier'])->purchaseOrder();
 
         $purchases = QueryBuilder::for($purchaseOrders)
             ->allowedFilters(PurchaseOrderFilter::filter($admin->id))
-            ->with(['purchaseOrder.supplier' , 'warehouse'])->get();
+            ->with(['order.warehouse', 'supplier'])->get();
 
 
-        return $this->response (OrderResource::collection($purchases));
+        return $this->response(PurchaseOrderResource::collection($purchases));
     }
 
 
@@ -92,6 +91,9 @@ class PurchaseOrderController extends Controller
              }
 
         });
+        $purchase = $order->purchaseOrder;
+        $purchase->isInventoried = 1;
+        $purchase->save();
 
          return $this->response(response(),'the batch has been added in your warehouse successfully');
     }

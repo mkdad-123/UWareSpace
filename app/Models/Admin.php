@@ -17,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $email
@@ -165,7 +165,14 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
 
     public function purchaseOrders(): HasManyThrough
     {
-        return $this->hasManyThrough(PurchaseOrder::class,Order::class);
+        return $this->hasManyThrough(purchaseOrder::class,Order::class ,
+            'warehouse_id' , 'order_id' , 'id' , 'id');
+    }
+
+    public function sellOrders(): HasManyThrough
+    {
+        return $this->hasManyThrough(sellOrder::class,Order::class ,
+            'warehouse_id' , 'order_id' , 'id' , 'id');
     }
 
     public function getJWTIdentifier()

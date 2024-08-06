@@ -15,7 +15,10 @@ class MemberResource extends JsonResource
             'name' => $this->name,
              'email' => $this->email,
             'location' => $this->location,
-            'phones' => PhoneResource::collection($this->whenLoaded('phones'))
+            'phones' => PhoneResource::collection($this->whenLoaded('phones')),
+            'order' => SellOrderResource::collection($this->whenLoaded('sellOrders')),
+            'purchase_order' => PurchaseOrderResource::collection($this->whenLoaded('purchaseOrders'))
+
         ];
     }
 }

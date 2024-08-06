@@ -16,38 +16,70 @@ class SellOrderFilter
 
             AllowedFilter::callback('order', function (Builder $query, $value) use ($id) {
 
-                $query->where('payment_type', 'like', "%{$value}%")
+                $query->where('status', 'like', "%{$value}%")
+                    ->sellOrder()
 
-                    ->where('admin_id', $id)
+                    ->orwhereHas('order' , function (Builder $query) use ($value , $id){
 
-                    ->orwhereHas('SellOrder' , function (Builder $query) use ($value , $id){
+                        $query->where('payment_type', 'like', "%{$value}%")
 
-                        $query->where('status', 'like', "%{$value}%")->whereIn('status' , SellOrderEnum::getStatus())
+                            ->orWhereHas('warehouse' ,function (Builder $query) use ($value){
 
-                            ->where('admin_id', $id)
+                                $query->where('name', 'like', "%{$value}%");
 
-                            ->orWhereHas('client',function (Builder $query) use ($value , $id) {
-
-                                $query->where('name', 'like', "%{$value}%")->whereIn('status', SellOrderEnum::getStatus())
-                                    ->where('admin_id', $id);
-
-                            })
-
-                            ->orWhereHas('shipment', function (Builder $query) use ($value, $id) {
-
-                                $query->where('tracking_number', 'like', "%{$value}%")->whereIn('status', SellOrderEnum::getStatus())
-                                    ->where('admin_id', $id);
                             });
 
-                    })->orWhereHas('warehouse' ,function (Builder $query) use ($value){
+                    })->sellOrder()
+
+                    ->orWhereHas('client',function (Builder $query) use ($value , $id) {
 
                         $query->where('name', 'like', "%{$value}%");
 
-                    })->whereHas('SellOrder' , function (Builder $query) use ($value){
+                    })->sellOrder()
 
-                        $query->whereIn('status' , SellOrderEnum::getStatus());
+                    ->orWhereHas('shipment', function (Builder $query) use ($value, $id) {
 
-                    })->where('admin_id', $id);
+                        $query->where('tracking_number', 'like', "%{$value}%");
+
+                    })->sellOrder();
+            })
+        ];
+    }
+
+
+    public static function filterSells($id): array
+    {
+
+        return [
+
+            AllowedFilter::callback('sell', function (Builder $query, $value) use ($id) {
+
+                $query->where('status', 'like', "%{$value}%")
+                    ->sell()
+
+                    ->orwhereHas('order' , function (Builder $query) use ($value , $id){
+
+                        $query->where('payment_type', 'like', "%{$value}%")
+
+                            ->orWhereHas('warehouse' ,function (Builder $query) use ($value){
+
+                                $query->where('name', 'like', "%{$value}%");
+
+                            });
+
+                    })->sell()
+
+                    ->orWhereHas('client',function (Builder $query) use ($value , $id) {
+
+                        $query->where('name', 'like', "%{$value}%");
+
+                        })->sell()
+
+                        ->orWhereHas('shipment', function (Builder $query) use ($value, $id) {
+
+                                $query->where('tracking_number', 'like', "%{$value}%");
+
+                        })->sell();
             })
         ];
     }

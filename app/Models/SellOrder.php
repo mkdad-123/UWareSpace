@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\SellOrderEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $order_id
@@ -58,4 +60,27 @@ class SellOrder extends Model
         return $this->belongsTo(Shipment::class);
     }
 
+    public function scopeSell(Builder $query): Builder
+    {
+        return $query->where('status' , SellOrderEnum::RECEIVED)
+
+            ->whereHas('order' , function ($query){
+                return $query->where('payment_type' , 'cash');
+            });
+    }
+
+    public function scopeSellOrder(Builder $query): Builder
+    {
+        return $query->whereIn('status' , SellOrderEnum::getStatus());
+
+    }
+
+    public function scopeSellDebt(Builder $query): Builder
+    {
+        return $query->where('status' , SellOrderEnum::RECEIVED)
+
+            ->whereHas('order' , function ($query){
+                return $query->where('payment_type' , 'debt');
+            });
+    }
 }

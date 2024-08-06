@@ -17,31 +17,26 @@ class PurchaseOrderFilter
 
             AllowedFilter::callback('order', function (Builder $query, $value) use ($id) {
 
-                $query->where('payment_type', 'like', "%{$value}%")
+                $query->where('status', 'like', "%{$value}%")
+                    ->purchaseOrder()
 
-                    ->where('admin_id', $id)
+                    ->orwhereHas('order' , function (Builder $query) use ($value , $id){
 
-                    ->orwhereHas('purchaseOrder' , function (Builder $query) use ($value , $id){
+                        $query->where('payment_type', 'like', "%{$value}%")
 
-                        $query->where('status', 'like', "%{$value}%")->whereIn('status' , PurchaseOrderEnum::getStatus())
+                            ->orWhereHas('warehouse' ,function (Builder $query) use ($value){
 
-                            ->where('admin_id', $id)
+                                $query->where('name', 'like', "%{$value}%");
 
-                            ->orWhereHas('supplier',function (Builder $query) use ($value , $id){
-
-                                $query->where('name', 'like', "%{$value}%")->whereIn('status' , PurchaseOrderEnum::getStatus())
-
-                                    ->where('admin_id', $id);
                             });
-                    })->orWhereHas('warehouse' ,function (Builder $query) use ($value){
+
+                    })->purchaseOrder()
+
+                    ->orWhereHas('supplier',function (Builder $query) use ($value , $id) {
 
                         $query->where('name', 'like', "%{$value}%");
 
-                    })->whereHas('purchaseOrder' , function (Builder $query) use ($value){
-
-                        $query->whereIn('status' , PurchaseOrderEnum::getStatus());
-
-                    })->where('admin_id', $id);
+                    })->purchaseOrder();
             })
         ];
     }
@@ -55,32 +50,31 @@ class PurchaseOrderFilter
 
             AllowedFilter::callback('order', function (Builder $query, $value) use ($id) {
 
-                $query->where('payment_type', 'like', "%{$value}%")
+                $query->where('status', 'like', "%{$value}%")
+                    ->purchase()
 
-                    ->where('admin_id', $id)
+                    ->orwhereHas('order' , function (Builder $query) use ($value , $id){
 
-                    ->orwhereHas('purchaseOrder' , function (Builder $query) use ($value , $id){
+                        $query->where('payment_type', 'like', "%{$value}%")
 
-                        $query->where('status', 'like', "%{$value}%")->where('status' , PurchaseOrderEnum::RECEIVED)
+                            ->orWhereHas('warehouse' ,function (Builder $query) use ($value){
 
-                            ->where('admin_id', $id)
+                                $query->where('name', 'like', "%{$value}%");
 
-                            ->orWhereHas('supplier',function (Builder $query) use ($value , $id){
-
-                                $query->where('name', 'like', "%{$value}%")->where('status' , PurchaseOrderEnum::RECEIVED)
-
-                                    ->where('admin_id', $id);
                             });
-                    })->orWhereHas('warehouse' ,function (Builder $query) use ($value){
+
+                    })->purchase()
+
+                    ->orWhereHas('supplier',function (Builder $query) use ($value , $id) {
 
                         $query->where('name', 'like', "%{$value}%");
 
-                    })->whereHas('purchaseOrder' , function (Builder $query) use ($value){
-
-                    $query->where('status' , PurchaseOrderEnum::RECEIVED);
-
-                        })->where('admin_id', $id);
+                    })->purchase();
             })
         ];
+
+        /*
+         *
+         */
     }
 }

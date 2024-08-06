@@ -1,14 +1,19 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
+use App\Http\Controllers\Order\SellController;
+use App\Http\Controllers\Order\SellOrderController;
+use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Subscription\SubscriptionController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\VehicleController;
@@ -80,14 +85,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('delete/{warehouse}' , 'delete');
         });
 
-    /*
-    * Item management for admin dashboard
-    */
-    Route::prefix('admin/item')->controller(ItemController::class)
-        ->group(function (){
-            Route::get('show-all' , 'showAll');
-            Route::get('show/{item}' , 'show');
-        });
+
 
     /*
     * Vehicle management for admin dashboard
@@ -122,22 +120,58 @@ Route::middleware('auth:admin')->group(function () {
             // Route::post('sort','sort');
         });
 
-    /*
-     * Show Purchases
-     */
-    Route::prefix('admin/received/purchase')->controller(PurchaseController::class)
-        ->group(function (){
-            Route::get('show-all-purchase', 'showPurchases');
-        });
+    Route::prefix('admin')->group(function (){
 
-    Route::prefix('purchase')->controller(OrderStatusController::class)
-        ->group(function (){
-            Route::post('changeStatus/{order}', 'changeStatusPurchase');
-        });
+        /*
+        * Item management for admin dashboard
+        */
+        Route::prefix('item')->controller(ItemController::class)
+            ->group(function (){
+                Route::get('show-all' , 'showAll');
+                Route::get('show/{item}' , 'show');
+            });
 
-    Route::prefix('admin/orders/purchase')->controller(PurchaseOrderController::class)
-        ->group(function () {
-            Route::get('show-all', 'showAll');
-            Route::get('show/{order}', 'show');
-        });
+        Route::prefix('shipment')->controller(ShipmentController::class)
+            ->group(function () {
+                Route::get('show-all', 'showAll');
+                Route::get('show/{shipment}', 'show');
+            });
+
+        Route::prefix('received/purchase')->controller(PurchaseController::class)
+            ->group(function (){
+                Route::get('show-all-purchase', 'showPurchases');
+            });
+
+        Route::get('received/sell/show-all-sell', [SellController::class ,'showSells']);
+
+        Route::prefix('debt')->controller(DebtController::class)
+            ->group(function (){
+                Route::get('show-all-debt-purchase', 'showDebtPurchase');
+                Route::get('show-all-debt-sell', 'showDebtSell');
+            });
+
+
+        Route::prefix('orders/purchase')->controller(PurchaseOrderController::class)
+            ->group(function () {
+                Route::get('show-all', 'showAll');
+                Route::get('show/{order}', 'show');
+            });
+
+        Route::controller(SellOrderController::class)
+            ->group(function () {
+                Route::get('show-all', 'showAll');
+                Route::get('show/{order}', 'show');
+            });
+
+        Route::controller(AdminNotificationController::class)
+            ->prefix('notification')->group(function (){
+                Route::get('/show_all' , 'index');
+                Route::get('/unread' , 'unread');
+                Route::post('/put_mark_All' , 'markReadAll');
+                Route::post('/put_mark/{id}' , 'markRead');
+                Route::post('/delete_All' , 'deleteAll');
+                Route::delete('/delete_One/{id}' , 'delete');
+            });
+    });
+
 });

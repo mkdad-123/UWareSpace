@@ -12,6 +12,7 @@ class PurchaseOrderResource extends JsonResource
     {
         return [
             'status' => $this->status,
+            'order' => new OrderResource($this->whenLoaded('order')),
             'supplier' => new MemberResource($this->whenLoaded('supplier')),
         ];
     }

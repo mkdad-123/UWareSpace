@@ -22,6 +22,8 @@ class ClientStoreRequest extends FormRequest
             'location.city' => 'required_with:location|string|max:250',
             'location.region' => 'required_with:location|string|max:250',
             'location.street' => 'sometimes|string|max:250',
+            'latitude' => 'required',
+            'longitude' => 'required',
             'phones' => 'required|array',
             'phones.*.number'=> 'required|string',
         ];

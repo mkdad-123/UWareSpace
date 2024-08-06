@@ -27,7 +27,7 @@ class  OrderChangeRequest extends FormRequest
             $newStatus = $this->input('status');
             $currentStatus = $order->purchaseOrder->status;
 
-            if ($newStatus === 'sending' && $currentStatus !== 'pending') {
+            if ($newStatus === 'sending' && ($currentStatus !== 'pending')) {
                 $validator->errors()->add('status', 'Status can only be changed to "sending" if it is currently "pending".');
             }
 

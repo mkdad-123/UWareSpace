@@ -6,6 +6,7 @@ use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PurchaseOrderResource;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseController extends Controller
@@ -13,31 +14,31 @@ class PurchaseController extends Controller
     public function showPurchases()
     {
 
-        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+        $admin = auth('admin')->user() ?: auth('employee')->user()->admin;
 
-        $purchaseOrders  = $admin->load('orders.purchaseOrder')->orders()
-            ->whereHas('purchaseOrder' , function ($query) {
-
-                $query->where('status', PurchaseOrderEnum::RECEIVED);
-            });
+        $purchaseOrders = $admin->load([
+            'purchaseOrders.order.warehouse', 'purchaseOrders.supplier',
+        ])->purchaseOrders()
+            ->with(['order.warehouse', 'supplier'])->purchase();
 
         $purchases = QueryBuilder::for($purchaseOrders)
             ->allowedFilters(PurchaseOrderFilter::filterPurchase($admin->id))
-            ->with(['purchaseOrder.supplier' , 'warehouse'])->paginate(1);
+            ->with(['order.warehouse', 'supplier'])->get();
 
-        return $this->response (($purchases));
+
+        return $this->response(PurchaseOrderResource::collection($purchases));
+
     }
 
     public function showNonInventoried()
     {
-        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+        $admin = auth('admin')->user() ?: auth('employee')->user()->admin;
 
-        $items  = $admin->load('orders.purchaseOrder')->orders()
-            ->whereHas('purchaseOrder' , function ($query) {
+        $nonInventoried = $admin->load([
+            'purchaseOrders.order.warehouse', 'purchaseOrders.supplier',
+        ])->purchaseOrders()
+            ->with(['order.warehouse', 'supplier'])->nonInventoried()->get();
 
-                $query->whereIn('status', PurchaseOrderEnum::getStatusForChange());
-            })->get();
-
-        return $this->response (OrderResource::collection($items));
+        return $this->response(PurchaseOrderResource::collection($nonInventoried));
     }
 }

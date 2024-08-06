@@ -40,7 +40,14 @@ trait ModelOperationTrait
 
             if ($member->admin_id == $admin->id)
             {
-                return $this->response(new MemberResource($member->load('phones')), 'members is showed successfully');
+                if($this->model instanceof Client)
+                {
+                    return $this->response(new MemberResource($member->load('phones' , 'sellOrders.order.orderItems.item')),
+                        'members is showed successfully');
+                } else {
+                    return $this->response(new MemberResource($member->load('phones' , 'purchaseOrders.order.orderItems.item')),
+                        'members is showed successfully');
+                }
             }
             else {
                 return $this->response($member, 'member show is failed',403);

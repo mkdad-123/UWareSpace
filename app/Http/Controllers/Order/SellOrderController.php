@@ -7,6 +7,7 @@ use App\filters\SellOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\SellOrderStoreRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\SellOrderResource;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Client;
 use App\Models\Item;
@@ -22,17 +23,18 @@ class SellOrderController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $sellOrders  = $admin->load('orders.sellOrder')->orders()
-            ->whereHas('sellOrder' , function ($query) {
-
-                $query->where('status', SellOrderEnum::getStatus());
-            });
+        $sellOrders  = $admin->load([
+            'sellOrders.order.warehouse' , 'sellOrders.client' , 'sellOrders.shipment',
+        ])->sellOrders()
+            ->with(['order.warehouse' , 'client' , 'shipment'])->sellOrder();
 
         $sells = QueryBuilder::for($sellOrders)
             ->allowedFilters(SellOrderFilter::filter($admin->id))
-            ->with(['sellOrder.client' ,'sellOrder.shipment' , 'warehouse'])->get();
+            ->with(['order.warehouse' , 'client' , 'shipment'])->get();
 
-        return $this->response(OrderResource::collection($sells));
+
+        return $this->response (SellOrderResource::collection($sells));
+
     }
 
 

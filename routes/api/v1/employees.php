@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
+use App\Http\Controllers\Employee\EmployeeNotificationController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
+use App\Http\Controllers\Order\SellController;
 use App\Http\Controllers\Order\SellOrderController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplierController;
@@ -126,7 +129,8 @@ use Illuminate\Support\Facades\Route;
 
             Route::controller(OrderStatusController::class)
                 ->group(function (){
-                  //  Route::post('changeStatus/{order}', 'changeStatusPurchase');
+                   Route::post('shipment/changeStatus/{shipment}', 'changeStatusShipment');
+                    Route::post('changeStatus/{order}', 'changeStatusSell');
                 });
         });
     });
@@ -136,4 +140,25 @@ use Illuminate\Support\Facades\Route;
             Route::get('show-all-purchase', 'showPurchases');
             Route::get('show-all-non-inventoried', 'showNonInventoried');
         });
+
+    Route::get('received/sell/show-all-sell', [SellController::class ,'showSells']);
+
+        Route::prefix('debt')->controller(DebtController::class)
+            ->group(function (){
+                Route::get('show-all-debt-purchase', 'showDebtPurchase');
+                Route::get('show-all-debt-sell', 'showDebtSell');
+                Route::post('change-payment-type', 'paidDebt');
+            });
+
+
+        Route::controller(EmployeeNotificationController::class)
+            ->prefix('employee/notification')->group(function (){
+                Route::get('/show_all' , 'index');
+                Route::get('/unread' , 'unread');
+                Route::post('/put_mark_All' , 'markReadAll');
+                Route::post('/put_mark/{id}' , 'markRead');
+                Route::post('/delete_All' , 'deleteAll');
+                Route::delete('/delete_One/{id}' , 'delete');
+            });
+
 });

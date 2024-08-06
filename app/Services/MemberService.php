@@ -31,7 +31,7 @@ class MemberService
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $data['admin_id'] =$admin->id;
+        $data['admin_id'] = $admin->id;
 
         return $model->create($data);
 
@@ -42,20 +42,34 @@ class MemberService
         return PhoneService::storePhones($user , $phones);
     }
 
+    protected function transform($location , $data)
+    {
+        $country = $location['country'];
+        $city = $location['city'];
+        $region = $location['region'];
+        $address = $region . ',' . $city . ',' . $country;
+        $data['location'] = $address;
+
+        return $data;
+    }
+
     public function storeClient($model , $data , $location , $phones)
     {
         try {
 
             DB::beginTransaction();
 
-            if($location){
+            if($location)
+            {
 
-                if(! $adrsCoordinate = $this->locationService->transformAddress($location)){
+//                if(! $adrsCoordinate = $this->locationService->transformAddress($location))
+//                {
+//
+//                    return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
+//                }
+//                $data = $this->mergeData($data ,$adrsCoordinate);
 
-                    return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
-                }
-
-                $data = $this->mergeData($data ,$adrsCoordinate);
+                $data = $this->transform($location , $data);
             }
 
             $user = $this->storeMember($model , $data);

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $warehouse_id
@@ -40,6 +40,7 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\Vehicle $vehicle
  * @property-read \App\Models\Warehouse $warehouse
  * @method static \Database\Factories\ShipmentFactory factory($count = null, $state = [])
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SellOrder> $sellOrders
  * @mixin \Eloquent
  */
 class Shipment extends Model
