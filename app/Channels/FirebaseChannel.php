@@ -17,7 +17,7 @@ class FirebaseChannel
     {
         $data = $notification->toFirebase($notifiable);
 
-        $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+        $factory = (new Factory)->withServiceAccount(config('firebase_credentials'));
         $messaging = $factory->createMessaging();
 
         $message = [

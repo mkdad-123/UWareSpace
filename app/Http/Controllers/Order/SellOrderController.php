@@ -40,9 +40,9 @@ class SellOrderController extends Controller
 
     public function show(Order $order)
     {
-        $purchase = $order->load(['sellOrder.client' , 'sellOrder.shipment','warehouse' , 'orderItems.item']);
+        $sell = $order->load(['sellOrder.client' , 'sellOrder.shipment','warehouse' , 'orderItems.item']);
 
-        return $this->response (new OrderResource($purchase));
+        return $this->response (new OrderResource($sell));
     }
 
 
