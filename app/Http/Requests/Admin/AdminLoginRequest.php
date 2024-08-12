@@ -16,7 +16,8 @@ class AdminLoginRequest extends FormRequest
     {
         return [
             'email' => 'required|exists:admins',
-            'password' => 'required'
+            'password' => 'required',
+            'firebase_token' => 'required|unique:admins,firebase_token'
         ];
     }
 }

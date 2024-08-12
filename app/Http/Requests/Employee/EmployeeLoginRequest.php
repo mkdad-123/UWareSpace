@@ -17,7 +17,7 @@ class EmployeeLoginRequest extends FormRequest
         return [
             'email' => 'required|exists:employees,email',
             'password' => 'required|min:8',
-            'firebase_token' => 'required',
+            'firebase_token' => 'required|unique:employees,firebase_token',
         ];
     }
 }

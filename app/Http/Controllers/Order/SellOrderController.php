@@ -12,6 +12,7 @@ use App\Http\Resources\WarehouseResource;
 use App\Models\Client;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\SellOrder;
 use App\Services\Order\SellOrderStoreService;
 use Illuminate\Database\Query\Builder;
 use LaravelIdea\Helper\App\Models\_IH_Warehouse_QB;
@@ -38,11 +39,11 @@ class SellOrderController extends Controller
     }
 
 
-    public function show(Order $order)
+    public function show(SellOrder $sellOrder)
     {
-        $sell = $order->load(['sellOrder.client' , 'sellOrder.shipment','warehouse' , 'orderItems.item']);
+        $sell = $sellOrder->load(['order.warehouse' , 'client' , 'shipment' ,'order.orderItems.item']);
 
-        return $this->response (new OrderResource($sell));
+        return $this->response (new SellOrderResource($sell));
     }
 
 
@@ -73,9 +74,9 @@ class SellOrderController extends Controller
         return $this->response (WarehouseResource::collection($warehouses),'These warehouses from closest to farthest from client');
     }
 
-    public function delete(Order $order)
+    public function delete(SellOrder $sellOrder)
     {
-        $order->delete();
+        $sellOrder->order->delete();
 
         return $this->response (response(),'Order has been deleted successfully');
     }

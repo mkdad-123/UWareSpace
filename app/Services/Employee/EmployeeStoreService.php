@@ -17,9 +17,9 @@ class EmployeeStoreService{
 
     public OperationResult $result;
 
-    protected function storeEmployee($data)
+    protected function storeEmployee($data , $adminId)
     {
-        $data['admin_id'] = auth('admin')->id();
+        $data['admin_id'] = $adminId;
 
         return Employee::create($data);
     }
@@ -29,8 +29,9 @@ class EmployeeStoreService{
         return Role::whereId($roleId)->first();
     }
 
-    protected function setRoleInUser($user , $role)
+    protected function setRoleInUser(Employee $user , $role , $adminId)
     {
+        setPermissionsTeamId($adminId);
         $user->assignRole($role);
     }
 
@@ -49,13 +50,15 @@ class EmployeeStoreService{
 
              DB::beginTransaction();
 
-             $user = $this->storeEmployee($request->except(['role_id' , 'phones']));
+             $adminId = auth('admin')->id();
+
+             $user = $this->storeEmployee($request->except(['role_id' , 'phones']) , $adminId);
 
              $user = PhoneService::storePhones($user , $request->input('phones'));
 
              $role = $this->getRole($request->role_id);
 
-             $this->setRoleInUser($user,$role);
+             $this->setRoleInUser($user,$role,$adminId);
 
              $this->sendEmail($user,$role->name,$request->password);
 

@@ -154,13 +154,13 @@ Route::middleware('auth:admin')->group(function () {
         Route::prefix('orders/purchase')->controller(PurchaseOrderController::class)
             ->group(function () {
                 Route::get('show-all', 'showAll');
-                Route::get('show/{order}', 'show');
+                Route::get('show/{purchaseOrder}', 'show');
             });
 
         Route::controller(SellOrderController::class)
             ->group(function () {
                 Route::get('show-all', 'showAll');
-                Route::get('show/{order}', 'show');
+                Route::get('show/{sellOrder}', 'show');
             });
 
         Route::controller(AdminNotificationController::class)

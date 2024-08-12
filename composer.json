@@ -16,7 +16,8 @@
         "predis/predis": "^2.2",
         "spatie/laravel-permission": "^6.7",
         "spatie/laravel-query-builder": "^6.0",
-        "tymon/jwt-auth": "^2.1"
+        "tymon/jwt-auth": "^2.1",
+        "uestla/simplex-calculator": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

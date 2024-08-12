@@ -13,12 +13,15 @@ class OrderStoreService
 {
     protected OperationResult $result;
 
-    public function calculateCapacity($items ,$size): float
+    public function loadItems($items)
     {
         $itemIds = array_column($items,'id');
 
-        $loadedItems = Item::whereIn('id' , $itemIds)->get()->keyBy('id');
+        return Item::whereIn('id' , $itemIds)->get()->keyBy('id');
+    }
 
+    public function calculateCapacity($items ,$loadedItems,$size): float
+    {
         $total = 0.0;
 
         foreach ($items as $item )
@@ -31,8 +34,23 @@ class OrderStoreService
         return $total;
     }
 
-    protected function storeOrder($data)
+    public function calculatePrice($items ,$loadedItems )
     {
+        $totalPrice = 0.0;
+
+        foreach ($items as $item)
+        {
+            $totalPrice += $loadedItems[$item['id']]->sell_price;
+
+        }
+
+        return $totalPrice;
+    }
+
+    protected function storeOrder($data , $price)
+    {
+        $data['price'] = $price;
+
         $order = Order::create($data);
 
         return $order->id;

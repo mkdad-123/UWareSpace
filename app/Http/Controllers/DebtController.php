@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PurchaseOrderEnum;
-use App\Enums\SellOrderEnum;
-use App\Http\Resources\OrderResource;
 use App\Http\Resources\PurchaseOrderResource;
 use App\Http\Resources\SellOrderResource;
 use App\Models\Order;

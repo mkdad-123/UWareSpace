@@ -19,10 +19,11 @@ class RoleService{
 
         $role =  Role::create([
             'name' => $name,
-            'guard_name' => 'employee'
+            'guard_name' => 'employee',
+            'admin_id' => $adminId
         ]);
 
-        $role->admins()->attach($adminId);
+        //$role->admins()->attach($adminId);
 
         return $role;
     }
@@ -39,7 +40,8 @@ class RoleService{
 
     protected function updateRole($id,$name)
     {
-        $role = Role::find($id);
+        $adminId = auth('admin')->id();
+        $role = Role::where('id' , $id)->where('admin_id' ,$adminId)->first();
         $role->name = $name;
         $role->save();
 

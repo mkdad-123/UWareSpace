@@ -6,9 +6,9 @@ use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BatchRequest;
 use App\Http\Requests\Order\PurchaseOrderRequest;
-use App\Http\Resources\OrderResource;
 use App\Http\Resources\PurchaseOrderResource;
 use App\Models\Order;
+use App\Models\PurchaseOrder;
 use App\Services\Item\ItemStoreService;
 use App\Services\Item\ItemUpdateService;
 use App\Services\Order\PurchaseOrderStoreService;
@@ -35,11 +35,11 @@ class PurchaseOrderController extends Controller
     }
 
 
-    public function show(Order $order)
+    public function show(PurchaseOrder $purchaseOrder)
     {
-        $purchase = $order->load(['purchaseOrder.supplier' , 'warehouse' , 'orderItems.item']);
+        $purchase = $purchaseOrder->load(['order.warehouse', 'supplier' , 'order.orderItems.item']);
 
-        return $this->response (new OrderResource($purchase));
+        return $this->response (new PurchaseOrderResource($purchase));
     }
 
 
@@ -62,15 +62,16 @@ class PurchaseOrderController extends Controller
         );
     }
 
-    public function delete(Order $order)
+    public function delete(PurchaseOrder $purchaseOrder)
     {
-        $order->delete();
+        $purchaseOrder->order->delete();
 
         return $this->response (response(),'Order has been deleted successfully');
     }
 
-    public function addBatch (BatchRequest $request ,Order $order , ItemStoreService $storeService , ItemUpdateService $updateService)
+    public function addBatch (BatchRequest $request ,PurchaseOrder $purchaseOrder , ItemStoreService $storeService , ItemUpdateService $updateService)
     {
+        $order = $purchaseOrder->order;
 
         $warehouse = $order->warehouse;
 

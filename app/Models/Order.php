@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $warehouse_id
@@ -32,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
  * @property-read \App\Models\PurchaseOrder|null $purchaseOrder
  * @property-read \App\Models\SellOrder|null $sellOrder
+ * @property string $price
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePrice($value)
  * @mixin \Eloquent
  */
 class Order extends Model
@@ -41,6 +43,7 @@ class Order extends Model
 
     protected $fillable = [
         'warehouse_id',
+        'price',
         'payment_type',
         'payment_at',
     ];

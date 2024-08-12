@@ -105,14 +105,14 @@ use Illuminate\Support\Facades\Route;
                 ->group(function () {
                     Route::post('store', 'store');
                     Route::get('show-all', 'showAll');
-                    Route::get('show/{order}', 'show');
-                    Route::delete('delete/{order}', 'delete');
-                    Route::post('batch/{order}' , 'addBatch');
+                    Route::get('show/{purchaseOrder}', 'show');
+                    Route::delete('delete/{purchaseOrder}', 'delete');
+                    Route::post('batch/{purchaseOrder}' , 'addBatch');
                 });
 
             Route::controller(OrderStatusController::class)
                 ->group(function (){
-                    Route::post('changeStatus/{order}', 'changeStatusPurchase');
+                    Route::post('changeStatus/{purchaseOrder}', 'changeStatusPurchase');
                 });
         });
 
@@ -122,15 +122,15 @@ use Illuminate\Support\Facades\Route;
                 ->group(function () {
                     Route::post('store', 'store');
                     Route::get('show-all', 'showAll');
-                    Route::get('show/{order}', 'show');
-                    Route::delete('delete/{order}', 'delete');
+                    Route::get('show/{sellOrder}', 'show');
+                    Route::delete('delete/{sellOrder}', 'delete');
                     Route::get('show-nearest-warehouse/with-quantity/{client}' , 'checkNearestWarehouse');
                 });
 
             Route::controller(OrderStatusController::class)
                 ->group(function (){
                    Route::post('shipment/changeStatus/{shipment}', 'changeStatusShipment');
-                    Route::post('changeStatus/{order}', 'changeStatusSell');
+                    Route::post('changeStatus/{sellOrder}', 'changeStatusSell');
                 });
         });
     });

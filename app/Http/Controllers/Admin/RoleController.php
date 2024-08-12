@@ -13,9 +13,9 @@ class RoleController extends Controller
 {
     public function show()
     {
-        $admin = auth('admin')->user();
+        $admin = auth('admin')->id();
 
-        $roles = $admin->roles()->get();
+        $roles = Role::where('admin_id' , $admin)->get();
 
         return $this->response(RoleResource::collection($roles));
     }
@@ -53,7 +53,10 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        Role::find($id)->delete();
+        $adminId = auth('admin')->id();
+
+        Role::where('id' , $id)->where('admin_id' ,$adminId)
+        ->delete();
 
         return $this->response(response(),'Role deleted successfully');
     }

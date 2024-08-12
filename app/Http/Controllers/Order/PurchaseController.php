@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Enums\PurchaseOrderEnum;
 use App\filters\PurchaseOrderFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderResource;
 use App\Http\Resources\PurchaseOrderResource;
 use Spatie\QueryBuilder\QueryBuilder;
 

@@ -117,10 +117,6 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
         return $this->hasMany(Employee::class );
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
 
     public function notes(): MorphMany
     {

@@ -16,12 +16,10 @@ class ShipmentAddOrderService
 
     protected OperationResult $result;
 
-    protected $updateService;
-
-    public function __construct(ItemUpdateService $updateService)
-    {
-        $this->updateService = $updateService;
-    }
+    public function __construct(
+        protected ItemUpdateService $updateService ,
+        protected OrderStoreService $storeService
+    ){}
 
 
     protected function getItems($warehouse , $order)
@@ -97,7 +95,9 @@ class ShipmentAddOrderService
 
             $items = $this->createMapItems($warehouse , $order);
 
-            $percent = (new OrderStoreService())->calculateCapacity($items->toArray() , $shipment->vehicle->size_cubic_meters);
+            $loadedItemsById = $this->storeService->loadItems($items->toArray());
+
+            $percent = $this->storeService->calculateCapacity($items ,$loadedItemsById , $warehouse->size_cubic_meters );
 
             $capacityPercent = round(($shipment->current_capacity + $percent) , 2);
 

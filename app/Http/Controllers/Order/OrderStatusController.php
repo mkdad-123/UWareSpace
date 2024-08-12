@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderChangeRequest;
 use App\Http\Requests\ShipmentStatusRequest;
-use App\Models\Order;
+use App\Models\PurchaseOrder;
+use App\Models\SellOrder;
 use App\Models\Shipment;
 use App\Services\Order\OrderChangeStatusService;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ use Throwable;
 
 class OrderStatusController extends Controller
 {
-    public function changeStatusPurchase(OrderChangeRequest $request , Order $order , OrderChangeStatusService $changeStatusService)
+    public function changeStatusPurchase(OrderChangeRequest $request , PurchaseOrder $purchaseOrder , OrderChangeStatusService $changeStatusService)
     {
-        $result = $changeStatusService->changePurchaseStatus($request ,$order );
+        $result = $changeStatusService->changePurchaseStatus($request ,$purchaseOrder);
 
         if ( $result->status == 200){
 
@@ -33,10 +34,9 @@ class OrderStatusController extends Controller
 
     }
 
-    public function changeStatusSell(Order $order, Request $request)
+    public function changeStatusSell(SellOrder $sellOrder, Request $request)
     {
         $status = $request->input('status');
-        $sellOrder = $order->sellOrder;
         $sellOrder->status = $status;
         $sellOrder->save();
 

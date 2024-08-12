@@ -38,20 +38,24 @@ class OrderChangeStatusService
                     "quantity" => $item->quantity
                 ];
             });
-            $percent = $this->orderStoreService->calculateCapacity($items ,$warehouse->size_cubic_meters);
+            $loadedItemsById = $this->orderStoreService->loadItems($items);
+
+            $percent = $this->orderStoreService->calculateCapacity($items ,$loadedItemsById , $warehouse->size_cubic_meters );
         }
 
         $warehouse->current_capacity += $percent;
         $warehouse->save();
     }
 
-    public function changePurchaseStatus($request , $order)
+    public function changePurchaseStatus($request , $purchaseOrder)
     {
         try {
 
             DB::beginTransaction();
 
             $status = $request->input('status');
+
+            $order = $purchaseOrder->order;
 
             $warehouse = $order->warehouse;
 

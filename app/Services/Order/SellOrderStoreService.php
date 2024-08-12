@@ -45,11 +45,15 @@ class SellOrderStoreService extends OrderStoreService
 
             $items = $request->input('items');
 
-            $percent = $this->calculateCapacity($items ,$warehouse->size_cubic_meters );
+            $loadedItemsById = $this->loadItems($items);
+
+            $percent = $this->calculateCapacity($items ,$loadedItemsById , $warehouse->size_cubic_meters );
 
             $capacity_percent = round(($warehouse->current_capacity - $percent) , 2);
 
-            $orderId  = $this->storeOrder($request->only(['warehouse_id' , 'payment_type' , 'payment_at']));
+            $price = $this->calculatePrice($items , $loadedItemsById);
+
+            $orderId  = $this->storeOrder($request->only(['warehouse_id' , 'payment_type' , 'payment_at']) , $price);
 
             $this->addCache($orderId , $percent);
 
@@ -57,7 +61,7 @@ class SellOrderStoreService extends OrderStoreService
 
             $this->storeOrderItems($orderId ,$items);
 
-            $this->sendNotification($orderId , $warehouse->admin_id);
+           // $this->sendNotification($orderId , $warehouse->admin_id);
 
             DB::commit();
 
@@ -76,7 +80,9 @@ class SellOrderStoreService extends OrderStoreService
 
             DB::rollBack();
 
-             $this->result = new OperationResult('An error occurred: ' . $e->getMessage(), response(), 500);
+             $this->result = new OperationResult('An error occurred: ' . $e->getMessage().' in line '.
+                 $e->getLine() .' and in file '.
+                 $e->getFile(), response(), 500);
         }
 
         return $this->result;

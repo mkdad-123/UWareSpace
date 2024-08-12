@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Enums\SellOrderEnum;
 use App\filters\SellOrderFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderResource;
 use App\Http\Resources\SellOrderResource;
 use Spatie\QueryBuilder\QueryBuilder;
 
