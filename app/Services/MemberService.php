@@ -131,12 +131,13 @@ class MemberService
 
             if($location){
 
-                if(! $adrsCoordinate = $this->locationService->transformAddress($location)){
-
-                    return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
-                }
-
-                $data = $this->mergeData($data ,$adrsCoordinate);
+//                if(! $adrsCoordinate = $this->locationService->transformAddress($location)){
+//
+//                    return $this->result = new OperationResult('Failed to get coordinate',response(), 400);
+//                }
+//
+//                $data = $this->mergeData($data ,$adrsCoordinate);
+                $data = $this->transform($location , $data);
             }
 
             $user = $this->updateMember($user ,$data);

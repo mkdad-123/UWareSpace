@@ -14,9 +14,11 @@ class ClientUpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        $clientId = $this->route('id');
+
         return [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string',
+            'email' => 'sometimes|string|unique:clients,email,'.$clientId,
             'location'=> 'sometimes|array',
             'location.country' => 'required_with:location|string|max:250',
             'location.city' => 'required_with:location|string|max:250',

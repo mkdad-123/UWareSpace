@@ -97,7 +97,7 @@ trait ModelOperationTrait
 
         $member = $this->model->find($id);
 
-        $admin = auth('admin')->user() ?:auth('employee')->user();
+        $admin = auth('admin')->user() ?:auth('employee')->user()->admin;
 
         if($member->admin_id == $admin->id) {
 
@@ -139,7 +139,7 @@ trait ModelOperationTrait
 
         $member = $this->model->find($id);
 
-        $admin = auth('admin')->user() ?:auth('employee')->user();
+        $admin = auth('admin')->user() ?:auth('employee')->user()->admin;
 
         if($member!= null && $member->admin_id == $admin->id){
 
