@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderChangeRequest;
+use App\Http\Requests\SellOrderStatusRequest;
 use App\Http\Requests\ShipmentStatusRequest;
 use App\Models\PurchaseOrder;
 use App\Models\SellOrder;
@@ -34,7 +35,7 @@ class OrderStatusController extends Controller
 
     }
 
-    public function changeStatusSell(SellOrder $sellOrder, Request $request)
+    public function changeStatusSell(SellOrder $sellOrder, SellOrderStatusRequest $request)
     {
         $status = $request->input('status');
         $sellOrder->status = $status;
