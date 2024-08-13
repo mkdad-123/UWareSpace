@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $order_id
@@ -84,7 +84,8 @@ class PurchaseOrder extends Model
 
     public function scopeNonInventoried(Builder $query): Builder
     {
-        return $query->where('isInventoried' , 0);
+        return $query->where('isInventoried' , 0)
+            ->where('status' , PurchaseOrderEnum::getStatusForChange());
     }
 
 

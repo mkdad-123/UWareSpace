@@ -26,7 +26,7 @@ class SellOrderStatusRequest extends FormRequest
             $currentStatus = $order->status;
 
             if ($newStatus === 'sending' && ($currentStatus !== 'preparation')) {
-                $validator->errors()->add('status', 'Status can only be changed to "sending" if it is currently "pending".');
+                $validator->errors()->add('status', 'Status can only be changed to "sending" if it is currently "preparation".');
             }
 
             if ($newStatus === 'received' && $currentStatus !== 'sending') {

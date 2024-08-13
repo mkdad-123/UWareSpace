@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BatchRequest;
 use App\Http\Requests\Order\PurchaseOrderRequest;
 use App\Http\Resources\PurchaseOrderResource;
+use App\Models\Item;
 use App\Models\Order;
 use App\Models\PurchaseOrder;
 use App\Services\Item\ItemStoreService;
@@ -71,6 +72,11 @@ class PurchaseOrderController extends Controller
 
     public function addBatch (BatchRequest $request ,PurchaseOrder $purchaseOrder , ItemStoreService $storeService , ItemUpdateService $updateService)
     {
+        if ($purchaseOrder->isInventoried)
+        {
+            return $this->response(response(),'this batch has been added recently in your warehouse');
+        }
+
         $order = $purchaseOrder->order;
 
         $warehouse = $order->warehouse;
@@ -79,16 +85,18 @@ class PurchaseOrderController extends Controller
             ->get()->keyBy('id');
 
         $order->orderItems()->each(function ($order_item) use ($warehouse ,$warehouseItem, $storeService ,$updateService, $request){
-
-             $item = $warehouseItem->get($order_item->item_id);
+             $itemId = $order_item->item_id;
+             $item = $warehouseItem->get($itemId);
 
              if ($item){
-
                  $updateService->updateQuantityForBatch($item , $order_item->quantity);
 
              }else {
-
-                 $storeService->createItemInWarehouse($item,$warehouse->id,$request);
+                 $item = Item::find($itemId);
+                 $cnt = 0;
+                 $data = $request->input('items')[$cnt++];
+                 $data[$itemId]['real_quantity'] = $order_item->quantity;
+                 $storeService->createItemInWarehouse($item,$warehouse->id,$data[$itemId] );
              }
 
         });

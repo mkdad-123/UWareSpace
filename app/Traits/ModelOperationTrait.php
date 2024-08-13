@@ -19,7 +19,7 @@ trait ModelOperationTrait
     {
         $admin = auth('admin')->user() ?:auth('employee')->user()->admin;
 
-        $members = $this->model->where('admin_id',$admin->id)->get();
+        $members = $this->model->with('phones')->where('admin_id',$admin->id)->get();
 
         if ($members){
             return $this->response(MemberResource::collection($members), 'members is showed successfully');
