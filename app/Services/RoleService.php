@@ -20,10 +20,9 @@ class RoleService{
         $role =  Role::create([
             'name' => $name,
             'guard_name' => 'employee',
-            'admin_id' => $adminId
         ]);
 
-        //$role->admins()->attach($adminId);
+        $role->admins()->attach($adminId);
 
         return $role;
     }
@@ -106,7 +105,8 @@ class RoleService{
 
             return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
 
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
 
             DB::rollBack();
 

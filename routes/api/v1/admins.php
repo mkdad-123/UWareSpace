@@ -68,7 +68,7 @@ Route::middleware('auth:admin')->group(function () {
         ->group( function (){
             Route::post('store','store');
             Route::get('show-all','show');
-            Route::get('show/{employee}','showOne');
+            Route::get('show/{id}','showOne');
             Route::put('update/{employee}','update');
             Route::delete('delete/{employee}','destroy');
         });

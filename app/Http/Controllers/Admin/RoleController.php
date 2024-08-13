@@ -13,9 +13,9 @@ class RoleController extends Controller
 {
     public function show()
     {
-        $admin = auth('admin')->id();
+        $admin = auth('admin')->user();
 
-        $roles = Role::where('admin_id' , $admin)->get();
+        $roles = $admin->roles()->get();
 
         return $this->response(RoleResource::collection($roles));
     }

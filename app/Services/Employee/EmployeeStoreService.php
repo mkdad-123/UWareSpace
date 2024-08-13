@@ -26,12 +26,11 @@ class EmployeeStoreService{
 
     protected function getRole($roleId)
     {
-        return Role::whereId($roleId)->first();
+        return Role::find($roleId);
     }
 
     protected function setRoleInUser(Employee $user , $role , $adminId)
     {
-        setPermissionsTeamId($adminId);
         $user->assignRole($role);
     }
 
@@ -56,7 +55,7 @@ class EmployeeStoreService{
 
              $user = PhoneService::storePhones($user , $request->input('phones'));
 
-             $role = $this->getRole($request->role_id);
+             $role = $this->getRole($request->input('role_id'));
 
              $this->setRoleInUser($user,$role,$adminId);
 

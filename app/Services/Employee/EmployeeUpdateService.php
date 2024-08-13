@@ -70,6 +70,8 @@ class EmployeeUpdateService{
 
             DB::beginTransaction();
 
+            $adminId = auth('admin')->id();
+
             $data = $this->updatePassword($request->except(['role_id' , 'phones']));
 
             $data = $this->updateEmail($data);
@@ -85,7 +87,7 @@ class EmployeeUpdateService{
 
             $this->deleteRole($user->id);
 
-            $this->setRoleInUser($user,$role);
+            $this->setRoleInUser($user,$role->name , $adminId);
 
            // $employee = Employee::with(['roles','phones'])->find($id);
 

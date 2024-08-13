@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Services\Employee\EmployeeStoreService;
 use App\Services\Employee\EmployeeUpdateService;
 use App\Services\EmployeeDeleteService;
+use Spatie\Permission\Models\Role;
 
 
 class EmployeeController extends Controller
@@ -35,10 +36,10 @@ class EmployeeController extends Controller
         );
     }
 
-    public function showOne(Employee $employee)
+    public function showOne($id)
     {
+        $employee = Employee::find($id);
         $employee->load(['phones' , 'roles']);
-
 
         return $this->response(new EmployeeResource($employee));
     }
