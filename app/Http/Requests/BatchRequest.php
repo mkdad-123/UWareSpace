@@ -13,7 +13,7 @@ class BatchRequest extends FormRequest
 
         return [
             'items' => 'sometimes|array',
-            'items.*' => 'required_with:items|array',
+            '*' => 'required_with:items|array',
             'items.*.min_quantity' => 'required_with:id|integer|min:0',
             'items.*.available_quantity'=> 'required_with:id|integer|min:0',
         ];
@@ -22,5 +22,17 @@ class BatchRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $order = $this->route('purchaseOrder');
+
+            if ($order->isInventoried) {
+                $validator->errors()->add('items', 'this batch has been added recently in your warehouse.');
+            }
+        });
     }
 }

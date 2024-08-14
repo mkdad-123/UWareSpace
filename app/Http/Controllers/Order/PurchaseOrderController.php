@@ -72,10 +72,6 @@ class PurchaseOrderController extends Controller
 
     public function addBatch (BatchRequest $request ,PurchaseOrder $purchaseOrder , ItemStoreService $storeService , ItemUpdateService $updateService)
     {
-        if ($purchaseOrder->isInventoried)
-        {
-            return $this->response(response(),'this batch has been added recently in your warehouse');
-        }
 
         $order = $purchaseOrder->order;
 
@@ -93,10 +89,9 @@ class PurchaseOrderController extends Controller
 
              }else {
                  $item = Item::find($itemId);
-                 $cnt = 0;
-                 $data = $request->input('items')[$cnt++];
-                 $data[$itemId]['real_quantity'] = $order_item->quantity;
-                 $storeService->createItemInWarehouse($item,$warehouse->id,$data[$itemId] );
+                 $data = $request->input('items')[$itemId];
+                 $data['real_quantity'] = $order_item->quantity;
+                 $storeService->createItemInWarehouse($item,$warehouse->id,$data);
              }
 
         });
