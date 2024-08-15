@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $warehouse_id
@@ -46,7 +47,17 @@ class Order extends Model
         'price',
         'payment_type',
         'payment_at',
+        'invoice_number'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            $order->invoice_number = (string) Str::uuid();
+        });
+    }
 
     public function warehouse(): BelongsTo
     {
