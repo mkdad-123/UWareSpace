@@ -53,10 +53,7 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        $adminId = auth('admin')->id();
-
-        Role::where('id' , $id)->where('admin_id' ,$adminId)
-        ->delete();
+        Role::where('id' , $id)->delete();
 
         return $this->response(response(),'Role deleted successfully');
     }

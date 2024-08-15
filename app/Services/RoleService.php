@@ -39,8 +39,7 @@ class RoleService{
 
     protected function updateRole($id,$name)
     {
-        $adminId = auth('admin')->id();
-        $role = Role::where('id' , $id)->where('admin_id' ,$adminId)->first();
+        $role = Role::find($id);
         $role->name = $name;
         $role->save();
 

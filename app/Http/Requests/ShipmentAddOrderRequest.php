@@ -9,7 +9,7 @@ class ShipmentAddOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => 'required|exists:sell_orders,order_id'
+            'order_id' => 'required|exists:sell_orders,id'
         ];
     }
 

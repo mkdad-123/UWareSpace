@@ -40,7 +40,7 @@
             filter: grayscale(100%);
         }
         .company-info {
-            text-align: left;
+            text-align: right;
             font-size: 12px;
             color: #666;
             margin-top: 5px;
@@ -92,12 +92,12 @@
     <div class="header">
         <h1>{{ $title }}</h1>
         @if (!is_null($logo))
-            <img src="{{asset($logo)}}" alt="Logo">
+            <img src="{{ asset($logo) }}" alt="Logo">
         @endif
         @if (!is_null($company))
             <div class="company-info">
-                <p>name:{{ $company['name'] }}</p>
-                <p>email:{{ $company['email'] }}</p>
+                <p>{{ $company['name'] }}</p>
+                <p>{{ $company['email'] }}</p>
                 <p>number phone :</p>
                 @foreach ($company['phones'] as $phone)
                     <p>{{$phone['number']}}</p>
@@ -106,37 +106,39 @@
         @endif
     </div>
     <div class="content">
-        <h2>Report Summary</h2>
-        <p>{{ $content }}</p>
+        <h2>Invoice Details</h2>
+        <p>Invoice Number: {{ $order['order']['invoice_number'] }}</p>
+        <p>Dear Mr./Ms. {{ $order['client']['name'] }}</p>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th>Invoice Number</th>
-            <th>Warehouse Name</th>
-            <th>Client Name</th>
-            <th>Shipment Number</th>
+            <th>Item Name</th>
+            <th>SKU</th>
             <th>Price</th>
-            <th>Date</th>
+            <th>Quantity</th>
         </tr>
         </thead>
         <tbody>
-        @foreach ($orders as $order)
+        @foreach ($order['order']['order_items'] as $item)
             <tr>
-                <td>{{ $order['order']['invoice_number'] }}</td>
-                <td>{{ $order['order']['warehouse']['name'] }}</td>
-                <td>{{ $order['client']['name'] }}</td>
-                <td>{{ $order['shipment']['tracking_number'] }}</td>
-                <td>{{ $order['order']['price'] }}</td>
-                <td>{{ $order['created_at'] }}</td>
-
+                <td>{{ $item['item']['name'] }}</td>
+                <td>{{ $item['item']['SKU'] }}</td>
+                <td>{{ $item['item']['sell_price'] }}</td>
+                <td>{{ $item['quantity'] }}</td>
             </tr>
         @endforeach
+
+
         </tbody>
     </table>
+    <div class="content">
+        <p>Warehouse Name: {{ $order['order']['warehouse']['name'] }}</p>
+        <p>Shipment Number: {{ $order['shipment']['tracking_number'] }}</p>
+        <p>Total Price: {{ $order['order']['price'] }}</p>
+    </div>
     <div class="footer">
-        <p>Total Price: {{ $total_price }}</p>
-        <p>All rights reserved © {{now()}}</p>
+        <p>All rights reserved © 2024</p>
     </div>
 </div>
 </body>

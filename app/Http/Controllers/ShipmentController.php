@@ -10,6 +10,7 @@ use App\Http\Resources\ShipmentResource;
 use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\SellOrder;
 use App\Models\Shipment;
 use App\Services\Item\ItemUpdateService;
 use App\Services\Order\OrderStoreService;
@@ -80,7 +81,9 @@ class ShipmentController extends Controller
     {
         $orderId = $request->input('order_id');
 
-        $order = Order::find($orderId);
+        $sellOrder = SellOrder::find($orderId);
+
+        $order = $sellOrder->order;
 
         $result = $addOrderService->addOrderInShipment($order , $shipment);
 

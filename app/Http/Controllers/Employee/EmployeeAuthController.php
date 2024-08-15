@@ -39,7 +39,7 @@ class EmployeeAuthController extends Controller
         if (auth('employee')->user()) {
             auth()->guard('employee')->logout();
 
-            return $this->response(response(),'Logged out successfully' , 401);
+            return $this->response(response(),'Logged out successfully' );
         }
         return $this->response(response(),'Unauthorized' , 401);
 

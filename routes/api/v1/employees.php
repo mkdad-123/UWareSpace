@@ -5,6 +5,7 @@ use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\Employee\EmployeeAuthController;
 use App\Http\Controllers\Employee\EmployeeNotificationController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
@@ -168,6 +169,10 @@ use Illuminate\Support\Facades\Route;
 
         Route::prefix('reports')->controller(ReportController::class)->group(function (){
             Route::get('sales' , 'generatePDFForSells');
+            Route::get('purchases' , 'generatePDFForPurchase');
         });
+
+        Route::get('invoice/{sellOrder}' , [InvoiceController::class,'generateInvoice']);
+
 });
 

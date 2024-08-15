@@ -92,7 +92,7 @@
     <div class="header">
         <h1>{{ $title }}</h1>
         @if (!is_null($logo))
-            <img src="{{asset($logo)}}" alt="Logo">
+            <img src="{{$logo}}" alt="Logo">
         @endif
         @if (!is_null($company))
             <div class="company-info">
@@ -114,10 +114,8 @@
         <tr>
             <th>Invoice Number</th>
             <th>Warehouse Name</th>
-            <th>Client Name</th>
-            <th>Shipment Number</th>
+            <th>Supplier Name</th>
             <th>Price</th>
-            <th>Date</th>
         </tr>
         </thead>
         <tbody>
@@ -125,11 +123,9 @@
             <tr>
                 <td>{{ $order['order']['invoice_number'] }}</td>
                 <td>{{ $order['order']['warehouse']['name'] }}</td>
-                <td>{{ $order['client']['name'] }}</td>
-                <td>{{ $order['shipment']['tracking_number'] }}</td>
+                <td>{{ $order['supplier']['name'] }}</td>
                 <td>{{ $order['order']['price'] }}</td>
                 <td>{{ $order['created_at'] }}</td>
-
             </tr>
         @endforeach
         </tbody>
