@@ -10,28 +10,27 @@ use App\Models\PurchaseOrder;
 use App\Models\SellOrder;
 use App\Models\Shipment;
 use App\Services\Order\OrderChangeStatusService;
-use Illuminate\Http\Request;
-use Throwable;
 
 class OrderStatusController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:change status sell order|manage sells|manage current sell orders')
+        ->only('changeStatusSell');
+
+        $this->middleware('permission:manage purchases|manage current purchase orders')
+            ->only('changeStatusPurchase');
+
+        $this->middleware('permission:manage shipments')->only('changeStatusShipment');
+
+    }
+
     public function changeStatusPurchase(OrderChangeRequest $request , PurchaseOrder $purchaseOrder , OrderChangeStatusService $changeStatusService)
     {
         $result = $changeStatusService->changePurchaseStatus($request ,$purchaseOrder);
 
-        if ( $result->status == 200){
-
-            return $this->response (
-                $result->data,
-                $result->message,
-                $result->status,
-            );
-        }
-        return  $this->response (
-            $result->data,
-            $result->message,
-            $result->status,
-        );
+            return $this->response ($result->data, $result->message, $result->status,);
 
     }
 
@@ -47,9 +46,6 @@ class OrderStatusController extends Controller
 
     }
 
-    /**
-     * @throws Throwable
-     */
     public function changeStatusShipment(Shipment $shipment , ShipmentStatusRequest $request)
     {
 

@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PurchaseOrderResource;
 use App\Http\Resources\SellOrderResource;
 use App\Models\Order;
+use App\Models\PurchaseOrder;
+use App\Models\SellOrder;
 
 
 class DebtController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:manage debts');
+    }
 
     public function showDebtPurchase()
     {
@@ -35,8 +41,19 @@ class DebtController extends Controller
 
     }
 
-    public function paidDebt(Order $order)
+    public function paidDebtPurchase(PurchaseOrder $purchaseOrder)
     {
+        $order = $purchaseOrder->order;
+        $order->payment_type = 'cash';
+        $order->payment_at = null;
+        $order->save();
+
+        return $this->response(response() , 'Payment has been made successfully');
+    }
+
+    public function paidDebtSell(SellOrder $sellOrder)
+    {
+        $order = $sellOrder->order;
         $order->payment_type = 'cash';
         $order->payment_at = null;
         $order->save();

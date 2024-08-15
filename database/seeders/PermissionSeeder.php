@@ -8,9 +8,12 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
-    static private $permissions = [
-        'store',
-        'delete'
+    static private array $permissions = [
+
+        'manage inventory' , 'manage warehouses' , 'manage sells' , 'manage previous sales' , 'manage current sell orders',
+        'manage shipments' ,'manage purchases'  , 'manage previous purchases' , 'manage current purchase orders',
+        'manage clients' , 'manage suppliers' , 'manage external members', 'manage debts', 'manage quality',
+        'add order in shipment', 'create invoices' , 'change status sell order'
     ];
 
     static public function run(): void

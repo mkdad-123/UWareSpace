@@ -10,10 +10,13 @@ use App\Traits\ModelOperationTrait;
 
 class ClientController extends Controller
 {
+
     use ModelOperationTrait;
 
     public function __construct()
     {
+        $this->middleware('permission:manage clients|manage external members');
+
         $this->setmodel(new Client());
     }
 

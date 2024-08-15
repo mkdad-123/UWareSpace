@@ -12,6 +12,12 @@ use App\Services\Warehouse\WarehouseUpdateService;
 
 class WarehouseController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:manage warehouses');
+    }
+
     public function showAll()
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;

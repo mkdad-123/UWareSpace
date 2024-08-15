@@ -9,6 +9,11 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class SellController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:manage sells|manage previous sales');
+    }
+
     public function showSells()
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;

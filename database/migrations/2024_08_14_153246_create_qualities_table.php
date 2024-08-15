@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin_role', function (Blueprint $table) {
+        Schema::create('qualities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
-            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
+            $table->foreignId('warehouse_item_id')->constrained('warehouse_item');
+            $table->string('url')->nullable();
+            $table->text('note')->nullable();
+            $table->integer('quantity');
+            $table->date('expiration_date')->nullable();
             $table->timestamps();
-
-            $table->unique(['admin_id' , 'role_id']);
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('qualities');
     }
 };

@@ -24,7 +24,7 @@ class WarehouseItemStoreRequest extends FormRequest
                 ->where(function ($query) use ($itemId){
                     return $query->where('item_id' , $itemId);
                 }),
-           // unique:warehouse_item,warehouse_id,NULL,id,item_id,' . $itemId,
+            //unique:warehouse_item,warehouse_id,NULL,id,item_id,' . $itemId
             'min_quantity' => 'required|integer|min:0',
             'available_quantity'=> 'required|integer|min:0',
             'real_quantity' => 'required|integer|min:0',

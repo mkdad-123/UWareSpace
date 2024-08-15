@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\ShipmentEnum;
 use App\Http\Requests\Shipment\ShipmentStoreRequest;
 use App\Http\Requests\ShipmentAddOrderRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ShipmentResource;
+use App\Models\Employee;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Shipment;
@@ -16,6 +18,14 @@ use Illuminate\Http\Request;
 
 class ShipmentController extends Controller
 {
+
+//    public function __construct()
+//    {
+//        $this->middleware('permission:manage shipments');
+//        $this->middleware('permission:add order in shipment')->only('addOrder');
+//
+//    }
+
     public function showAll()
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
@@ -63,19 +73,19 @@ class ShipmentController extends Controller
 
         $result = $addOrderService->addOrderInShipment($order , $shipment);
 
-        if ( $result->status == 201){
-
             return $this->response (
                 $result->data,
                 $result->message,
                 $result->status,
             );
-        }
-        return  $this->response (
-            $result->data,
-            $result->message,
-            $result->status,
-        );
+
+    }
+
+    public function showAllDrivers()
+    {
+        $employees = Employee::permission('add order in shipment')->get();
+
+        return $this->response(EmployeeResource::collection($employees));
     }
 
 }

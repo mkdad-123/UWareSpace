@@ -16,6 +16,7 @@ class BatchRequest extends FormRequest
             '*' => 'required_with:items|array',
             'items.*.min_quantity' => 'required_with:id|integer|min:0',
             'items.*.available_quantity'=> 'required_with:id|integer|min:0',
+            'expiration_date' => 'sometimes|date|after:today'
         ];
     }
 

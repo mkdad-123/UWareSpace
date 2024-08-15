@@ -12,14 +12,9 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
     public function run(): void
     {
-        //Admin::factory(10)->create();
-
-        //Employee::factory(10)->create();
 
         SuperAdmin::create([
             'name' => 'Mkdad Taleb',
@@ -29,14 +24,6 @@ class DatabaseSeeder extends Seeder
 
        PermissionSeeder::run();
 
-//        Admin::create([
-//            'name' => 'Mkdad Taleb',
-//            'email' => 'ma0109424@gmail.com',
-//            'password' => Hash::make('password'),
-//            'location' => 'damas',
-//            'active' => true,
-//            'email_verified_at' => Carbon::now(),
-//        ]);
     }
 
 

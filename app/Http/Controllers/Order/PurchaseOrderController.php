@@ -7,16 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BatchRequest;
 use App\Http\Requests\Order\PurchaseOrderRequest;
 use App\Http\Resources\PurchaseOrderResource;
-use App\Models\Item;
-use App\Models\Order;
 use App\Models\PurchaseOrder;
-use App\Services\Item\ItemStoreService;
-use App\Services\Item\ItemUpdateService;
+use App\Services\BatchStoreService;
 use App\Services\Order\PurchaseOrderStoreService;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseOrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:manage current purchase orders|manage purchases')->except('addBatch');
+
+        $this->middleware('manage inventory')->only('addBatch');
+    }
 
     public function showAll()
     {
@@ -48,19 +51,8 @@ class PurchaseOrderController extends Controller
     {
         $result = $orderStoreService->store($request);
 
-        if ( $result->status == 201){
+        return  $this->response ($result->data, $result->message, $result->status,);
 
-            return $this->response (
-                $result->data,
-                $result->message,
-                $result->status,
-            );
-        }
-        return  $this->response (
-            $result->data,
-            $result->message,
-            $result->status,
-        );
     }
 
     public function delete(PurchaseOrder $purchaseOrder)
@@ -70,36 +62,12 @@ class PurchaseOrderController extends Controller
         return $this->response (response(),'Order has been deleted successfully');
     }
 
-    public function addBatch (BatchRequest $request ,PurchaseOrder $purchaseOrder , ItemStoreService $storeService , ItemUpdateService $updateService)
+    public function addBatch (BatchRequest $request ,PurchaseOrder $purchaseOrder ,BatchStoreService $batchService )
     {
+        $result = $batchService->storeBatch($request , $purchaseOrder);
 
-        $order = $purchaseOrder->order;
+        return  $this->response ($result->data, $result->message, $result->status,);
 
-        $warehouse = $order->warehouse;
-
-        $warehouseItem = $warehouse->items()->whereIn('item_id' , $order->orderItems->pluck('item_id'))
-            ->get()->keyBy('id');
-
-        $order->orderItems()->each(function ($order_item) use ($warehouse ,$warehouseItem, $storeService ,$updateService, $request){
-             $itemId = $order_item->item_id;
-             $item = $warehouseItem->get($itemId);
-
-             if ($item){
-                 $updateService->updateQuantityForBatch($item , $order_item->quantity);
-
-             }else {
-                 $item = Item::find($itemId);
-                 $data = $request->input('items')[$itemId];
-                 $data['real_quantity'] = $order_item->quantity;
-                 $storeService->createItemInWarehouse($item,$warehouse->id,$data);
-             }
-
-        });
-        $purchase = $order->purchaseOrder;
-        $purchase->isInventoried = 1;
-        $purchase->save();
-
-         return $this->response(response(),'the batch has been added in your warehouse successfully');
     }
 
 

@@ -9,6 +9,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:manage purchases|manage previous purchases')->except('showNonInventoried');
+
+        $this->middleware('permission:manage inventory')->only('showNonInventoried');
+    }
+
     public function showPurchases()
     {
 

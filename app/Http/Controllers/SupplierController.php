@@ -10,10 +10,13 @@ use App\Traits\ModelOperationTrait;
 
 class SupplierController extends Controller
 {
+
     use ModelOperationTrait;
 
     public function __construct()
     {
+        $this->middleware('permission:manage suppliers|manage external members');
+
         $this->setmodel(new Supplier());
     }
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SellController;
 use App\Http\Controllers\Order\SellOrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\VehicleController;
@@ -94,6 +95,7 @@ use Illuminate\Support\Facades\Route;
             Route::post('update/{shipment}', 'update');
             Route::delete('delete/{shipment}', 'delete');
             Route::post('add-order-in-shipment/{shipment}' , 'addOrder');
+            Route::get('show-drivers' , 'showAllDrivers');
             Route::get('filter', 'filter');
         });
 
@@ -147,7 +149,9 @@ use Illuminate\Support\Facades\Route;
             ->group(function (){
                 Route::get('show-all-debt-purchase', 'showDebtPurchase');
                 Route::get('show-all-debt-sell', 'showDebtSell');
-                Route::post('change-payment-type', 'paidDebt');
+                Route::post('change-payment-type-purchase/{purchaseOrder}', 'paidDebtPurchase');
+                Route::post('change-payment-type-sell{sellOrder}', 'paidDebtSell');
+
             });
 
 
@@ -160,5 +164,5 @@ use Illuminate\Support\Facades\Route;
                 Route::post('/delete_All' , 'deleteAll');
                 Route::delete('/delete_One/{id}' , 'delete');
             });
-
 });
+

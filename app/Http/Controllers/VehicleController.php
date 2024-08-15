@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
+
     public function showAll()
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;

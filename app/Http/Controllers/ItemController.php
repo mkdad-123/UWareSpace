@@ -14,6 +14,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ItemController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:manage inventory');
+        $this->middleware('permission:manage current purchase orders|manage purchase')->only('store');
+    }
+
     public function showAll()
     {
         $admin = auth('admin')->user()?: auth('employee')->user()->admin;
@@ -86,8 +93,6 @@ class ItemController extends Controller
         );
     }
 
-    public function search()
-    {}
 
     public function filter()
     {

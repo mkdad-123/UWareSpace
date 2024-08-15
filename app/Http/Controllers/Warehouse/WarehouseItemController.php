@@ -14,23 +14,22 @@ use App\Services\Item\ItemUpdateService;
 
 class WarehouseItemController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:manage warehouses');
+    }
+
     public function store(Item $item ,WarehouseItemStoreRequest $request , ItemStoreService $storeService)
     {
         $result = $storeService->storeInWarehouse($request,$item);
-
-        if ( $result->status == 201){
 
             return $this->response(
                 $result->data,
                 $result->message,
                 $result->status,
             );
-        }
-        return  $this->response(
-            $result->data,
-            $result->message,
-            $result->status,
-        );
+
     }
 
     public function update(Item $item ,WarehouseItemUpdateRequest $request , ItemUpdateService $updateService)
