@@ -96,6 +96,7 @@ use Illuminate\Support\Facades\Route;
             Route::delete('delete/{shipment}', 'delete');
             Route::post('add-order-in-shipment/{shipment}' , 'addOrder');
             Route::get('show-drivers' , 'showAllDrivers');
+            Route::get('show-all-received' , 'showReceived');
             Route::get('filter', 'filter');
         });
 

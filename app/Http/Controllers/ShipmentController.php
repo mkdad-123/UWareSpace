@@ -30,9 +30,20 @@ class ShipmentController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $shipments  = $admin->load('shipments')->shipments();
+        $shipments  = $admin->load('shipments.sellOrders')->shipments();
 
-        $shipments = $shipments->whereIn('status' , ShipmentEnum::getStatus())->get();
+        $shipments = $shipments->with('sellOrders')->whereIn('status' , ShipmentEnum::getStatus())->get();
+
+        return $this->response(ShipmentResource::collection($shipments));
+    }
+
+    public function showReceived()
+    {
+        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+
+        $shipments  = $admin->load('shipments.sellOrders')->shipments();
+
+        $shipments = $shipments->with('sellOrders')->where('status' , ShipmentEnum::RECEIVED)->get();
 
         return $this->response(ShipmentResource::collection($shipments));
     }
