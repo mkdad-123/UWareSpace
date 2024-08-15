@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\EmployeeLoginRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Traits\ResetPasswordTrait;
 use Illuminate\Http\Request;
@@ -30,7 +31,10 @@ class EmployeeAuthController extends Controller
         $employee->firebase_token = $request->input('firebase_token');
         $employee->save();
 
-        return $this->response($token , 'Login successfully');
+        return $this->response([
+            'token' => $token ,
+            'employee' => new EmployeeResource($employee->load('roles.permissions' ))
+            ], 'Login successfully');
 
     }
 
