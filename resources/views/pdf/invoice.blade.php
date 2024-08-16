@@ -40,7 +40,7 @@
             filter: grayscale(100%);
         }
         .company-info {
-            text-align: right;
+            text-align: left;
             font-size: 12px;
             color: #666;
             margin-top: 5px;
@@ -96,8 +96,8 @@
         @endif
         @if (!is_null($company))
             <div class="company-info">
-                <p>{{ $company['name'] }}</p>
-                <p>{{ $company['email'] }}</p>
+                <p>name:{{ $company['name'] }}</p>
+                <p>email:{{ $company['email'] }}</p>
                 <p>number phone :</p>
                 @foreach ($company['phones'] as $phone)
                     <p>{{$phone['number']}}</p>
@@ -108,6 +108,8 @@
     <div class="content">
         <h2>Invoice Details</h2>
         <p>Invoice Number: {{ $order['order']['invoice_number'] }}</p>
+        <p>Warehouse Name: {{ $order['order']['warehouse']['name'] }}</p>
+        <p>Shipment Number: {{ $order['shipment']['tracking_number'] }}</p>
         <p>Dear Mr./Ms. {{ $order['client']['name'] }}</p>
     </div>
     <table class="table">
@@ -115,17 +117,21 @@
         <tr>
             <th>Item Name</th>
             <th>SKU</th>
-            <th>Price</th>
+            <th>Unit</th>
+            <th>Individual Price</th>
             <th>Quantity</th>
+            <th>Quantity Price</th>
         </tr>
         </thead>
         <tbody>
-        @foreach ($order['order']['order_items'] as $item)
+        @foreach ($order['order']->orderItems as $item)
             <tr>
                 <td>{{ $item['item']['name'] }}</td>
                 <td>{{ $item['item']['SKU'] }}</td>
+                <td>{{ $item['item']['unit'] }}</td>
                 <td>{{ $item['item']['sell_price'] }}</td>
                 <td>{{ $item['quantity'] }}</td>
+                <td>{{ $item['quantity']*$item['item']['sell_price']  }}</td>
             </tr>
         @endforeach
 
@@ -133,12 +139,11 @@
         </tbody>
     </table>
     <div class="content">
-        <p>Warehouse Name: {{ $order['order']['warehouse']['name'] }}</p>
-        <p>Shipment Number: {{ $order['shipment']['tracking_number'] }}</p>
+        <p>Payment Type: {{ $order['order']['payment_type'] }} </p>
         <p>Total Price: {{ $order['order']['price'] }}</p>
     </div>
     <div class="footer">
-        <p>All rights reserved © 2024</p>
+        <p>All rights reserved © {{now()}}</p>
     </div>
 </div>
 </body>

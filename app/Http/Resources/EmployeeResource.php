@@ -18,7 +18,8 @@ class EmployeeResource extends JsonResource
             'email' => $this->email,
             'location' => $this->location,
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
-            'phones' => PhoneResource::collection($this->whenLoaded('phones'))
+            'phones' => PhoneResource::collection($this->whenLoaded('phones')),
+            'complaints' => $this->whenLoaded('compliants')
         ];
         return $data;
     }

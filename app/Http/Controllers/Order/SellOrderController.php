@@ -20,12 +20,12 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class SellOrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:manage sells|manage current sell orders')->except('checkNearestWarehouse');
-
-        $this->middleware('permission:manage clients')->only('checkNearestWarehouse');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('permission:manage sells|manage current sell orders')->except('checkNearestWarehouse');
+//
+//        $this->middleware('permission:manage clients')->only('checkNearestWarehouse');
+//    }
 
     public function showAll()
     {

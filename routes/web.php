@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,5 @@ Route::post('/reset-password',[ResetPasswordController::class , 'reset'])->name(
 Route::prefix('reports')->controller(ReportController::class)->group(function (){
     Route::get('sales' , 'generatePDFForSells');
 });
+
+Route::get('auth/warehouse/google/callback', [AdminAuthController::class ,'handleAuthCallback']);

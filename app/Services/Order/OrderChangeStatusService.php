@@ -34,11 +34,12 @@ class OrderChangeStatusService
 
             $items = $order->load('orderItems')->orderItems->map(function ($item){
                 return [
-                    "id" => $item->id,
+                    "id" => $item->item_id,
                     "quantity" => $item->quantity
                 ];
             });
-            $loadedItemsById = $this->orderStoreService->loadItems($items);
+
+            $loadedItemsById = $this->orderStoreService->loadItems($items->toArray());
 
             $percent = $this->orderStoreService->calculateCapacity($items ,$loadedItemsById , $warehouse->size_cubic_meters );
         }
@@ -76,7 +77,8 @@ class OrderChangeStatusService
 
             return $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
 
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
 
             DB::rollBack();
 

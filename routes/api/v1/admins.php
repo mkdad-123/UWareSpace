@@ -7,12 +7,14 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompliantsController;
 use App\Http\Controllers\DebtController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Order\OrderStatusController;
 use App\Http\Controllers\Order\PurchaseController;
 use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SellController;
 use App\Http\Controllers\Order\SellOrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Subscription\SubscriptionController;
 use App\Http\Controllers\SupplierController;
@@ -33,6 +35,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::post('/login', 'login');
             Route::post('/logout', 'logout')->middleware('auth:admin');
             Route::get('/email/verify/{id}/{hash}', 'verify')->middleware('signed')->name('verification.verify');
+            Route::get('/redirect', 'redirectToAuth');
         });
 });
 
@@ -172,6 +175,13 @@ Route::middleware('auth:admin')->group(function () {
                 Route::post('/delete_All' , 'deleteAll');
                 Route::delete('/delete_One/{id}' , 'delete');
             });
+
+        Route::prefix('reports')->controller(ReportController::class)->group(function (){
+            Route::get('sales' , 'generatePDFForSells');
+            Route::get('purchases' , 'generatePDFForPurchase');
+        });
+
+        Route::get('invoice/{sellOrder}' , [InvoiceController::class,'generateInvoice']);
     });
 
 });

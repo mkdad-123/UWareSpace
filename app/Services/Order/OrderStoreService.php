@@ -26,6 +26,7 @@ class OrderStoreService
 
         foreach ($items as $item )
         {
+
             $itemSize = $loadedItems[$item['id']]->size_cubic_meters;
 
             $total += calculate_capacity($size , $itemSize , $item['quantity']);

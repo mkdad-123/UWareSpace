@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\SellOrder;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
@@ -13,8 +12,9 @@ class InvoiceController extends Controller
     {
         $admin = auth('admin')->user()?:auth('employee')->user()->admin;
 
-        $sell = $sellOrder->load(['order:id,invoice_number,price,warehouse_id','order.warehouse:id,name' , 'client:id,name' ,
-            'shipment:id,tracking_number' ,'order.orderItems.item']);
+        $sell = $sellOrder->load(['order:id,invoice_number,price,warehouse_id,payment_at,payment_type'
+            ,'order.warehouse:id,name' , 'client:id,name' ,
+            'shipment:id,tracking_number' ,'order.orderItems','order.orderItems.item']);
 
         $company = [
             'name' => $admin->name,
@@ -29,9 +29,8 @@ class InvoiceController extends Controller
             'logo' => $admin->logo,
             'company' => $company,
         ];
-        return view('pdf.invoice' , $data);
-//        $pdf = PDF::loadView('pdf.invoice' , $data)->setPaper('a4');
-//
-//        return $pdf->stream('report.pdf');
+
+        $pdf = PDF::loadView('pdf.invoice' , $data)->setPaper('a4');
+         return $pdf->stream('report.pdf');
     }
 }

@@ -181,7 +181,7 @@ class Admin extends Authenticatable implements Resetable,MustVerifyEmail,JWTSubj
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }
