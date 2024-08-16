@@ -17,7 +17,7 @@ class RoleRequest extends FormRequest
         $adminId = auth('admin')->id();
 
         return [
-            'name' => 'required|unique:roles,name,NULL,id,admin_id,' . $adminId,
+            'name' => 'required|unique:roles,name',
             'permission' => 'required|array|exists:permissions,id',
         ];
     }

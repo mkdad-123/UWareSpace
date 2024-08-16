@@ -27,8 +27,11 @@ class EmployeeAuthController extends Controller
         {
             return $this->response(response() , 'Your account is pending');
         }
-
-        $employee->firebase_token = $request->input('firebase_token');
+        if ($request->has('firebase_token')){
+            $employee->firebase_token = $request->input('firebase_token');
+        }else {
+            $employee->firebase_token = 'there is no token';
+        }
         $employee->save();
 
         return $this->response([

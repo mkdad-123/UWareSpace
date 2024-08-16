@@ -118,7 +118,7 @@ class ItemStoreService
 
             $warehouse = Warehouse::find($request->input('warehouse_id'));
 
-            $itemCapacity =  $warehouse->items()->where('id' , $item->id)->first();
+            $itemCapacity =  $warehouse->items()->where('items.id' , $item->id)->first();
 
             $percent = calculate_capacity($warehouse->size_cubic_meters,
                 $itemCapacity->size_cubic_meters ,
@@ -138,8 +138,6 @@ class ItemStoreService
             $warehouse->current_capacity += $percent;
 
             $warehouse->save();
-
-
 
             DB::commit();
 

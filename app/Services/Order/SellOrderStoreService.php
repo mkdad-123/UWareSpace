@@ -28,7 +28,8 @@ class SellOrderStoreService extends OrderStoreService
       */
     protected function sendNotification($orderId , $adminId)
     {
-        $users = Employee::whereAdminId($adminId)->permission('store')->get();
+        $users = Employee::whereAdminId($adminId)->permission('add order in shipment')
+            ->whereNot('firebase_token' , 'there is no token')->get();
 
         Notification::send($users , new SellOrderNotification($orderId));
     }
@@ -61,7 +62,7 @@ class SellOrderStoreService extends OrderStoreService
 
             $this->storeOrderItems($orderId ,$items);
 
-           // $this->sendNotification($orderId , $warehouse->admin_id);
+            $this->sendNotification($orderId , $warehouse->admin_id);
 
             DB::commit();
 

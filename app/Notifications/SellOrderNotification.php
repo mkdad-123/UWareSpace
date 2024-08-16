@@ -19,8 +19,8 @@ class SellOrderNotification extends Notification
 
     public function via($notifiable): array
     {
-       // return ['database' , 'App\Channels\FirebaseChannel'];
-        return ['database'];
+        return ['database' , 'App\Channels\FirebaseChannel'];
+       // return ['database'];
     }
 
     public function toDatabase($notifiable): array

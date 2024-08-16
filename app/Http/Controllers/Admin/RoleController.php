@@ -25,11 +25,7 @@ class RoleController extends Controller
 
         $result = (new RoleService())->store($request);
 
-        return $this->response(
-            $result->data,
-            $result->message,
-            $result->status
-        );
+        return $this->response($result->data, $result->message, $result->status);
     }
 
     public function showOne($id)

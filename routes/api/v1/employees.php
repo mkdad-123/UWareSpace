@@ -56,6 +56,7 @@ use Illuminate\Support\Facades\Route;
             Route::post('update/{item}', 'update');
             Route::delete('delete/{item}', 'delete');
             Route::get('filter', 'filter');
+            Route::get('top-items' , 'getTopFiveItems');
         });
 
     Route::prefix('item')->controller(WarehouseItemController::class)
@@ -98,6 +99,8 @@ use Illuminate\Support\Facades\Route;
             Route::post('add-order-in-shipment/{shipment}' , 'addOrder');
             Route::get('show-drivers' , 'showAllDrivers');
             Route::get('show-all-received' , 'showReceived');
+            Route::get('received/count' , "showCountReceived");
+            Route::get('pending/count' , "showCountPending");
             Route::get('filter', 'filter');
         });
 

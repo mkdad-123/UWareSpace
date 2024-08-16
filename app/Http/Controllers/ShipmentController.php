@@ -15,16 +15,19 @@ use App\Models\Shipment;
 use App\Services\Item\ItemUpdateService;
 use App\Services\Order\OrderStoreService;
 use App\Services\ShipmentAddOrderService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ShipmentController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('permission:manage shipments');
-//        $this->middleware('permission:add order in shipment')->only('addOrder');
-//
+//   public function __construct()
+//   {
+//       if(auth('employee')->user())
+//       {
+//           $this->middleware('permission:manage shipments');
+//           $this->middleware('permission:add order in shipment')->only('addOrder');
+//       }
 //    }
 
     public function showAll()
@@ -100,6 +103,28 @@ class ShipmentController extends Controller
         $employees = Employee::permission('add order in shipment')->get();
 
         return $this->response(EmployeeResource::collection($employees));
+    }
+
+    public function showCountReceived()
+    {
+        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+
+        $count = $admin->load('shipments')->shipments()
+            ->whereYear('shipments.created_at' , Carbon::now()->year)
+            ->where('status' , ShipmentEnum::RECEIVED)->count();
+
+        return $this->response($count);
+    }
+
+    public function showCountPending()
+    {
+        $admin = auth('admin')->user()?:auth('employee')->user()->admin;
+
+        $count = $admin->load('shipments')->shipments()
+            ->whereYear('shipments.created_at' , Carbon::now()->year)
+            ->where('status' , ShipmentEnum::getStatus())->count();
+
+        return $this->response($count);
     }
 
 }

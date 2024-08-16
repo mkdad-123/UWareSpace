@@ -132,12 +132,16 @@ Route::middleware('auth:admin')->group(function () {
             ->group(function (){
                 Route::get('show-all' , 'showAll');
                 Route::get('show/{item}' , 'show');
+                Route::get('top-items' , 'getTopFiveItems');
             });
 
         Route::prefix('shipment')->controller(ShipmentController::class)
             ->group(function () {
                 Route::get('show-all', 'showAll');
                 Route::get('show/{shipment}', 'show');
+                Route::get('received/count' , "showCountReceived");
+                Route::get('pending/count' , "showCountPending");
+
             });
 
         Route::prefix('received/purchase')->controller(PurchaseController::class)

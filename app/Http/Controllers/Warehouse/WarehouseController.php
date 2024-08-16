@@ -13,10 +13,13 @@ use App\Services\Warehouse\WarehouseUpdateService;
 class WarehouseController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:manage warehouses');
-    }
+//    public function __construct()
+//    {
+//        if (auth('employee')->user())
+//        {
+//            $this->middleware('permission:manage warehouses');
+//        }
+//    }
 
     public function showAll()
     {
