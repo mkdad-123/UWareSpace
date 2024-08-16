@@ -27,13 +27,14 @@ class SubscriptionController extends Controller
             ]);
             if ($Plan) {
                 $plan = ModelsPlan::create([
-                    'price'          => $Plan->amount,
-                    'currency'       => $Plan->currency,
-                    'name'           => $request->name,
-                    'interval_count' => $Plan->interval_count,
-                    'billing_method' => $Plan->interval,
-                    'discription'    => $request->discription,
-                    'plan_id'        => $Plan->id,
+                    'price'           => $Plan->amount,
+                    'currency'        => $Plan->currency,
+                    'name'            => $request->name,
+                    'interval_count'  => $Plan->interval_count,
+                    'billing_method'  => $Plan->interval,
+                    'discription'     => $request->discription,
+                    'plan_id'         => $Plan->id,
+                    'num_of_employees'=>$request->employees_number,
                 ]);
             }
             if ($plan) {
@@ -49,7 +50,7 @@ class SubscriptionController extends Controller
     }
     public function ShowPlans()
     {
-        $plans = ModelsPlan::select('name', 'price' , 'discription' ,'billing_method', 'interval_count' ,'currency')->get();
+        $plans = ModelsPlan::select('name', 'price' , 'discription' ,'billing_method', 'interval_count' ,'currency','plan_id')->get();
         if ($plans) {
             return $this->response($plans , "show successs ",200);
         } else {
@@ -76,8 +77,7 @@ class SubscriptionController extends Controller
         if ($paymentMethod != null) {
             $paymentMethod = $admin->addPaymentMethod($paymentMethod);
         }
-        $plan = $request->plan_id;
-            $done = $admin->newSubscription('default', $plan)->create();
+            $done = $admin->newSubscription('default', $request->plan_id)->createAndSendInvoice();
             if ($done) {
                 return $this->response($done ,"subscription success" ,200);
             }

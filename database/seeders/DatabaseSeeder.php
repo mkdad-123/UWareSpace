@@ -18,13 +18,22 @@ class DatabaseSeeder extends Seeder
 
         SuperAdmin::create([
             'name' => 'Mkdad Taleb',
-            'email' => 'ma0109424@gmail.com',
+            'email' => 'ma@gmail.com',
             'password' => Hash::make('password')
         ]);
 
-       PermissionSeeder::run();
+       //PermissionSeeder::run();
+       Admin::create([
+        'name' => 'Mkdad Taleb',
+        'email' => 'ma@gmail.com',
+        'password' => Hash::make('password'),
+        'location' => 'damas',
+        'active' => true,
+        'email_verified_at' => Carbon::now(),
+    ]);
+ }
 
     }
 
 
-}
+

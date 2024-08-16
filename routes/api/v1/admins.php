@@ -39,6 +39,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::controller(SubscriptionController::class)->prefix('subscription')
     ->group(function () {
         Route::post('/PickePlan', 'PickePlan')->middleware('auth:admin');
+        Route::post('/processPlan', 'processPlan')->middleware('auth:admin');
     });
 
 Route::controller(CompliantsController::class)->prefix('Compliant')
