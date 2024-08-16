@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('currency');
             $table->text('discription');
+            $table->integer('num_of_employees');
             $table->timestamps();
         });
     }
