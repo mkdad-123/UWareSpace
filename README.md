@@ -1,66 +1,201 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Mango is a comprehensive **SaaS (Software as a Service)** platform designed to streamline warehouse management. It enables businesses to efficiently manage inventory, logistics, employees, customers, and suppliers. The system supports role-based access control, inventory tracking, sales and purchase management, and promotional offers.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Role-Based Access Control**: Assign roles to employees and control their permissions.
+- **Inventory Management**: Track and manage inventory levels, products, and stock movements.
+- **Sales & Purchase Tracking**: Manage sales orders, purchase orders, and shipments.
+- **Customer & Supplier Management**: Maintain customer and supplier records.
+- **Promotional Offers**: Create and manage special offers for inventory products.
+- **Reporting & Analytics**: Generate reports for sales, purchases, and inventory.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technologies
 
-## Learning Laravel
+- **Backend**: Laravel, PHP, MVC.
+- **Frontend**: Blade, HTML, CSS, JavaScript.
+- **Database**: MySQL.
+- **APIs**: RESTful APIs for seamless integration.
+- **Tools**: Git, GitHub, Postman, Redis, Firebase (FCM).
+- **Techniques**: OOP, Design Patterns (Service Layer, Strategy, DTOs, Dependency Injection).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## How to Run the Project
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Prerequisites
 
-## Laravel Sponsors
+Before running the project, ensure you have the following installed:
+- PHP (>= 8.1)
+- Composer
+- MySQL
+- Git
+- Node.js (optional, if using frontend assets)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Installation Steps
 
-### Premium Partners
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/mkdad-123/UWareSpace.git
+   cd UWareSpace
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+2. **Install dependencies**:
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Set up the `.env` file**:
+    - Copy the `.env.example` file to `.env`:
+      ```bash
+      cp .env.example .env
+      ```
+    - Update the `.env` file with your database credentials:
+      ```plaintext
+      DB_DATABASE=your_database_name
+      DB_USERNAME=your_database_user
+      DB_PASSWORD=your_database_password
+      ```
+
+4. **Generate an application key**:
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Set up JWT Secret**:
+   If you're using JWT for authentication, generate the JWT secret key:
+   ```bash
+   php artisan jwt:secret
+   ```
+
+6. **Create storage link**:
+   To make uploaded files accessible, create a symbolic link:
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Run migrations and seed the database**:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+8. **Start the development server**:
+   ```bash
+   php artisan serve
+   ```
+
+9. **Access the application**:
+   Open your browser and navigate to `http://localhost:8000`.
+
+---
+## Custom Artisan Commands
+
+This project includes custom Artisan commands to streamline development:
+
+### 1. **Create a Service**
+- Command: `php artisan make:service {ServiceName}`
+- Description: Generates a new service class in the `app/Services` directory.
+- Example:
+  ```bash
+  php artisan make:service UserService
+  ```
+
+### 2. **Create a Trait**
+- Command: `php artisan make:trait {TraitName}`
+- Description: Generates a new trait in the `app/Traits` directory.
+- Example:
+  ```bash
+  php artisan make:trait Loggable
+  ```
+
+### 3. **How to Register Custom Commands**
+- To use these commands, ensure they are registered in the `app/Console/Kernel.php` file:
+  ```php
+  protected $commands = [
+      \App\Console\Commands\MakeServiceCommand::class,
+      \App\Console\Commands\MakeTraitCommand::class,
+  ];
+  ```
+  
+## Additional Package Setup
+
+This project uses several Laravel packages that may require additional setup. Below are the instructions for each package:
+
+### 1. **JWT-Auth (tymon/jwt-auth)**
+- After installing dependencies, generate the JWT secret key:
+  ```bash
+  php artisan jwt:secret
+  ```
+
+### 2. **Firebase (kreait/firebase-php)**
+- Obtain your Firebase credentials:
+    1. Go to the [Firebase Console](https://console.firebase.google.com/).
+    2. Create a new project or use an existing one.
+    3. Download the service account JSON file.
+- Place the JSON file in the `storage/app` directory.
+- Update the `.env` file with the path to the JSON file:
+  ```plaintext
+  FIREBASE_CREDENTIALS=storage/app/your-firebase-credentials.json
+  ```
+
+### 3. **Laravel DomPDF (barryvdh/laravel-dompdf)**
+- No additional setup is required. Ensure you have the `dompdf/dompdf` dependency installed.
+
+### 4. **TCPDF (elibyy/tcpdf-laravel)**
+- No additional setup is required.
+
+### 5. **Laravel Sanctum (laravel/sanctum)**
+- No additional setup is required.
+
+### 6. **Laravel Telescope (laravel/telescope)**
+- After running migrations, install Telescope:
+  ```bash
+  php artisan telescope:install
+  php artisan migrate
+  ```
+
+### 7. **Spatie Laravel Permission (spatie/laravel-permission)**
+- No additional setup is required. Ensure you have run the migrations.
+
+### 8. **Spatie Laravel Query Builder (spatie/laravel-query-builder)**
+- No additional setup is required.
+
+### 9. **Laravel Cashier (laravel/cashier)**
+- No additional setup is required. Ensure you have configured your Stripe keys in the `.env` file:
+  ```plaintext
+  STRIPE_KEY=your-stripe-key
+  STRIPE_SECRET=your-stripe-secret
+  ```
+
+### 10. **Laravel Socialite (laravel/socialite)**
+- No additional setup is required. Ensure you have configured your social media keys in the `.env` file if using social login.
+
+---
+
+## Documentation
+
+For detailed documentation, including the **Software Requirements Specification (SRS)**, please refer to the [Documentation Folder](/docs).
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+If you'd like to contribute to this project, please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeatureName`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeatureName`).
+5. Open a pull request.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Contact
 
-## Security Vulnerabilities
+If you have any questions or feedback, feel free to reach out:
+- **Email**: makdad.taleb@gmail.com
+- **GitHub**: [mkdad-123](https://github.com/mkdad-123)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
