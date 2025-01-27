@@ -15,8 +15,9 @@ class SupplierController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:manage suppliers|manage external members');
-
+        if(auth('employee')->user()){
+            $this->middleware('permission:manage suppliers|manage external members');
+        }
         $this->setmodel(new Supplier());
     }
 

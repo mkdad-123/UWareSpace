@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('plan_id');
             $table->string('name');
             $table->string('billing_method');
-            $table->tinyInteger('interval_count')->defult(1);
+            $table->tinyInteger('interval_count')->default(1);
             $table->string('price');
             $table->string('currency');
             $table->text('discription');

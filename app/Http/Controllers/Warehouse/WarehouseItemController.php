@@ -15,10 +15,12 @@ use App\Services\Item\ItemUpdateService;
 class WarehouseItemController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('permission:manage warehouses');
-//    }
+    public function __construct()
+    {
+        if(auth('employee')->user()){
+            $this->middleware('permission:manage warehouses');
+        }
+    }
 
     public function store(Item $item ,WarehouseItemStoreRequest $request , ItemStoreService $storeService)
     {

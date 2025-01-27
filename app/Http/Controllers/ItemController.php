@@ -18,11 +18,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 class ItemController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('permission:manage inventory');
-//        $this->middleware('permission:manage current purchase orders|manage purchase')->only('store');
-//    }
+    public function __construct()
+    {
+        if (auth('employee')->user())
+        {
+            $this->middleware('permission:manage inventory');
+            $this->middleware('permission:manage current purchase orders|manage purchase')->only('store');
+        }
+    }
 
     public function showAll()
     {

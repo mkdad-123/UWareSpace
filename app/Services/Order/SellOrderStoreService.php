@@ -77,7 +77,8 @@ class SellOrderStoreService extends OrderStoreService
 
              $this->result = new OperationResult('Database error: ' . $e->getMessage(), response(), 500);
 
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
 
             DB::rollBack();
 

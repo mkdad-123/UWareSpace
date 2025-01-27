@@ -7,6 +7,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
+    public function __construct()
+    {
+        if(auth('employee')->user()){
+            $this->middleware('permission:create invoices');
+        }
+    }
 
     public function generateInvoice(SellOrder $sellOrder)
     {
@@ -31,6 +37,6 @@ class InvoiceController extends Controller
         ];
 
         $pdf = PDF::loadView('pdf.invoice' , $data)->setPaper('a4');
-         return $pdf->stream('report.pdf');
+        return $pdf->stream('report.pdf');
     }
 }

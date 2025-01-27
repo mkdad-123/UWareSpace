@@ -14,12 +14,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class PurchaseOrderController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('permission:manage current purchase orders|manage purchases')->except('addBatch');
-//
-//        $this->middleware('manage inventory')->only('addBatch');
-//    }
+    public function __construct()
+    {
+        if(auth('employee')->user()){
+            $this->middleware('permission:manage current purchase orders|manage purchases')->except('addBatch');
+
+            $this->middleware('manage inventory')->only('addBatch');
+        }
+
+    }
 
     public function showAll()
     {

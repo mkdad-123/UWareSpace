@@ -21,7 +21,7 @@ class ItemStoreService
     protected function storePhoto($photo , $data)
     {
         $photoName = time().'.'.$photo->getClientOriginalExtension();
-        $photo->storeAs('images', $photoName, 'public');
+        $photo->storeAs('images', $photoName,"public");
         $data['photo'] = 'images/'.$photoName;
 
         return $data;

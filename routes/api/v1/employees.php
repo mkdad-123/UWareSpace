@@ -21,7 +21,7 @@ use App\Http\Controllers\Warehouse\WarehouseItemController;
 use Illuminate\Support\Facades\Route;
 
 
-
+//Route::middleware('subscribe')->group(function (){
     /*
      * Authentication System for employee
      */
@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Route;
                 Route::post('/logout', 'logout')->middleware('auth:employee');
             });
     });
+
 
     Route::controller(CompliantsController::class)->prefix('Compliant')
         ->group(function () {
@@ -179,3 +180,4 @@ use Illuminate\Support\Facades\Route;
 
 });
 
+//});

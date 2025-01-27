@@ -12,10 +12,15 @@ class PurchaseController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:manage purchases|manage previous purchases')->except('showNonInventoried');
+        if(auth('employee')->user())
+        {
+            $this->middleware('permission:manage purchases|manage previous purchases')->except('showNonInventoried');
 
-        $this->middleware('permission:manage inventory')->only('showNonInventoried');
+            $this->middleware('permission:manage inventory')->only('showNonInventoried');
+        }
     }
+
+
 
     public function showPurchases()
     {

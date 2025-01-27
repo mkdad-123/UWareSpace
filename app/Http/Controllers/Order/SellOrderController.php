@@ -20,12 +20,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class SellOrderController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('permission:manage sells|manage current sell orders')->except('checkNearestWarehouse');
-//
-//        $this->middleware('permission:manage clients')->only('checkNearestWarehouse');
-//    }
+    public function __construct()
+    {
+        if(auth('employee')->user()){
+            $this->middleware('permission:manage sells|manage current sell orders')->except('checkNearestWarehouse');
+
+            $this->middleware('permission:manage clients')->only('checkNearestWarehouse');
+        }
+
+    }
 
     public function showAll()
     {
@@ -59,19 +62,11 @@ class SellOrderController extends Controller
 
         $result = $orderStoreService->store($request);
 
-        if ( $result->status == 201){
-
             return $this->response (
                 $result->data,
                 $result->message,
                 $result->status,
             );
-        }
-        return  $this->response (
-            $result->data,
-            $result->message,
-            $result->status,
-        );
     }
 
     public function checkNearestWarehouse(Client $client)

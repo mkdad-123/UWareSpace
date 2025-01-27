@@ -11,7 +11,10 @@ class SellController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:manage sells|manage previous sales');
+        if(auth('employee')->user()){
+            $this->middleware('permission:manage sells|manage previous sales');
+
+        }
     }
 
     public function showSells()

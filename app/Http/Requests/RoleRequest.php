@@ -14,10 +14,9 @@ class RoleRequest extends FormRequest
 
     public function rules(): array
     {
-        $adminId = auth('admin')->id();
-
+        $roleId = $this->route('id');
         return [
-            'name' => 'required|unique:roles,name',
+            'name' => 'required|unique:roles,name,'.$roleId,
             'permission' => 'required|array|exists:permissions,id',
         ];
     }

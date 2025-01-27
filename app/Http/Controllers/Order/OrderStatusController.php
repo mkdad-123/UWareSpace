@@ -13,18 +13,20 @@ use App\Services\Order\OrderChangeStatusService;
 
 class OrderStatusController extends Controller
 {
-//
-//    public function __construct()
-//    {
-//        $this->middleware('permission:change status sell order|manage sells|manage current sell orders')
-//        ->only('changeStatusSell');
-//
-//        $this->middleware('permission:manage purchases|manage current purchase orders')
-//            ->only('changeStatusPurchase');
-//
-//        $this->middleware('permission:manage shipments')->only('changeStatusShipment');
-//
-//    }
+
+    public function __construct()
+    {
+        if(auth('employee')->user())
+        {
+            $this->middleware('permission:change status sell order|manage sells|manage current sell orders')
+                ->only('changeStatusSell');
+
+            $this->middleware('permission:manage purchases|manage current purchase orders')
+                ->only('changeStatusPurchase');
+
+            $this->middleware('permission:manage shipments')->only('changeStatusShipment');
+        }
+    }
 
     public function changeStatusPurchase(OrderChangeRequest $request , PurchaseOrder $purchaseOrder , OrderChangeStatusService $changeStatusService)
     {
@@ -57,8 +59,7 @@ class OrderStatusController extends Controller
 
             $shipment->sellOrders->each(function ($sellOrder) use ($request){
                 $sellOrder->status = $request->input('status');
-                $sellOrder->save();
-            }) ;
+                $sellOrder->save();            }) ;
         }else {
             $shipment->status = $status;
             $shipment->save();
